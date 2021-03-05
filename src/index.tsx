@@ -6,25 +6,41 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import store from './state/store/store';
 import InitializeSideEffects from './sideEffects/InitializeSideEffects';
-import { ThemeProvider } from 'styled-components';
-import theme from './components/shared/Theme/theme';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import moment from 'moment';
 import loadScript from './utils/loadScript';
+import { create } from 'jss';
+import rtl from 'jss-rtl';
+import { ThemeProvider, createMuiTheme, StylesProvider, jssPreset } from '@material-ui/core/styles';
 
 // loadScript('google-places-api-script', `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_PLACES_KEY}&libraries=places`);
 
 //Register all side effects
 InitializeSideEffects();
+
+const dir = 'rtl';
+let theme;
+const plugins = [...jssPreset().plugins];
+document.body.dir = dir || '';
+theme = createMuiTheme({
+    direction: dir
+});
+if (dir === 'rtl') {
+    plugins.push(rtl());
+}
+const jss = create({ plugins });
+
 ReactDOM.render(
     <React.StrictMode>
         <ThemeProvider theme={theme}>
-            <Provider store={store}>
-                <MuiPickersUtilsProvider libInstance={moment} utils={MomentUtils}>
-                    <App />
-                </MuiPickersUtilsProvider>
-            </Provider>
+            <StylesProvider jss={jss}>
+                <Provider store={store}>
+                    <MuiPickersUtilsProvider libInstance={moment} utils={MomentUtils}>
+                        <App />
+                    </MuiPickersUtilsProvider>
+                </Provider>
+            </StylesProvider>
         </ThemeProvider>
     </React.StrictMode>,
     document.getElementById('root')

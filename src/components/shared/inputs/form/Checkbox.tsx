@@ -13,7 +13,7 @@ const FormCheckbox = ({ name, onChange, ...restProps }: Props) => {
                 return (
                     <div>
                         <Checkbox
-                            onChange={(event) => {
+                            onChange={(event: any) => {
                                 setFieldValue(name, event.target.checked);
                                 setFieldTouched(name, true, false);
                                 onChange && onChange(event);

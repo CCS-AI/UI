@@ -21,6 +21,8 @@
         "draft-js-export-html": "^1.4.1",
         "formik": "^2.1.5",
         "html-react-parser": "^1.2.4",
+        "jss": "^10.5.1",
+        "jss-rtl": "^0.3.0",
         "localized-strings": "^0.2.4",
         "lodash": "^4.17.19",
         "moment": "^2.27.0",

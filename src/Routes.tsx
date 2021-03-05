@@ -5,6 +5,7 @@ import { PagesRoutes } from './routing/PagesRoutes';
 import AuthRoute from './routing/AuthRoute';
 import { connect } from 'react-redux';
 import { RootState } from './state/store/store';
+import ExceptionPage from './components/pages/ExceptionPage/ExceptionPage';
 
 type Props = {};
 
@@ -18,7 +19,7 @@ const Routes = ({}: Props) => {
                 <Route path={PagesRoutes.Login}>
                     <LoginPageConnected />
                 </Route>
-                {/* <AuthRoute component={() => <ExceptionPage status={404} title="Not found" />} path={PagesRoutes.Error} /> */}
+                <Route component={() => <ExceptionPage />} path={PagesRoutes.Error} />
                 <Redirect to={PagesRoutes.Error} />
             </Switch>
         </>

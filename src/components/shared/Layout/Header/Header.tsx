@@ -5,6 +5,8 @@ import { styled } from '../../Theme/theme';
 import { userInfo } from '../../../../models/entities/user';
 import { RootState } from '../../../../state/store/store';
 import { userSelectors } from '../../../../state/ducks/user/selectors';
+import { Button } from '@material-ui/core';
+import ccsLogo from '../../../../static/images/hearing.png';
 
 type Props = RouteComponentProps & {
     userInfo?: userInfo;
@@ -19,8 +21,13 @@ const HeaderConnected = ({ userInfo, fetchUserInfo, history, logout }: Props) =>
 
     return (
         <HeaderContainer>
-            <StyledLogo src={''} alt="CCS" />
-            <RightBar></RightBar>
+            <LogoContainer>
+                מערכת לניהול בדיקות שמיעה
+                <StyledLogo src={ccsLogo} alt="ccslogo" />
+            </LogoContainer>
+            <RightBar>
+                <Button onClick={logout}>התנתקות</Button>
+            </RightBar>
         </HeaderContainer>
     );
 };
@@ -37,10 +44,14 @@ const HeaderContainer = styled.div`
     height: 100%;
     margin-left: 10px;
     position: relative;
-
+    display: flex;
     @media screen and (max-width: 768px) {
         margin-left: 0;
     }
+`;
+const LogoContainer = styled.div`
+    display: flex;
+    align-items: center;
 `;
 const RightBar = styled.div`
     position: absolute;
@@ -56,14 +67,7 @@ const RightBar = styled.div`
     }
 `;
 const StyledLogo = styled.img`
-    width: 175px;
     height: 30px;
-    margin-left: 14px;
-    margin-top: 18px;
-
-    @media screen and (max-width: 768px) {
-        display: none;
-    }
 `;
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HeaderConnected));

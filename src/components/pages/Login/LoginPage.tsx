@@ -26,7 +26,6 @@ const LoginPage = React.memo(({ showLoader, error, login, match }: LoginPageProp
                         </Route> */}
                     <Redirect to="/" />
                 </Switch>
-                <ErrorMsg>{error}</ErrorMsg>
             </LoginPageWrapper>
         </React.Fragment>
     );
@@ -49,9 +48,6 @@ const ForgetPWText = styled.span`
     margin: 12px;
     color: #008ac9;
     cursor: pointer;
-`;
-const ErrorMsg = styled.div`
-    color: red;
 `;
 
 const Footer = styled.div`

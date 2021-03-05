@@ -1,10 +1,8 @@
-import { FormControlLabel } from '@material-ui/core';
+import { CheckboxProps, FormControlLabel } from '@material-ui/core';
 import React from 'react';
 import { Checkbox as CheckBox } from '@material-ui/core';
 
-export type BaseProps = {
-    checked?: boolean;
-    name?: string;
+export type BaseProps = CheckboxProps & {
     text: string | undefined;
     onChange?: (event: any) => void;
 };

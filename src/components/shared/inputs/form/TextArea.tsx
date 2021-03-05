@@ -14,7 +14,7 @@ const FormTextArea = ({ name, ...restProps }: Props) => {
                 const hasError = touched && error !== undefined;
                 return (
                     <div>
-                        <TextInput field={field} hasError={hasError} error={error} multiline {...restProps} />
+                        <TextInput field={field} multiline helperText={error} error={hasError} {...restProps} />
                     </div>
                 );
             }}

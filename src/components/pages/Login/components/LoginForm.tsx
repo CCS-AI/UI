@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Formik, Form } from 'formik';
-import { match, Link } from 'react-router-dom';
+import { Link, match } from 'react-router-dom';
 import Loader from '../../../shared/SmallComponents/Loader';
 import { Checkbox } from '../../../shared/inputs/base';
 import { FormTextInput } from '../../../shared/inputs/form';
 import { styled } from '../../../shared/Theme/theme';
 import { loginSchema } from '../../../../validationSchemas/loginForm';
 import loadScript from '../../../../utils/loadScript';
-import { Button } from '@material-ui/core';
+import { Button, Avatar, CssBaseline, Paper, Box, Grid, Typography } from '@material-ui/core';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import { makeStyles } from '@material-ui/core/styles';
+import loginBG from '../../../../static/images/loginbackground.jpg';
 
 declare global {
     interface Window {
@@ -47,6 +50,35 @@ type LoginPageProps = {
     login: (email: string, password: string, recaptchaToken?: string) => void;
     match: match;
 };
+const useStyles = makeStyles((theme) => ({
+    root: {
+        height: '100vh'
+    },
+    image: {
+        backgroundImage: `url(${loginBG})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundColor: theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+    },
+    paper: {
+        margin: theme.spacing(8, 4),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+    },
+    avatar: {
+        margin: theme.spacing(1),
+        backgroundColor: theme.palette.secondary.main
+    },
+    form: {
+        width: '100%', // Fix IE 11 issue.
+        marginTop: theme.spacing(1)
+    },
+    submit: {
+        margin: theme.spacing(3, 0, 2)
+    }
+}));
 
 const LoginForm = ({ showLoader, error, login, match }: LoginPageProps) => {
     const [isCaptchaReady, setIsCaptchaReady] = useState(false);
@@ -104,7 +136,17 @@ const LoginForm = ({ showLoader, error, login, match }: LoginPageProps) => {
             }
         }
     };
+    const Copyright = () => {
+        return (
+            <Typography variant="body2" color="textSecondary" align="center">
+                {'Copyright © '}
+                Communication clinical system {new Date().getFullYear()}
+                {'.'}
+            </Typography>
+        );
+    };
 
+    const classes = useStyles();
     return (
         <>
             <Formik
@@ -117,19 +159,45 @@ const LoginForm = ({ showLoader, error, login, match }: LoginPageProps) => {
                 {(formik) => {
                     const { errors, touched, isValid } = formik;
                     return (
-                        <FormContainer>
-                            <Form>
-                                <FormTextInput name="email" placeHolder={'איימיל'} style={{ height: '40px' }} />
-                                <FormTextInput name="password" placeHolder={'סיסמא'} type="password" style={{ height: '40px' }} />
-                                <Button variant="contained" type="submit" disabled={!isValid}>
-                                    {showLoader || generatingCaptcha ? (
-                                        <Loader width="20px" marginTop="0px" showText={false} />
-                                    ) : (
-                                        <span>{'התחברות'}</span>
-                                    )}
-                                </Button>
-                            </Form>
-                        </FormContainer>
+                        <Grid container component="main" className={classes.root}>
+                            <CssBaseline />
+                            <Grid item xs={false} sm={4} md={7} className={classes.image} />
+                            <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                                <div className={classes.paper}>
+                                    <Avatar className={classes.avatar}>
+                                        <LockOutlinedIcon />
+                                    </Avatar>
+                                    <Typography component="h1" variant="h5">
+                                        התחברות
+                                    </Typography>
+                                    <Form className={classes.form} noValidate>
+                                        <FormTextInput required label="איימיל" name="email" autoFocus />
+                                        <FormTextInput required name="password" label="סיסמא" type="password" />
+                                        <Checkbox value="remember" color="primary" text="זכור אותי" />
+                                        <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+                                            {showLoader || generatingCaptcha ? (
+                                                <Loader width="20px" marginTop="0px" showText={false} />
+                                            ) : (
+                                                <span>{'התחברות'}</span>
+                                            )}
+                                        </Button>
+                                        <Grid container>
+                                            <Grid item xs>
+                                                <Link to={'/forgotpwd'}>שכחת סיסמא?</Link>
+                                            </Grid>
+                                            <Grid item>
+                                                <Link to={'/register'}>{'אין לך משתמש? לחץ כאן כדי ליצור'}</Link>
+                                            </Grid>
+                                        </Grid>
+
+                                        <ErrorMsg>{error}</ErrorMsg>
+                                        <Box mt={5}>
+                                            <Copyright />
+                                        </Box>
+                                    </Form>
+                                </div>
+                            </Grid>
+                        </Grid>
                     );
                 }}
             </Formik>
@@ -148,6 +216,10 @@ function clearLocalStorage() {
     localStorage.removeItem('rememberMe');
 }
 
+const ErrorMsg = styled.div`
+    color: red;
+    text-align: center;
+`;
 const ForgetPWText = styled.span`
     margin: 12px;
     color: #008ac9;

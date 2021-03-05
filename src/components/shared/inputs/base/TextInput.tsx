@@ -1,26 +1,16 @@
 import React from 'react';
-import { CSSProperties } from 'styled-components';
 import { FieldInputProps } from 'formik';
-import { TextField } from '@material-ui/core';
+import { TextField, TextFieldProps } from '@material-ui/core';
 
-export type BaseProps = {
+export type BaseProps = TextFieldProps & {
     placeHolder?: string;
-    value?: string;
     onChange?: any;
-    style?: CSSProperties;
-    name?: string;
     field?: FieldInputProps<any>;
-    hasError?: boolean;
-    error?: string;
-    type?: string;
-    allowClear?: boolean;
-    multiline?: boolean;
 };
 
-const TextInput = ({ onChange, hasError, error, value, name, placeHolder, style, field, type, multiline }: BaseProps) => {
+const TextInput = ({ onChange, value, name, field, ...restProps }: BaseProps) => {
     return (
         <TextField
-            type={type}
             autoComplete="off"
             name={name}
             {...field}
@@ -29,15 +19,14 @@ const TextInput = ({ onChange, hasError, error, value, name, placeHolder, style,
                 if (field?.onChange) field.onChange(e);
             }}
             value={value ?? field?.value}
-            style={style}
-            placeholder={placeHolder}
-            error={hasError}
-            helperText={error}
-            multiline={multiline}
+            {...restProps}
         />
     );
 };
 TextInput.defaultProps = {
-    type: 'text'
+    type: 'text',
+    variant: 'outlined',
+    margin: 'normal',
+    fullWidth: true
 };
 export default TextInput;

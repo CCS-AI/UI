@@ -35,7 +35,7 @@ const LoaderWrapper = styled.div<LoaderStyle>`
     & span {
         font-size: 18px;
         margin-top: 16px;
-        color: ${(props) => props.theme.colors.primaryBlue};
+        color: black;
     }
 
     & img {
