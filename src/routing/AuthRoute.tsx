@@ -8,7 +8,7 @@ import { RootState } from '../state/store/store';
 import { authenticationSelectors } from '../state/ducks/authentication/selectors';
 import Loader from '../components/shared/SmallComponents/Loader';
 
-const AuthRoute = ({ token, refreshToken, refreshTokenError, component, companySettings, printMode, setPrintMode, featureFlags, ...rest }: any) => {
+const AuthRoute = ({ token, refreshToken, refreshTokenError, component, printMode, setPrintMode, featureFlags, ...rest }: any) => {
     let loginRefer = PagesRoutes.Login;
     if (rest.location.pathname !== '/') {
         loginRefer += `?refer=${encodeURIComponent(rest.location.pathname + rest.location.search)}`;
@@ -25,7 +25,7 @@ const AuthRoute = ({ token, refreshToken, refreshTokenError, component, companyS
                 render={(props) => {
                     if (token) {
                         Authentication.SetToken(token);
-                        return <Layout>{!companySettings ? <Loader /> : <Component {...props} />}</Layout>;
+                        return <Layout><Component {...props} /></Layout>;
                     } else return null;
                 }}
             />
