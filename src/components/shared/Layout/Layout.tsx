@@ -52,6 +52,8 @@ const ContentWrapper = styled.div`
     z-index: 50;
     height: calc(100% - 64px);
     margin-left: auto;
+    position: absolute;
+    top: 64px;
     @media screen and (max-width: 768px) {
         position: fixed;
         width: 100%;
