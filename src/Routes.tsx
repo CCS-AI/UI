@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { RootState } from './state/store/store';
 import ExceptionPage from './components/pages/ExceptionPage/ExceptionPage';
 import ShowAllPatietns from './components/pages/ShowPatients/ShowAllPatietns';
+
 type Props = {};
 
 const Routes = ({}: Props) => {
