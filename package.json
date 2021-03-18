@@ -25,6 +25,7 @@
         "jss-rtl": "^0.3.0",
         "localized-strings": "^0.2.4",
         "lodash": "^4.17.19",
+        "material-ui-search-bar": "^1.0.0",
         "moment": "^2.27.0",
         "node-fetch": "^2.6.1",
         "react": "^16.13.1",
