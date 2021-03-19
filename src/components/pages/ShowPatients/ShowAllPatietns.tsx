@@ -1,27 +1,30 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { RootState } from '../../../state/store/store';
-import { Patient } from '../../../models/entities/patient';
-import { patientSelector } from '../../../state/ducks/patient/selectors';
+import React, {useEffect} from 'react';
+import {connect} from 'react-redux';
+import {withRouter, RouteComponentProps} from 'react-router-dom';
+import {RootState} from '../../../state/store/store';
+import {Patient} from '../../../models/entities/patient';
+import {patientSelector} from '../../../state/ducks/patient/selectors';
+import {patientFieldToHeb} from "../../../models/HebTransformer";
+import {PatientTableWithSearch} from './TableWithSearch'
+
 
 export type ShowAllPatientsProps = RouteComponentProps & {
     patients: Patient[] | undefined;
-    fetchPatients: () => void;
+    fetchPatients: () => Promise<Patient[]>;
 };
 
-const ShowAllPatietns = ({ patients }: ShowAllPatientsProps) => {
-    // // get all patients keys as string array
-    // if (!patients) return <div>No patients</div>;
-    // const keysOfPatient = Object.keys(patients[0]);
-    // const patientsFields: any[] = keysOfPatient.map((key) => {
-    //     return {
-    //         field: key
-    //     };
-    // });
+const ShowAllPatients = ({patients, fetchPatients}: ShowAllPatientsProps) => {
+    useEffect(() => {
+        fetchPatients()
+    }, [])
 
-    return <h1>d</h1>;
-};
+    if (!patients || !patients.length) {
+        return <div>no patients</div>
+    }
+
+    return <PatientTableWithSearch rows={patients} columns={Object.keys(patients[0])} pageSize={5} mapFiledToHeb={patientFieldToHeb}></PatientTableWithSearch>
+}
+
 
 const mapStateToProps = (state: RootState) => ({
     patients: patientSelector.patientInfo(state)
@@ -31,4 +34,4 @@ const mapDispatchToProps = (dispatch: any) => ({
     fetchPatients: () => dispatch.patient.fetchAllPatients()
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ShowAllPatietns));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ShowAllPatients));

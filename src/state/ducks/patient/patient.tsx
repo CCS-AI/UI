@@ -16,7 +16,6 @@ export const patient: ModelConfig<patientsStateType> = {
     effects: (dispatch: any) => ({
         async fetchAllPatients() {
             const patients = await client.patients().fetchAllPatients();
-            console.log(patients);
             dispatch.patient.setAllPatients(patients);
         }
     })
