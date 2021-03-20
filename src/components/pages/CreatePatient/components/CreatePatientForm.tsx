@@ -9,7 +9,7 @@ import { loginSchema } from '../../../../validationSchemas/loginForm';
 import loadScript from '../../../../utils/loadScript';
 import { Button, CssBaseline, Paper, Box, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import loginBG from '../../../../static/images/loginbackground.jpg';
+import StaticDateTimePicker from '../../../shared/StaticDateTimePicker/StaticDateTimePicker';
 
 declare global {
     interface Window {
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
         height: '100vh'
     },
     image: {
-        backgroundImage: `url(${loginBG})`,
+        // backgroundImage: `url(${loginBG})`,
         backgroundRepeat: 'no-repeat',
         backgroundColor: theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
         backgroundSize: 'cover',
@@ -156,32 +156,37 @@ const CreatePatientForm = ({ showLoader, error, login, match }: LoginPageProps) 
                     return (
                         <Grid container component="main" className={classes.root}>
                             <CssBaseline />
-                            <Grid item xs={false} sm={4} md={7} className={classes.image} />
-                            <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                            <Grid item xs={false} sm={4} md={4} className={classes.image} />
+                            <Grid item xs={12} sm={4} md={4} component={Paper} elevation={6} square>
                                 <div className={classes.paper}>
-                                    <Typography component="h1" variant="h5">
-                                        התחברות
+                                    <Typography component="h1" variant="h4">
+                                        הוספת מטופל חדש למערכת
                                     </Typography>
                                     <Form className={classes.form} noValidate>
-                                        <FormTextInput required label="איימיל" name="email" autoFocus />
-                                        <FormTextInput required name="password" label="סיסמא" type="password" />
-                                        <Checkbox value="remember" color="primary" text="זכור אותי" />
+                                        <FormTextInput required label="שם פרטי" name="email" autoFocus />
+                                        <FormTextInput required label="שם משפחה" name="email" autoFocus />
+                                        <FormTextInput required label="תעודת זהות" name="email" autoFocus />
+                                        <FormTextInput required label="אימייל" name="email" autoFocus />
+                                        <FormTextInput required label="מין" name="email" autoFocus />
+                                        <FormTextInput required label="תאריך לידה" name="email" type="date" fullWidth={false} />
+                                        <FormTextInput required label="מספר טלפון" name="email" autoFocus />
+                                        <FormTextInput required label="מספר טלפון נוסף" name="email" autoFocus />
+                                        <FormTextInput required label="קופת חולים" name="email" autoFocus />
+                                        <Typography component="h1" variant="h5">
+                                            כתובת
+                                        </Typography>
+                                        <FormTextInput required label="עיר" name="email" autoFocus />
+                                        <FormTextInput required label="מספר רחוב" name="email" autoFocus />
+                                        <FormTextInput required label="מספר בית" name="email" autoFocus />
+                                        <FormTextInput required label="מספר דירה" name="email" autoFocus />
+                                        {/* <FormTextInput required name="קופת חולים" label="סיסמא" type="password" /> */}
                                         <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
                                             {showLoader || generatingCaptcha ? (
                                                 <Loader width="20px" marginTop="0px" showText={false} />
                                             ) : (
-                                                <span>{'התחברות'}</span>
+                                                <span>{'הוספה'}</span>
                                             )}
                                         </Button>
-                                        <Grid container>
-                                            <Grid item xs>
-                                                <Link to={'/forgotpwd'}>שכחת סיסמא?</Link>
-                                            </Grid>
-                                            <Grid item>
-                                                <Link to={'/register'}>{'אין לך משתמש? לחץ כאן כדי ליצור'}</Link>
-                                            </Grid>
-                                        </Grid>
-
                                         <ErrorMsg>{error}</ErrorMsg>
                                         <Box mt={5}>
                                             <Copyright />
