@@ -60,11 +60,12 @@ const PatientTable = ({rows, columns, pageSize}: TableWithSearchProps) => {
     const BUTTON = () => <Button className={"btn"}>הצג</Button>;
     const HIDDEN_FIELDS = ["id", "createdAt", "updatedAt"]
     const columnsDef: GridColDef[] = columns.map(column => {
+        const basicProp = {field: column, width: 120, headerName: patientsHebFields[column]}
         if (HIDDEN_FIELDS.includes(column))
-            return {field: column, width: 120, headerName: patientsHebFields[column], hide: true}
-        if (column == MEDICAL_FILE)
-            return {field: column, width: 120, headerName: patientsHebFields[column], renderCell: BUTTON}
-        return {field: column, width: 120, headerName: patientsHebFields[column]}
+            return {...basicProp, hide: true}
+        else if (column == MEDICAL_FILE)
+                       return {...basicProp, renderCell: BUTTON}
+        return basicProp
     })
 
 
