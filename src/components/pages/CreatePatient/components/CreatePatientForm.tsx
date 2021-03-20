@@ -2,51 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { Formik, Form } from 'formik';
 import { Link, match } from 'react-router-dom';
 import Loader from '../../../shared/SmallComponents/Loader';
-import { Checkbox } from '../../../shared/inputs/base';
 import { FormTextInput } from '../../../shared/inputs/form';
 import { styled } from '../../../shared/Theme/theme';
-import { loginSchema } from '../../../../validationSchemas/loginForm';
-import loadScript from '../../../../utils/loadScript';
 import { Button, CssBaseline, Paper, Box, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import StaticDateTimePicker from '../../../shared/StaticDateTimePicker/StaticDateTimePicker';
+import { createPatientSchema } from '../../../../validationSchemas/createPatientForm';
+import { Patient } from '../../../../models/entities/patient';
+import { GridRenderingZone } from '@material-ui/data-grid';
+import { patient } from '../../../../state/ducks/patient/patient';
 
-declare global {
-    interface Window {
-        captchaOnLoad: () => void;
-        grecaptcha: ReCaptchaInstance;
-    }
-}
-
-interface ReCaptchaInstance {
-    ready: (cb: () => any) => any;
-    execute: (options: ReCaptchaExecuteOptions) => Promise<string>;
-    render: (id: string, options: ReCaptchaRenderOptions) => any;
-}
-
-interface ReCaptchaExecuteOptions {
-    action: string;
-}
-
-interface ReCaptchaRenderOptions {
-    sitekey: string;
-    size: 'invisible';
-}
-
-interface Props {
-    action: string;
-    children: (props: CaptchaProps) => React.ReactNode;
-}
-
-interface CaptchaProps {
-    isReady: boolean;
-    execute: () => Promise<string>;
-}
-
-type LoginPageProps = {
+type CreatePatientProps = {
     showLoader: boolean;
     error: string;
-    login: (email: string, password: string, recaptchaToken?: string) => void;
+    createPatient: (patient: Patient) => void;
     match: match;
 };
 const useStyles = makeStyles((theme) => ({
@@ -75,61 +43,25 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const CreatePatientForm = ({ showLoader, error, login, match }: LoginPageProps) => {
-    const [isCaptchaReady, setIsCaptchaReady] = useState(false);
-    const [generatingCaptcha, setGeneratingCaptcha] = useState(false);
-    const [rememberMe, setRememberme] = useState(!!localStorage.getItem('rememberMe') || false);
-
-    let recaptchaBadge: HTMLDivElement;
-
-    useEffect(() => {
-        window.captchaOnLoad = onLoadRecaptcha;
-        loadScript('recaptcha-script', `https://www.google.com/recaptcha/api.js?onload=captchaOnLoad&render=explicit`);
-
-        return () => {
-            if (recaptchaBadge) {
-                document.body.removeChild(recaptchaBadge);
-            }
-        };
-    }, []);
-
-    const onLoadRecaptcha = (): void => {
-        const badge = document.createElement('div');
-        badge.id = 'g-recaptcha';
-        recaptchaBadge = document.body.appendChild(badge);
-
-        if (process.env.REACT_APP_RECAPTCHA_SITE_KEY) {
-            window.grecaptcha.render('g-recaptcha', {
-                sitekey: process.env.REACT_APP_RECAPTCHA_SITE_KEY,
-                size: 'invisible'
-            });
-        }
-
-        window.grecaptcha.ready(() => {
-            setIsCaptchaReady(true);
-        });
-    };
+const CreatePatientForm = ({ showLoader, error, createPatient, match }: CreatePatientProps) => {
     const initialValues = {
-        email: localStorage.getItem('email') || '',
-        password: localStorage.getItem('password') || ''
+        firstName: '',
+        lastName: '',
+        id: '',
+        email: '',
+        gender: '',
+        birth: new Date(),
+        phoneNumber1: '',
+        phoneNumber2: '',
+        HMO: '',
+        cityName: '',
+        streetName: '',
+        houseNumber: '',
+        apartmentNumber: ''
     };
 
-    const submitLogin = (email: string, password: string) => {
-        if (rememberMe) {
-            setLocalStorage(email, password, rememberMe);
-        } else {
-            clearLocalStorage();
-        }
-        login(email, password);
-        setGeneratingCaptcha(true);
-        if (isCaptchaReady) {
-            if (process.env.REACT_APP_RECAPTCHA_SITE_KEY) {
-                window.grecaptcha.execute({ action: 'submit' }).then((token) => {
-                    setGeneratingCaptcha(false);
-                    // login(email, password, token);
-                });
-            }
-        }
+    const submitNewPatient = (patient: Patient) => {
+        createPatient(patient);
     };
     const Copyright = () => {
         return (
@@ -140,15 +72,33 @@ const CreatePatientForm = ({ showLoader, error, login, match }: LoginPageProps) 
             </Typography>
         );
     };
-
     const classes = useStyles();
     return (
         <>
             <Formik
                 initialValues={initialValues}
-                validationSchema={loginSchema()}
-                onSubmit={({ email, password }) => {
-                    submitLogin(email.trim(), password);
+                validationSchema={createPatientSchema()}
+                onSubmit={(values) => {
+                    submitNewPatient({
+                        firstName: values.firstName,
+                        lastName: values.lastName,
+                        id: values.id,
+                        email: values.email.trim(),
+                        //  gender: values.gender,
+                        gender: 2,
+                        birth: values.birth,
+                        phone1: values.phoneNumber1,
+                        phone2: values.phoneNumber2,
+                        // hmo: values.HMO,
+                        hmo: 2,
+                        // cityName: values.cityName,
+                        // streetName: values.streetName,
+                        // houseNumber: values.houseNumber,
+                        // apartmentNumber: values.apartmentNumber
+                        address: values.cityName,
+                        organizationId: values.streetName,
+                        personalId: values.houseNumber
+                    });
                 }}
             >
                 {(formik) => {
@@ -163,29 +113,24 @@ const CreatePatientForm = ({ showLoader, error, login, match }: LoginPageProps) 
                                         הוספת מטופל חדש למערכת
                                     </Typography>
                                     <Form className={classes.form} noValidate>
-                                        <FormTextInput required label="שם פרטי" name="email" autoFocus />
-                                        <FormTextInput required label="שם משפחה" name="email" autoFocus />
-                                        <FormTextInput required label="תעודת זהות" name="email" autoFocus />
+                                        <FormTextInput required label="שם פרטי" name="firstName" autoFocus />
+                                        <FormTextInput required label="שם משפחה" name="lastName" autoFocus />
+                                        <FormTextInput required label="תעודת זהות" name="id" autoFocus />
                                         <FormTextInput required label="אימייל" name="email" autoFocus />
-                                        <FormTextInput required label="מין" name="email" autoFocus />
-                                        <FormTextInput required label="תאריך לידה" name="email" type="date" fullWidth={false} />
-                                        <FormTextInput required label="מספר טלפון" name="email" autoFocus />
-                                        <FormTextInput required label="מספר טלפון נוסף" name="email" autoFocus />
-                                        <FormTextInput required label="קופת חולים" name="email" autoFocus />
+                                        <FormTextInput required label="מין" name="gender" autoFocus />
+                                        <FormTextInput required label="תאריך לידה" name="birth" type="Date" fullWidth={false} />
+                                        <FormTextInput required label="מספר טלפון" name="phoneNumber1" autoFocus />
+                                        <FormTextInput required label="מספר טלפון נוסף" name="phoneNumber2" autoFocus />
+                                        <FormTextInput required label="קופת חולים" name="HMO" autoFocus />
                                         <Typography component="h1" variant="h5">
                                             כתובת
                                         </Typography>
-                                        <FormTextInput required label="עיר" name="email" autoFocus />
-                                        <FormTextInput required label="מספר רחוב" name="email" autoFocus />
-                                        <FormTextInput required label="מספר בית" name="email" autoFocus />
-                                        <FormTextInput required label="מספר דירה" name="email" autoFocus />
-                                        {/* <FormTextInput required name="קופת חולים" label="סיסמא" type="password" /> */}
+                                        <FormTextInput required label="עיר" name="cityName" autoFocus />
+                                        <FormTextInput required label="רחוב" name="streetName" autoFocus />
+                                        <FormTextInput required label="מספר בית" name="houseNumber" autoFocus />
+                                        {/* <FormTextInput required label="מספר דירה" name="apartmentNumber" autoFocus /> */}
                                         <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
-                                            {showLoader || generatingCaptcha ? (
-                                                <Loader width="20px" marginTop="0px" showText={false} />
-                                            ) : (
-                                                <span>{'הוספה'}</span>
-                                            )}
+                                            {showLoader || false ? <Loader width="20px" marginTop="0px" showText={false} /> : <span>{'הוספה'}</span>}
                                         </Button>
                                         <ErrorMsg>{error}</ErrorMsg>
                                         <Box mt={5}>
@@ -202,34 +147,8 @@ const CreatePatientForm = ({ showLoader, error, login, match }: LoginPageProps) 
     );
 };
 
-function setLocalStorage(email: string, password: string, rememberMe: boolean) {
-    localStorage.setItem('email', email);
-    localStorage.setItem('password', password);
-    localStorage.setItem('rememberMe', rememberMe.toString());
-}
-function clearLocalStorage() {
-    localStorage.removeItem('email');
-    localStorage.removeItem('password');
-    localStorage.removeItem('rememberMe');
-}
-
 const ErrorMsg = styled.div`
     color: red;
     text-align: center;
 `;
-const ForgetPWText = styled.span`
-    margin: 12px;
-    color: #008ac9;
-    cursor: pointer;
-`;
-
-const FormContainer = styled.div`
-    width: 50%;
-    min-width: 250px;
-`;
-
-const FieldContainer = styled.div`
-    margin-top: 12px;
-`;
-
 export default CreatePatientForm;

@@ -1,5 +1,4 @@
-
-export class Patient{
+export class Patient {
     public id: string;
     public firstName: string;
     public lastName: string;
@@ -40,7 +39,6 @@ export class Patient{
         this.organizationId = organizationId;
         this.personalId = personalId;
     }
-
 }
 
 enum Gender {
@@ -48,9 +46,8 @@ enum Gender {
     FEMALE
 }
 
-enum HMO {
+enum HMO { //KUPAT HOLIM
     CLALIT = 1,
     MACABI,
     LEUMIT
 }
-

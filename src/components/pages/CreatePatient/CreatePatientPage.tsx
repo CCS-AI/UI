@@ -2,24 +2,24 @@ import React from 'react';
 import { RootState } from '../../../state/store/store';
 import CreatePatientForm from './components/CreatePatientForm';
 import { connect } from 'react-redux';
-import { styled } from '../../shared/Theme/theme';
-import { PagesRoutes } from '../../../routing/PagesRoutes';
 import { Link, match } from 'react-router-dom';
+import { Patient } from '../../../models/entities/patient';
+import { authenticationSelectors } from '../../../state/ducks/authentication/selectors';
 
-type Props = {
+type CreatePatientProps = {
     showLoader: boolean;
     error: string;
-    login: (username: string, password: string, recaptchaToken?: string) => void;
+    createPatient: (patient: Patient) => void;
     match: match;
 };
 
-const CreatePatientPage = ({ showLoader, error, login, match }: Props) => {
+const CreatePatientPage = ({ showLoader, error, createPatient, match }: CreatePatientProps) => {
     return (
         <div>
             <CreatePatientForm
                 showLoader={showLoader}
                 error={error}
-                login={login}
+                createPatient={createPatient}
                 match={match}
                 /** here send props you need */
             />
@@ -27,11 +27,12 @@ const CreatePatientPage = ({ showLoader, error, login, match }: Props) => {
     );
 };
 const mapStateToProps = (state: RootState) => ({
-    //here get variables from store and set them to this component 'Props'
+    showLoader: state.loading.effects.authentication.loginAsync,
+    error: authenticationSelectors.loginError(state)
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    //here get functions from effects and set them to this component 'Props'
+    createPatient: (patient: Patient) => dispatch.patient.createPatient(patient)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreatePatientPage);

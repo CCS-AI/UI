@@ -18,7 +18,6 @@ const Routes = ({}: Props) => {
     return (
         <>
             <Switch>
-                <AuthRoute component={<div>Home</div>} exact path={PagesRoutes.Home} />
                 <AuthRoute component={CreatePatientPage} exact path={PagesRoutes.CreatePatient} />
                 <AuthRoute component={ShowAllPatients} path={PagesRoutes.Patients} />
                 <AuthRoute component={Home} exact path={PagesRoutes.Home} />
