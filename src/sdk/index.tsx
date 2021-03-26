@@ -19,7 +19,7 @@ class ccsSDK {
         return new User(this.baseUrl);
     }
     patients() {
-        this.isMock = true
+        this.isMock = false;
         if (this.isMock) return new PatientMock(this.baseUrl);
         return new Patient(this.baseUrl);
     }

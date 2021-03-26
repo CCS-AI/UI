@@ -7,8 +7,7 @@ export default class PatientApiMock extends BaseController implements IPatient {
         super(baseUrl);
     }
     async fetchAllPatients() : Promise<Patient[]>{
-        const response = await this.client.get(`/patient/all`);
-        console.log(response)
+        const response = Promise.resolve([]);
         return response
     }
     async getPatientById(patientId: string) {
