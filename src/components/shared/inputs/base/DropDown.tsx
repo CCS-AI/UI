@@ -2,7 +2,7 @@ import { FormControl, FormHelperText, MenuItem, Select } from '@material-ui/core
 import React from 'react';
 
 export type Option = {
-    value: string;
+    value: string | number;
     text: string;
 };
 
