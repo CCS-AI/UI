@@ -12,18 +12,6 @@ export interface TableWithSearchProps {
 
 const patientsHebFields = require('./../../../models/he.json')["patient"];
 
-// export const TableWithSearch = ({rows, columns, pageSize, mapFiledToHeb}: TableWithSearchProps) => {
-//     const columnsDef: GridColDef[] = columns.map(column => {
-//         if(column == "id")
-//             return {field: column, width: 100, headerName: mapFiledToHeb[column], hide:true}
-//         return {field: column, width: 100, headerName: mapFiledToHeb[column]}
-//     })
-//
-//
-//     return (
-//         <DataGrid rows={rows} columns={columnsDef} pageSize={pageSize}/>
-//     )
-// }
 export const PatientTableWithSearch = ({rows, columns, pageSize}: TableWithSearchProps) => {
     const [filteredRaws, setFilterRaws] = useState(rows)
 
