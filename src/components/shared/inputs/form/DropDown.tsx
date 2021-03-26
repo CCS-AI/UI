@@ -15,15 +15,15 @@ const FormDropDown = ({ name, onChange, onBlur, ...restProps }: Props) => {
                 return (
                     <DropDown
                         hasError={hasError}
-                        onChange={(value: any, option: any) => {
-                            setFieldValue(name, value);
-                            onChange && onChange(value, option);
+                        onChange={({ target }: React.ChangeEvent<{ value: unknown }>, child: React.ReactNode) => {
+                            setFieldValue(name, target.value);
+                            onChange && onChange(target.value);
                         }}
                         onBlur={(value: any) => {
                             setFieldTouched(name);
                             onBlur && onBlur(value);
                         }}
-                        value={value === '' || value === null ? undefined : value}
+                        value={!value ? '' : value}
                         {...restProps}
                     />
                 );
