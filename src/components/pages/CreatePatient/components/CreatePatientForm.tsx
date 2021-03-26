@@ -48,13 +48,13 @@ const CreatePatientForm = ({ showLoader, error, createPatient, match }: CreatePa
     const initialValues = {
         firstName: '',
         lastName: '',
-        gender: '1',
+        gender: 0,
         birth: new Date(),
         address: '',
         phone1: '',
         phone2: '',
         email: '',
-        hmo: '2',
+        hmo: 0,
         organizationId: '',
         personalId: ''
     };
@@ -81,13 +81,13 @@ const CreatePatientForm = ({ showLoader, error, createPatient, match }: CreatePa
                     submitNewPatient({
                         firstName: values.firstName,
                         lastName: values.lastName,
-                        //gender: parseInt(values.gender, 10),
+                        gender: values.gender,
                         birth: values.birth,
                         address: values.address,
                         phone1: values.phone2,
                         phone2: values.phone1,
                         email: values.email.trim(),
-                        // hmo: parseInt(values.hmo, 10),
+                        hmo: values.hmo,
                         personalId: values.personalId
                     } as Patient);
                 }}
@@ -108,31 +108,30 @@ const CreatePatientForm = ({ showLoader, error, createPatient, match }: CreatePa
                                         <FormTextInput required label="שם משפחה" name="lastName" autoFocus />
                                         <FormTextInput required label="תעודת זהות" name="personalId" autoFocus />
                                         <FormTextInput required label="אימייל" name="email" autoFocus />
-                                        {/* <Typography component="h1" variant="h6">
+                                        <Typography component="h1" variant="h6">
                                             מין:
                                         </Typography>
                                         <FormDropDown
                                             name="gender"
                                             options={[
-                                                { value: '1', text: 'זכר' },
-                                                { value: '2', text: 'נקבה' }
+                                                { value: 1, text: 'זכר' },
+                                                { value: 2, text: 'נקבה' }
                                             ]}
-                                        /> */}
+                                        />
                                         <FormTextInput required label="תאריך לידה" name="birth" type="Date" fullWidth={false} />
                                         <FormTextInput required label="מספר טלפון" name="phone1" autoFocus />
                                         <FormTextInput required label="מספר טלפון נוסף" name="phone2" autoFocus />
-                                        {/* <Typography component="h1" variant="h6">
+                                        <Typography component="h1" variant="h6">
                                             קופת חולים:
                                         </Typography>
                                         <FormDropDown
                                             name="hmo"
-                                            placeHolder="קופת חולים"
                                             options={[
-                                                { value: '1', text: 'כללית' },
-                                                { value: '2', text: 'מכבי' },
-                                                { value: '3', text: 'לאומית' }
+                                                { value: 1, text: 'כללית' },
+                                                { value: 2, text: 'מכבי' },
+                                                { value: 3, text: 'לאומית' }
                                             ]}
-                                        /> */}
+                                        />
                                         <FormTextInput required label="כתובת" name="address" autoFocus />
                                         <FormTextInput required label="מספר מזהה של הארגון" name="organizationId" autoFocus />
                                         <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
