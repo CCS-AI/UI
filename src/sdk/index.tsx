@@ -1,5 +1,7 @@
 import Auth from './controllers/auth/auth';
 import User from './controllers/user/user';
+import Patient from './controllers/patient/patient';
+import PatientApiMock from "./controllers/patient/patientMock";
 
 class ccsSDK {
     private baseUrl: string;
@@ -15,6 +17,11 @@ class ccsSDK {
     }
     user() {
         return new User(this.baseUrl);
+    }
+    patients() {
+        this.isMock = false;
+        if (this.isMock) return new PatientApiMock(this.baseUrl);
+        return new Patient(this.baseUrl);
     }
 }
 
