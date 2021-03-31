@@ -1,3 +1,43 @@
 .MuiDataGridMenu-root {
     z-index: 50;
 }
+
+.ForwardRef-root-1 {
+    justify-content: unset !important;
+}
+
+.ForwardRef-searchContainer-7 {
+    width: 300px !important;
+}
+
+.MuiDataGrid-main {
+    width: 1441px;
+}
+
+.MuiDataGrid-root.MuiDataGrid-root {
+    border: none;
+    margin-right: 40px;
+}
+
+.MuiPaper-root.ForwardRef-root-1.MuiPaper-elevation1.MuiPaper-rounded {
+    width: 360px;
+    margin: 40px;
+}
+
+.btn {
+    background-color: blue;
+    color: white;
+    font-weight: 600;
+}
+
+
+.MuiButtonBase-root.MuiButton-root.MuiButton-text.btn {
+    background-color: #ffc400;
+    color: white;
+    font-weight: 600;
+}
+
+.MuiButtonBase-root.MuiButton-root.MuiButton-text.btn:hover {
+    opacity: .5;
+    color: black;
+}

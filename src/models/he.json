@@ -1,16 +1,17 @@
 {
   "patient":{
-    "מזהה": "id",
-    "שם פרטי": "firstName",
-    "שם משפחה": "lastName",
-    "מין": "gender",
-    "תאריך לידה": "birth",
-    "כתובת": "address",
-    "טלפון 1": "phone1",
-    "טלפון 2": "phone2",
-    "מייל": "email",
-    "קופת חולים": "hmo",
-    "שם הארגון": "organizationId",
-    "תעודת זהות": "personalId"
+        "id": "מזהה",
+        "firstName": "שם פרטי",
+        "lastName": "שם משפחה",
+        "gender": "מין",
+        "birth": "תאריך לידה",
+        "address": "כתובת",
+        "phone1": "טלפון 1",
+        "phone2": "טלפון 2",
+        "email": "מייל",
+        "hmo": "קופת חולים",
+        "organizationId": "שם הארגון",
+        "personalId": "תעודת זהות",
+            "medicalFile": "תיק רפואי"
+    }
   }
-}

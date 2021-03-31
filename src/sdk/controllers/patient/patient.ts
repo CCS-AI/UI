@@ -7,7 +7,7 @@ export default class PatientApi extends BaseController implements IPatient {
         super(baseUrl);
     }
     async fetchAllPatients() {
-        const response = await this.client.get('/patients');
+        const response = await this.client.get(`/patient/all`);
         return response;
     }
     async getPatientById(patientId: string) {
