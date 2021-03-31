@@ -17,6 +17,10 @@ export const patient: ModelConfig<patientsStateType> = {
         async fetchAllPatients() {
             const patients = await client.patients().fetchAllPatients();
             dispatch.patient.setAllPatients(patients);
+        },
+        async createPatient(p: Patient) {
+            const newPaitent = await client.patients().createPatient(p);
+            //dispatch.patient.setAllPatients(patients);
         }
     })
 };
