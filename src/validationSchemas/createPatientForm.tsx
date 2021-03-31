@@ -11,7 +11,6 @@ export const createPatientSchema = () => {
         phone1: Yup.string().required('שדה חובה'),
         phone2: Yup.string().required('שדה חובה'),
         hmo: Yup.number().required('שדה חובה'),
-        address: Yup.string().required('שדה חובה'),
-        organizationId: Yup.string().required('שדה חובה')
+        address: Yup.string().required('שדה חובה')
     });
 };

@@ -55,7 +55,6 @@ const CreatePatientForm = ({ showLoader, error, createPatient, match }: CreatePa
         phone2: '',
         email: '',
         hmo: 0,
-        organizationId: '',
         personalId: ''
     };
 
@@ -133,7 +132,6 @@ const CreatePatientForm = ({ showLoader, error, createPatient, match }: CreatePa
                                             ]}
                                         />
                                         <FormTextInput required label="כתובת" name="address" autoFocus />
-                                        <FormTextInput required label="מספר מזהה של הארגון" name="organizationId" autoFocus />
                                         <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
                                             {showLoader || false ? <Loader width="20px" marginTop="0px" showText={false} /> : <span>{'הוספה'}</span>}
                                         </Button>
