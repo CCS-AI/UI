@@ -1,14 +1,13 @@
-import React, {PropsWithChildren, useState} from 'react';
+import React, { PropsWithChildren, useState } from 'react';
 import Header from './Header/Header';
 // import SideBar from './SideBar/SideBar';
-import {styled} from '../Theme/theme';
+import { styled } from '../Theme/theme';
 import useWindowSize from '../../../hooks/windowSize';
-import {SideBar} from "./SideBar_/SideBar";
-
+import { SideBar } from './SideBar_/SideBar';
 
 type Props = {};
 
-const Layout = ({children}: PropsWithChildren<Props>) => {
+const Layout = ({ children }: PropsWithChildren<Props>) => {
     const [windowWidth] = useWindowSize();
     //const [pageMarginRight, setPageMarginRight] = useState(240);
     const [openSideBar, setOpenSideBar] = useState(true);
@@ -19,18 +18,21 @@ const Layout = ({children}: PropsWithChildren<Props>) => {
     return (
         <LayoutContainer>
             <HeaderWrapper>
-                <Header/>
+                <Header />
             </HeaderWrapper>
             {/* <ResponsiveDrawerConnected> */}
             {/* <SideBar printMode={printMode}> */}
-            {<SideBar open={openSideBar}
-                      onClick={()=>setOpenSideBar(true)}
-                      image={"https://www.rcac.org/wp-content/uploads/2016/08/sidebar-ad-background.jpg"}
-                      title={"מערכת לניהול בדיקות שמיעה"}
-            />}
-            <ContentWrapper marginRight={openSideBar?pageMarginRightOpen:pageMarginRightClose}
-                            onClick={()=>setOpenSideBar(false)}
-            >{children}</ContentWrapper>
+            {
+                <SideBar
+                    open={openSideBar}
+                    onClick={() => setOpenSideBar(true)}
+                    image={'https://www.rcac.org/wp-content/uploads/2016/08/sidebar-ad-background.jpg'}
+                    title={'מערכת לניהול בדיקות שמיעה'}
+                />
+            }
+            <ContentWrapper marginRight={openSideBar ? pageMarginRightOpen : pageMarginRightClose} onClick={() => setOpenSideBar(false)}>
+                {children}
+            </ContentWrapper>
             {/* </SideBar> */}
             {/* </ResponsiveDrawerConnected> */}
         </LayoutContainer>
@@ -61,7 +63,7 @@ const LayoutContainer = styled.div`
     height: 100%;
 `;
 const ContentWrapper = styled.div<{ marginRight?: number }>`
-${(props) => (`margin-right: ${props.marginRight}px;`)}
+    ${(props) => `margin-right: ${props.marginRight}px;`}
     width: 100%;
     overflow-y: overlay;
     z-index: 50;
