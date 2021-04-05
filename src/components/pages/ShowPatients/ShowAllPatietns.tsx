@@ -20,7 +20,11 @@ const ShowAllPatients = ({ patients, fetchPatients }: ShowAllPatientsProps) => {
         return <div>no patients</div>;
     }
 
-    return <PatientTableWithSearch rows={patients} columns={Object.keys(patients[0])} pageSize={5}></PatientTableWithSearch>;
+    return (
+            <PatientTableWithSearch rows={patients}
+                                    columns={Object.keys(patients[0])}
+                                    pageSize={5}></PatientTableWithSearch>
+    )
 };
 
 const mapStateToProps = (state: RootState) => ({

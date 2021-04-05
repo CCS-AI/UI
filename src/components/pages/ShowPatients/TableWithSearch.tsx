@@ -22,11 +22,11 @@ export const PatientTableWithSearch = ({rows, columns, pageSize}: TableWithSearc
                 /* row.firstName.toLowerCase().includes(searchValue.toLowerCase()) ||
                 row.lastName.toLowerCase().includes(searchValue.toLowerCase()) ||
                 row.personalId.includes(searchValue) */
-                
-                const idMatch = row.personalId? row.personalId.includes(searchValue): false;
+
+                const idMatch = row.personalId ? row.personalId.includes(searchValue) : false;
                 return row.firstName.toLowerCase().includes(searchValue.toLowerCase()) ||
-                row.lastName.toLowerCase().includes(searchValue.toLowerCase()) ||
-                idMatch;
+                    row.lastName.toLowerCase().includes(searchValue.toLowerCase()) ||
+                    idMatch;
 
             }
         );
