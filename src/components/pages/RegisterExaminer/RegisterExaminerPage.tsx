@@ -32,7 +32,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    registerExaminer: (examiner: Examiner) => dispatch.patient.registerExaminer(examiner)
+    registerExaminer: (examiner: Examiner) => dispatch.examiner.registerExaminer(examiner)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterExaminerPage);
