@@ -51,7 +51,6 @@ const RegisterExaminerForm = ({ showLoader, error, registerExaminer, match }: Re
         lastName: '',
         phoneNumber: '',
         birthDate: new Date(),
-        role: '',
         licenseNumber: ''
     };
 
@@ -81,7 +80,6 @@ const RegisterExaminerForm = ({ showLoader, error, registerExaminer, match }: Re
                         lastName: values.lastName,
                         phoneNumber: values.phoneNumber,
                         birthDate: values.birthDate,
-                        role: values.role,
                         licenseNumber: values.licenseNumber
                     } as Examiner);
                 }}
@@ -104,7 +102,6 @@ const RegisterExaminerForm = ({ showLoader, error, registerExaminer, match }: Re
                                         <FormTextInput required label="סיסמא" name="password" autoFocus />
                                         <FormTextInput required label="מספר טלפון" name="phoneNumber" autoFocus />
                                         <FormTextInput required label="תאריך לידה" name="birth" type="Date" fullWidth={false} />
-                                        <FormTextInput required label="תפקיד" name="role" autoFocus />
                                         <FormTextInput required label="מספר רישיון" name="licenseNumber" autoFocus />
                                         <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
                                             {showLoader || false ? <Loader width="20px" marginTop="0px" showText={false} /> : <span>{'הוספה'}</span>}

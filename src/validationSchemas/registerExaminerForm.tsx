@@ -8,7 +8,6 @@ export const registerExaminerSchema = () => {
         lastName: Yup.string().required('שדה חובה'),
         phoneNumber: Yup.string().required('שדה חובה'),
         birthDate: Yup.date().required('שדה חובה'),
-        role: Yup.string().required('שדה חובה'),
         licenseNumber: Yup.string().required('שדה חובה')
     });
 };
