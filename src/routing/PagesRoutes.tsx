@@ -4,5 +4,5 @@ export const PagesRoutes = {
     Error: '/error',
     CreatePatient: '/CreatePatient',
     Patients: '/patients',
-    RegisterExaminer: '/examiner'
+    RegisterExaminer: '/examiner/register'
 };

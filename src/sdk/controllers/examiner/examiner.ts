@@ -7,7 +7,7 @@ export default class ExaminerApi extends BaseController implements IExaminer {
         super(baseUrl);
     }
     async registerExaminer(examiner: Examiner) {
-        const response = await this.client.post('/register', JSON.stringify(examiner));
+        const response = await this.client.post('/examiner/register', JSON.stringify(examiner));
         return response;
     }
 }
