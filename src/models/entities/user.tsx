@@ -1,4 +1,3 @@
-
 export type userInfo = {
     id: string;
     email: string;
@@ -13,4 +12,5 @@ export type userInfo = {
     createdAt: Date;
     updatedAt: Date;
     deletedAt: Date;
+    organizationId: string;
 };

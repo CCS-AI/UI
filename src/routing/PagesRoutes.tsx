@@ -3,5 +3,6 @@ export const PagesRoutes = {
     Home: '/',
     Error: '/error',
     CreatePatient: '/CreatePatient',
-    Patients: '/patients'
+    Patients: '/patients',
+    RegisterExaminer: '/examiner/register'
 };

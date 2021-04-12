@@ -20,7 +20,6 @@ export const patient: ModelConfig<patientsStateType> = {
         },
         async createPatient(p: Patient) {
             const newPaitent = await client.patients().createPatient(p);
-            //dispatch.patient.setAllPatients(patients);
         }
     })
 };

@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { RootState } from './state/store/store';
 import ExceptionPage from './components/pages/ExceptionPage/ExceptionPage';
 import CreatePatientPage from './components/pages/CreatePatient/CreatePatientPage';
+import RegisterExaminerPage from './components/pages/RegisterExaminer/RegisterExaminerPage';
 import Home from './components/pages/Home';
 import ShowAllPatients from './components/pages/ShowPatients/ShowAllPatietns';
 
@@ -19,6 +20,7 @@ const Routes = ({}: Props) => {
         <>
             <Switch>
                 <AuthRoute component={CreatePatientPage} exact path={PagesRoutes.CreatePatient} />
+                <AuthRoute component={RegisterExaminerPage} exact path={PagesRoutes.RegisterExaminer} />
                 <AuthRoute component={ShowAllPatients} path={PagesRoutes.Patients} />
                 <AuthRoute component={Home} exact path={PagesRoutes.Home} />
                 <Route path={PagesRoutes.Login}>
