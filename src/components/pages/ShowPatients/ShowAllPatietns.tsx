@@ -5,6 +5,7 @@ import { RootState } from '../../../state/store/store';
 import { Patient } from '../../../models/entities/patient';
 import { patientSelector } from '../../../state/ducks/patient/selectors';
 import { PatientTableWithSearch } from './TableWithSearch';
+import UserGuard from '../../../sdk/guards/UserGuard';
 
 export type ShowAllPatientsProps = RouteComponentProps & {
     patients: Patient[] | undefined;

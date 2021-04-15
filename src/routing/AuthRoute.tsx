@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { RootState } from '../state/store/store';
 import { authenticationSelectors } from '../state/ducks/authentication/selectors';
 import Loader from '../components/shared/SmallComponents/Loader';
+import UserGuard from '../sdk/guards/UserGuard';
 
 const AuthRoute = ({ token, refreshToken, refreshTokenError, component, printMode, setPrintMode, featureFlags, ...rest }: any) => {
     let loginRefer = PagesRoutes.Login;
@@ -25,7 +26,13 @@ const AuthRoute = ({ token, refreshToken, refreshTokenError, component, printMod
                 render={(props) => {
                     if (token) {
                         Authentication.SetToken(token);
-                        return <Layout><Component {...props} /></Layout>;
+                        return (
+                            <Layout>
+                                <UserGuard>
+                                    <Component {...props} />
+                                </UserGuard>
+                            </Layout>
+                        );
                     } else return null;
                 }}
             />
