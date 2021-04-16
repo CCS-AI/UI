@@ -176,7 +176,7 @@ const LoginForm = ({ showLoader, error, login, match }: LoginPageProps) => {
                                         <Checkbox value="remember" color="primary" text="זכור אותי" />
                                         <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
                                             {showLoader || generatingCaptcha ? (
-                                                <Loader width="20px" marginTop="0px" showText={false} />
+                                                <Loader width="20px" marginTop="0px" showText={false} color="white" />
                                             ) : (
                                                 <span>{'התחברות'}</span>
                                             )}

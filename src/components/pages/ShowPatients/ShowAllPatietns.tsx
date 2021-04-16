@@ -5,26 +5,35 @@ import { RootState } from '../../../state/store/store';
 import { Patient } from '../../../models/entities/patient';
 import { patientSelector } from '../../../state/ducks/patient/selectors';
 import { PatientTableWithSearch } from './TableWithSearch';
+import Loader from '../../shared/SmallComponents/Loader';
 
 export type ShowAllPatientsProps = RouteComponentProps & {
     patients: Patient[] | undefined;
     fetchPatients: () => Promise<Patient[]>;
+    showLoader: boolean;
 };
 
-const ShowAllPatients = ({ patients, fetchPatients }: ShowAllPatientsProps) => {
+const ShowAllPatients = ({ patients, fetchPatients, showLoader }: ShowAllPatientsProps) => {
     useEffect(() => {
         fetchPatients();
     }, []);
 
-    if (!patients || !patients.length) {
-        return <div>no patients</div>;
-    }
+    // if (!patients || !patients.length) {
+    //     return <div>no patients</div>;
+    // }
 
-    return <PatientTableWithSearch rows={patients} columns={Object.keys(patients[0])} pageSize={5}></PatientTableWithSearch>;
+    return showLoader ? (
+        <Loader showText={false} />
+    ) : !patients || !patients.length ? (
+        <div>No patients</div>
+    ) : (
+        <PatientTableWithSearch rows={patients} columns={Object.keys(patients[0])} pageSize={5}></PatientTableWithSearch>
+    );
 };
 
 const mapStateToProps = (state: RootState) => ({
-    patients: patientSelector.patientInfo(state)
+    patients: patientSelector.patientInfo(state),
+    showLoader: state.loading.effects.patient.fetchAllPatients
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
