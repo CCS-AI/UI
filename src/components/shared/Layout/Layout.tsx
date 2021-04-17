@@ -15,7 +15,7 @@ const Layout = ({ children }: PropsWithChildren<Props>) => {
     const [openSideBar, setOpenSideBar] = useState(true);
 
     const pageMarginRightOpen = 240;
-    const pageMarginRightClose = 50;
+    const pageMarginRightClose = 80;
 
     return (
         <LayoutContainer>
@@ -24,21 +24,19 @@ const Layout = ({ children }: PropsWithChildren<Props>) => {
             </HeaderWrapper>
             {/* <ResponsiveDrawerConnected> */}
             {/* <SideBar printMode={printMode}> */}
-            {
-                <SidebarGuard>
-                    <SideBar
-                        open={openSideBar}
-                        onClick={() => setOpenSideBar(true)}
-                        image={'https://www.rcac.org/wp-content/uploads/2016/08/sidebar-ad-background.jpg'}
-                        title={'מערכת לניהול בדיקות שמיעה'}
-                    />
-                </SidebarGuard>
-            }
+
+            <SidebarGuard>
+                <SideBar
+                    open={openSideBar}
+                    onClick={() => setOpenSideBar(true)}
+                    image={'https://www.rcac.org/wp-content/uploads/2016/08/sidebar-ad-background.jpg'}
+                    title={'מערכת לניהול בדיקות שמיעה'}
+                />
+            </SidebarGuard>
+
             <ContentWrapper marginRight={openSideBar ? pageMarginRightOpen : pageMarginRightClose} onClick={() => setOpenSideBar(false)}>
                 {children}
             </ContentWrapper>
-            {/* </SideBar> */}
-            {/* </ResponsiveDrawerConnected> */}
         </LayoutContainer>
     );
 };

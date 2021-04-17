@@ -74,7 +74,7 @@ const ResetPasswordForm = ({
                                 </FieldContainer>
                                 <Button type="submit" disabled={!(dirty && isValid)}>
                                     {isResetPassword ? (
-                                        <Loader width="20px" marginTop="0px" showText={false} />
+                                        <Loader width="20px" marginTop="0px" showText={false} color="white" />
                                     ) : (
                                         <span>{localization.send_btn}</span>
                                     )}

@@ -133,7 +133,11 @@ const CreatePatientForm = ({ showLoader, error, createPatient, match }: CreatePa
                                         />
                                         <FormTextInput required label="כתובת" name="address" autoFocus />
                                         <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
-                                            {showLoader || false ? <Loader width="20px" marginTop="0px" showText={false} /> : <span>{'הוספה'}</span>}
+                                            {showLoader || false ? (
+                                                <Loader width="20px" marginTop="0px" showText={false} color="white" />
+                                            ) : (
+                                                <span>{'הוספה'}</span>
+                                            )}
                                         </Button>
                                         <ErrorMsg>{error}</ErrorMsg>
                                         <Box mt={5}>

@@ -42,7 +42,11 @@ const ForgotPasswordForm = ({ forgotPassword, error, isEmailSending, localizatio
                                     <FormTextInput name="email" placeHolder={localization.email} style={{ height: '40px' }} />
                                 </FieldContainer>
                                 <Button type="submit" disabled={!(dirty && isValid)}>
-                                    {isEmailSending ? <Loader width="20px" marginTop="0px" showText={false} /> : <span>{localization.send_btn}</span>}
+                                    {isEmailSending ? (
+                                        <Loader width="20px" marginTop="0px" showText={false} color="white" />
+                                    ) : (
+                                        <span>{localization.send_btn}</span>
+                                    )}
                                 </Button>
                             </Form>
                         </FormContainer>

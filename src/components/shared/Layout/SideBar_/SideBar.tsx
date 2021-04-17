@@ -1,7 +1,6 @@
 import { ProSidebar, Menu, MenuItem, SubMenu, SidebarHeader } from 'react-pro-sidebar';
 import 'react-pro-sidebar/dist/css/styles.css';
 import React, { useEffect, useState } from 'react';
-import classNames from 'classnames';
 import './SideBar.css';
 import { Link } from 'react-router-dom';
 import { PagesRoutes } from '../../../../routing/PagesRoutes';
@@ -20,7 +19,15 @@ export const SIDEBAR_HEADERS = ['מטפלים', 'מטופלים', 'בדיקות'
 
 export const SideBar = ({ onClick, open, image, title, permission = Permission.UNDEFINED }: SideBarProps) => {
     return (
-        <ProSidebar rtl={true} collapsed={!open} className={'pro-sidebar'} style={{ paddingTop: 64 }} onClick={() => onClick()} image={image}>
+        <ProSidebar
+            width="240px"
+            rtl={true}
+            collapsed={!open}
+            className={'pro-sidebar'}
+            style={{ paddingTop: 64 }}
+            onClick={() => onClick()}
+            image={image}
+        >
             <SidebarHeader>
                 <div
                     style={{
