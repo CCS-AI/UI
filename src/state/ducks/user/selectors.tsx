@@ -1,6 +1,5 @@
 import { RootState } from '../../../state/store/store';
-import { permissionFromString } from '../../../sdk/guards/UserGuard';
-
+import { permissionFromString } from '../../../components/shared/guards/UserGuard';
 const userInfo = (state: RootState) => state.user.userInfo;
 
 const userRole = (state: RootState) => {

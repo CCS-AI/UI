@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 import React from 'react';
-import { RootState } from '../../state/store/store';
 import { withRouter } from 'react-router-dom';
-import { userSelectors } from '../../state/ducks/user/selectors';
-import { getPermissions, Permission } from '../../models/entities/Permissions';
+import { getPermissions, Permission } from '../../../models/entities/Permissions';
+import { RootState } from '../../../state/store/store';
+import { userSelectors } from '../../../state/ducks/user/selectors';
 
 const UserGuard = ({ userRole, children, location }: any) => {
     const hasPermission = (permission: Permission, path: string) => getPermissions()[permission].includes(path);

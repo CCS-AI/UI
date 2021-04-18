@@ -4,8 +4,8 @@ import Header from './Header/Header';
 import { styled } from '../Theme/theme';
 import useWindowSize from '../../../hooks/windowSize';
 import { SideBar } from './SideBar_/SideBar';
-import SidebarGuard from '../../../sdk/guards/SidebarGuard';
 import { Permission } from '../../../models/entities/Permissions';
+import SidebarGuard from '../guards/SidebarGuard';
 
 type Props = {};
 
