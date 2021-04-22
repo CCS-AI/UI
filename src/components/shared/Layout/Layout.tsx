@@ -4,6 +4,8 @@ import Header from './Header/Header';
 import { styled } from '../Theme/theme';
 import useWindowSize from '../../../hooks/windowSize';
 import { SideBar } from './SideBar_/SideBar';
+import { Permission } from '../../../models/entities/Permissions';
+import SidebarGuard from '../guards/SidebarGuard';
 
 type Props = {};
 
@@ -22,12 +24,16 @@ const Layout = ({ children }: PropsWithChildren<Props>) => {
             </HeaderWrapper>
             {/* <ResponsiveDrawerConnected> */}
             {/* <SideBar printMode={printMode}> */}
-            <SideBar
-                open={openSideBar}
-                onClick={() => setOpenSideBar(true)}
-                image={'https://www.rcac.org/wp-content/uploads/2016/08/sidebar-ad-background.jpg'}
-                title={'מערכת לניהול בדיקות שמיעה'}
-            />
+
+            <SidebarGuard>
+                <SideBar
+                    open={openSideBar}
+                    onClick={() => setOpenSideBar(true)}
+                    image={'https://www.rcac.org/wp-content/uploads/2016/08/sidebar-ad-background.jpg'}
+                    title={'מערכת לניהול בדיקות שמיעה'}
+                />
+            </SidebarGuard>
+
             <ContentWrapper marginRight={openSideBar ? pageMarginRightOpen : pageMarginRightClose} onClick={() => setOpenSideBar(false)}>
                 {children}
             </ContentWrapper>
