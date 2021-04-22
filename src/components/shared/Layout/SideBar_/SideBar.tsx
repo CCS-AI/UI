@@ -59,6 +59,10 @@ export const SideBar = ({ onClick, open, image, title }: SideBarProps) => {
                 <SubMenu title="פעולות על בדיקות" className={'Menu'}>
                     <MenuItem>עוד דברים</MenuItem>
                     <MenuItem>עוד דברים 2</MenuItem>
+                    <MenuItem>
+                        אליאל טסט
+                        <Link to={PagesRoutes.CreateExamination} />
+                    </MenuItem>
                 </SubMenu>
             </Menu>
         </ProSidebar>
