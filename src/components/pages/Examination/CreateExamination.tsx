@@ -21,6 +21,7 @@ const CreateExamination = ({}: Props) => {
                     eventHandlers: {
                         onClick: (e: any, props) => {
                             setData([...data, { x: Math.floor(Math.random() * 8000) + 0, y: Math.floor(Math.random() * 120) + 0, type: 'test' }]);
+                            return [];
                         }
                     }
                 }
