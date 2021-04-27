@@ -68,6 +68,10 @@ export const SideBar = ({ onClick, open, image, title, permission = Permission.U
                 <SubMenu title="פעולות על בדיקות" className={'Menu'} hidden={hasPermissionToCategory(permission, 'פעולות על בדיקות')}>
                     <MenuItem>עוד דברים</MenuItem>
                     <MenuItem>עוד דברים 2</MenuItem>
+                    <MenuItem>
+                        אליאל טסט
+                        <Link to={PagesRoutes.CreateExamination} />
+                    </MenuItem>
                 </SubMenu>
                 <MenuItem className={'SideHeader'} hidden={hasPermissionToCategory(permission, 'פעולות על מטפלים')}>
                     מטפלים

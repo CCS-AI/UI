@@ -66,7 +66,7 @@ const LayoutContainer = styled.div`
 `;
 const ContentWrapper = styled.div<{ marginRight?: number }>`
     ${(props) => `margin-right: ${props.marginRight}px;`}
-    width: 100%;
+    width: calc(100% - ${(props) => props.marginRight}px);
     overflow-y: overlay;
     z-index: 50;
     height: calc(100% - 64px);
