@@ -5,36 +5,32 @@ import './SideBar.css';
 import { Link } from 'react-router-dom';
 import { PagesRoutes } from '../../../../routing/PagesRoutes';
 import { getPermissions, hasPermissionToCategory, hasPermissionToHeader, Permission } from '../../../../models/entities/Permissions';
+import { IconButton } from '@material-ui/core';
+import ArrowBack from '@material-ui/icons/ArrowBackIos';
+import ArrowForward from '@material-ui/icons/ArrowForwardIos';
+import { styled } from '../../Theme/theme';
 
 export interface SideBarProps {
     open: boolean;
-    onClick: () => void;
     image: string;
     title: string;
     permission?: Permission;
+    setOpenSideBar: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const SIDEBAR_CATEGORIES = ['פעולות על מטופלים', 'פעולות על מטפלים', 'פעולות על בדיקות'];
 export const SIDEBAR_HEADERS = ['מטפלים', 'מטופלים', 'בדיקות'];
 
-export const SideBar = ({ onClick, open, image, title, permission = Permission.UNDEFINED }: SideBarProps) => {
+export const SideBar = ({ setOpenSideBar, open, image, title, permission = Permission.UNDEFINED }: SideBarProps) => {
     return (
-        <ProSidebar
-            width="240px"
-            rtl={true}
-            collapsed={!open}
-            className={'pro-sidebar'}
-            style={{ paddingTop: 64 }}
-            onClick={() => onClick()}
-            image={image}
-        >
+        <ProSidebar width="240px" rtl={true} collapsed={!open} className={'pro-sidebar'} style={{ paddingTop: 64, color: 'white' }} image={image}>
             <SidebarHeader>
                 <div
                     style={{
                         padding: '24px',
                         textTransform: 'uppercase',
                         fontWeight: 'bold',
-                        fontSize: 14,
+                        fontSize: 13,
                         letterSpacing: '1px',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
@@ -83,6 +79,18 @@ export const SideBar = ({ onClick, open, image, title, permission = Permission.U
                     </MenuItem>
                 </SubMenu>
             </Menu>
+            <SidebarOpenButton onClick={() => setOpenSideBar(!open)}>
+                <IconButton color="inherit">{open ? <ArrowForward /> : <ArrowBack />}</IconButton>
+            </SidebarOpenButton>
         </ProSidebar>
     );
 };
+const SidebarOpenButton = styled.div`
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: 70px;
+    left: 15px;
+`;

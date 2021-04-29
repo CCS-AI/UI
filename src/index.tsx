@@ -32,17 +32,15 @@ if (dir === 'rtl') {
 const jss = create({ plugins });
 
 ReactDOM.render(
-    <React.StrictMode>
-        <ThemeProvider theme={theme}>
-            <StylesProvider jss={jss}>
-                <Provider store={store}>
-                    <MuiPickersUtilsProvider libInstance={moment} utils={MomentUtils}>
-                        <App />
-                    </MuiPickersUtilsProvider>
-                </Provider>
-            </StylesProvider>
-        </ThemeProvider>
-    </React.StrictMode>,
+    <ThemeProvider theme={theme}>
+        <StylesProvider jss={jss}>
+            <Provider store={store}>
+                <MuiPickersUtilsProvider libInstance={moment} utils={MomentUtils}>
+                    <App />
+                </MuiPickersUtilsProvider>
+            </Provider>
+        </StylesProvider>
+    </ThemeProvider>,
     document.getElementById('root')
 );
 

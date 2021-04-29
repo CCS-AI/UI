@@ -28,15 +28,13 @@ const Layout = ({ children }: PropsWithChildren<Props>) => {
             <SidebarGuard>
                 <SideBar
                     open={openSideBar}
-                    onClick={() => setOpenSideBar(true)}
+                    setOpenSideBar={setOpenSideBar}
                     image={'https://www.rcac.org/wp-content/uploads/2016/08/sidebar-ad-background.jpg'}
                     title={'מערכת לניהול בדיקות שמיעה'}
                 />
             </SidebarGuard>
 
-            <ContentWrapper marginRight={openSideBar ? pageMarginRightOpen : pageMarginRightClose} onClick={() => setOpenSideBar(false)}>
-                {children}
-            </ContentWrapper>
+            <ContentWrapper marginRight={openSideBar ? pageMarginRightOpen : pageMarginRightClose}>{children}</ContentWrapper>
         </LayoutContainer>
     );
 };
