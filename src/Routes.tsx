@@ -11,6 +11,7 @@ import RegisterExaminerPage from './components/pages/RegisterExaminer/RegisterEx
 import Home from './components/pages/Home';
 import ShowAllPatients from './components/pages/ShowPatients/ShowAllPatietns';
 import CreateExamination from './components/pages/Examination/CreateExamination';
+import PatientMedicalFile from './components/pages/PatientMedicalFile';
 
 type Props = {};
 
@@ -22,9 +23,10 @@ const Routes = ({}: Props) => {
             <Switch>
                 <AuthRoute component={CreatePatientPage} exact path={PagesRoutes.CreatePatient} />
                 <AuthRoute component={RegisterExaminerPage} exact path={PagesRoutes.RegisterExaminer} />
-                <AuthRoute component={ShowAllPatients} path={PagesRoutes.Patients} />
+                <AuthRoute component={ShowAllPatients} exact path={PagesRoutes.Patients} />
                 <AuthRoute component={Home} exact path={PagesRoutes.Home} />
                 <AuthRoute component={CreateExamination} exact path={PagesRoutes.CreateExamination} />
+                <AuthRoute component={PatientMedicalFile} exact path={PagesRoutes.PatientMedicalFile} />
                 <Route path={PagesRoutes.Login}>
                     <LoginPageConnected />
                 </Route>
