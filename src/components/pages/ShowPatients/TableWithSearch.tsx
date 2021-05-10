@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
-import { DataGrid, GridColDef, GridCellParams } from '@material-ui/data-grid';
+import { DataGrid, GridColDef, GridCellParams, GridRowId } from '@material-ui/data-grid';
 import './styles/table.css';
 import { Button, Dialog } from '@material-ui/core';
 import SearchBar from 'material-ui-search-bar';
+import PatientMedicalFileDetails from '../PatientMedicalFile';
 
 export interface TableWithSearchProps {
     rows: any[];
     columns: string[];
     pageSize: number;
-    patientId?: string;
 }
 
 const patientsHebFields = require('./../../../models/he.json')['patient'];
 
-export const PatientTableWithSearch = ({ rows, columns, pageSize, patientId }: TableWithSearchProps) => {
+export const PatientTableWithSearch = ({ rows, columns, pageSize }: TableWithSearchProps) => {
     const [filteredRaws, setFilterRaws] = useState(rows);
     const [open, setOpen] = useState(false);
-    const [patientIdButton, setPatientId] = useState(patientId);
+    const [patientId, setPatientId] = useState('');
 
     const requestSearch = (searchValue: string) => {
         const filteredRows = rows.filter((row) => {
@@ -43,7 +43,7 @@ export const PatientTableWithSearch = ({ rows, columns, pageSize, patientId }: T
         <React.Fragment>
             <Dialog onClose={() => setOpen(false)} open={open}>
                 <div>somemodal</div>
-                <PatientMedicalFile patientId={patientId} />
+                <PatientMedicalFileDetails patientId={patientId} />
             </Dialog>
             <SearchBar
                 value={''}
@@ -52,7 +52,7 @@ export const PatientTableWithSearch = ({ rows, columns, pageSize, patientId }: T
                 placeholder={'חפש לפי שם פרטי/משפחה/תעודת זהות'}
             />
             <Button></Button>
-            <PatientTable rows={filteredRaws} columns={columns} pageSize={pageSize} setOpen={setOpen} />
+            <PatientTable rows={filteredRaws} columns={columns} pageSize={pageSize} setOpen={setOpen} setPatientId={setPatientId} />
         </React.Fragment>
     );
 };
@@ -60,8 +60,9 @@ export const PatientTableWithSearch = ({ rows, columns, pageSize, patientId }: T
 type PatientTableProps = TableWithSearchProps & {
     patientId?: string;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setPatientId: React.Dispatch<React.SetStateAction<string>>;
 };
-const PatientTable = ({ rows, columns, pageSize, setOpen }: PatientTableProps) => {
+const PatientTable = ({ rows, columns, pageSize, setOpen, setPatientId }: PatientTableProps) => {
     // add show patient's medical file column
     const MEDICAL_FILE = 'medicalFile';
     if (!columns.includes(MEDICAL_FILE)) columns.push(MEDICAL_FILE);
@@ -71,7 +72,7 @@ const PatientTable = ({ rows, columns, pageSize, setOpen }: PatientTableProps) =
             className={'btn'}
             onClick={() => {
                 setOpen(true);
-                setPatientId(params.row.id);
+                setPatientId('' + params.row.id);
             }}
         >
             הצג

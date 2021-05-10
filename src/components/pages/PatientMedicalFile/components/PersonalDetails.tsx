@@ -1,18 +1,19 @@
 import { Card } from '@material-ui/core';
 import React from 'react';
-import { Patient } from '../../../../models/entities/patient';
+import { PatientMedicalFile } from '../../../../models/entities/pmf';
 
 type Props = {
-    patient: Patient;
+    PatientMedicalFileInfo?: PatientMedicalFile;
 };
 
-const PersonalDetails = ({ patient }: Props) => {
+const PersonalDetails = ({ PatientMedicalFileInfo }: Props) => {
+    console.log(PatientMedicalFileInfo);
     return (
         <Card>
             <h3>פרטים אישיים:</h3>
             <div>
                 <div>שם מלא</div>
-                <div>{patient.firstName + ' ' + patient.lastName}</div>
+                {/* <div>{PatientMedicalFileInfo. + ' ' + patient.lastName}</div> */}
             </div>
         </Card>
     );

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Patient } from '../../../models/entities/patient';
 import { patient } from '../../../state/ducks/patient/patient';
 import { RootState } from '../../../state/store/store';
-import {PatientMedicalFile} from '../../../models/entities/pmf';
+import { PatientMedicalFile } from '../../../models/entities/pmf';
 import Loader from '../../shared/SmallComponents/Loader';
 import PersonalDetails from './components/PersonalDetails';
 import { patientMedicalFileSelector } from '../../../state/ducks/patientMedicalfile/selectors';
@@ -18,24 +18,23 @@ type Props = {
 /*
 https://material-ui.com/components/dialogs/
 */
-{/* <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
+{
+    /* <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
     <PatientMedicalFile patientId={patientId} />
-</Dialog> */}
+</Dialog> */
+}
 
-const PatientMedicalFile = ({ patientId, patientMedicalFile, fetchPatientMedicalFile }: Props) => {
+const PatientMedicalFileDetails = ({ patientId, patientMedicalFile, fetchPatientMedicalFile }: Props) => {
     useEffect(() => {
         fetchPatientMedicalFile(patientId);
     }, [patientId, patientMedicalFile]);
-    const patient = {
-        firstName: 'לי',
-        lastName: 'כוכב'
-    } as Patient;
     return (
         <>
             {!patientMedicalFile ? (
                 <div>
                     <h1>תיק רפואי</h1>
-                    <PersonalDetails patient={patient} />
+                    <PersonalDetails PatientMedicalFileInfo={patientMedicalFile} />
+
                     {/* <ExaminationsResults examinations={patientMedicalFile.examination}/> */}
                 </div>
             ) : (
@@ -46,13 +45,11 @@ const PatientMedicalFile = ({ patientId, patientMedicalFile, fetchPatientMedical
 };
 
 const mapStateToProps = (state: RootState) => ({
-    patientId : patientSelector.patientInfo(state),
-    patientMedicalFile : patientMedicalFileSelector.patientMedicalFileInfo(state),
+    patientMedicalFile: patientMedicalFileSelector.patientMedicalFileInfo(state),
+    showLoader: state.loading.effects.patientMedicalFile.fetchPatientMedicalFile
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    fetchPatientMedicalFile: (patientId: string) => dispatch.patientMedicalFile.fetchPatientMedicalFile(patientId);
-
+    fetchPatientMedicalFile: (patientId: string) => dispatch.patientMedicalFile.fetchPatientMedicalFile(patientId)
 });
-
-export default connect(mapStateToProps, mapDispatchToProps)(PatientMedicalFile);
+export default connect(mapStateToProps, mapDispatchToProps)(PatientMedicalFileDetails);
