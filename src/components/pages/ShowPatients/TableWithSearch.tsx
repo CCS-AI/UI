@@ -8,13 +8,15 @@ export interface TableWithSearchProps {
     rows: any[];
     columns: string[];
     pageSize: number;
+    patientId?: string;
 }
 
 const patientsHebFields = require('./../../../models/he.json')['patient'];
 
-export const PatientTableWithSearch = ({ rows, columns, pageSize }: TableWithSearchProps) => {
+export const PatientTableWithSearch = ({ rows, columns, pageSize, patientId }: TableWithSearchProps) => {
     const [filteredRaws, setFilterRaws] = useState(rows);
     const [open, setOpen] = useState(false);
+    const [patientIdButton, setPatientId] = useState(patientId);
 
     const requestSearch = (searchValue: string) => {
         const filteredRows = rows.filter((row) => {
@@ -41,7 +43,7 @@ export const PatientTableWithSearch = ({ rows, columns, pageSize }: TableWithSea
         <React.Fragment>
             <Dialog onClose={() => setOpen(false)} open={open}>
                 <div>somemodal</div>
-                {/* <PatientMedicalFile patientId={patientId} /> */}
+                <PatientMedicalFile patientId={patientId} />
             </Dialog>
             <SearchBar
                 value={''}
@@ -56,6 +58,7 @@ export const PatientTableWithSearch = ({ rows, columns, pageSize }: TableWithSea
 };
 
 type PatientTableProps = TableWithSearchProps & {
+    patientId?: string;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 const PatientTable = ({ rows, columns, pageSize, setOpen }: PatientTableProps) => {
@@ -67,9 +70,8 @@ const PatientTable = ({ rows, columns, pageSize, setOpen }: PatientTableProps) =
         <Button
             className={'btn'}
             onClick={() => {
-                console.log('TableWithSearch : params.row', params.row.id);
                 setOpen(true);
-                //TODO: setPatientId(patientId)
+                setPatientId(params.row.id);
             }}
         >
             הצג
