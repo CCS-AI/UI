@@ -17,6 +17,9 @@ export const patientMedicalFile: ModelConfig<patientsMedicalFileStateType> = {
         async fetchPatientMedicalFile(patientId: string) {
             const pmf = await client.patientMedicalFile().fetchPatientMedicalFile(patientId);
             dispatch.patientMedicalFile.setPatientMedicalFile(pmf);
+        },
+        async setSingleProduct() {
+            dispatch.patientMedicalFile.setPatientMedicalFile(null);
         }
     })
 };

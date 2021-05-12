@@ -39,5 +39,5 @@ const ExaminationsTable = ({ examinationsRows, columns, pageSize }: TablehProps)
         return basicProp;
     });
     console.log(examinationsRows);
-    return <DataGrid rows={examinationsRows} columns={columnsDef} pageSize={pageSize} />;
+    return <DataGrid rows={examinationsRows} columns={columnsDef} pageSize={pageSize} hideFooter={true} />;
 };

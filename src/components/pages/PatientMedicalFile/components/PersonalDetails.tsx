@@ -10,7 +10,7 @@ const PersonalDetails = ({ patient }: Props) => {
     return (
         <>
             {patient ? (
-                <Card>
+                <Card style={{ border: 'none', boxShadow: 'none' }}>
                     <h3>פרטים אישיים</h3>
                     <div>
                         <h5>שם מלא: {' ' + patient.firstName + ' ' + patient.lastName}</h5>
@@ -39,7 +39,6 @@ const PersonalDetails = ({ patient }: Props) => {
                     <div>
                         <h5>קופת חולים: {HMO[patient.hmo] ? ' ' + HMO[patient.hmo] : ' *נתון לא קיים במערכת*'}</h5>
                     </div>
-                    <h3>בדיקות</h3>
                 </Card>
             ) : (
                 <h3>אין נתונים</h3>

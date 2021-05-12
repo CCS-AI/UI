@@ -7,16 +7,20 @@ import Loader from '../../shared/SmallComponents/Loader';
 import PersonalDetails from './components/PersonalDetails';
 import { patientMedicalFileSelector } from '../../../state/ducks/patientMedicalfile/selectors';
 import { ExaminationsResults } from './components/ExaminationsResults';
+import StaticDateTimePicker from '../../shared/StaticDateTimePicker/StaticDateTimePicker';
+import SideEffectJS from 'side-effect-js';
 
 type Props = {
     patientId: string;
     patientMedicalFileInfo?: PatientMedicalFile; //TODO: change to this - PatientMedicalFile;
     showLoader: boolean;
     fetchPatientMedicalFile: (patientId: string) => void;
+    setSingleProduct: () => void;
 };
 
-const PatientMedicalFileDetails = ({ patientId, patientMedicalFileInfo, fetchPatientMedicalFile }: Props) => {
+const PatientMedicalFileDetails = ({ patientId, patientMedicalFileInfo, fetchPatientMedicalFile, setSingleProduct }: Props) => {
     useEffect(() => {
+        setSingleProduct();
         fetchPatientMedicalFile(patientId);
     }, []);
     return (
@@ -25,11 +29,11 @@ const PatientMedicalFileDetails = ({ patientId, patientMedicalFileInfo, fetchPat
                 <div>
                     <h1>תיק רפואי</h1>
                     <PersonalDetails patient={patientMedicalFileInfo.patient} />
+                    <h3>בדיקות</h3>
                     {!patientMedicalFileInfo.examinations || !patientMedicalFileInfo.examinations.length ? (
                         <div> </div>
                     ) : (
                         <div>
-                            <h3>בדיקות</h3>
                             <ExaminationsResults
                                 examinationsRows={patientMedicalFileInfo.examinations}
                                 columns={Object.keys(patientMedicalFileInfo.examinations[0])}
@@ -40,7 +44,9 @@ const PatientMedicalFileDetails = ({ patientId, patientMedicalFileInfo, fetchPat
                 </div>
             ) : (
                 <>
-                    <div>תיק רפואי לא קיים</div>
+                    <div>
+                        <h1>תיק רפואי לא קיים</h1>
+                    </div>
                     <Loader />
                 </>
             )}
@@ -54,7 +60,8 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    fetchPatientMedicalFile: (patientId: string) => dispatch.patientMedicalFile.fetchPatientMedicalFile(patientId)
+    fetchPatientMedicalFile: (patientId: string) => dispatch.patientMedicalFile.fetchPatientMedicalFile(patientId),
+    setSingleProduct: () => dispatch.patientMedicalFile.setSingleProduct()
 });
 export default connect(mapStateToProps, mapDispatchToProps)(PatientMedicalFileDetails);
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { DataGrid, GridColDef, GridCellParams, GridRowId } from '@material-ui/data-grid';
 import './styles/table.css';
-import { Button, Dialog, DialogTitle } from '@material-ui/core';
+import { Button, Dialog, DialogContent, DialogTitle } from '@material-ui/core';
 import SearchBar from 'material-ui-search-bar';
 import PatientMedicalFileDetails from '../PatientMedicalFile';
 import { RootState } from '../../../state/store/store';
@@ -45,7 +45,10 @@ export const PatientTableWithSearch = ({ rows, columns, pageSize }: TableWithSea
     return (
         <React.Fragment>
             <Dialog onClose={() => setOpen(false)} open={open}>
-                <PatientMedicalFileDetails patientId={patientId} />
+                <DialogContent style={{ height: '1200px', width: '500px' }}>
+                    <PatientMedicalFileDetails patientId={patientId} />
+                </DialogContent>
+                \{' '}
             </Dialog>
             <SearchBar
                 value={''}
@@ -87,6 +90,5 @@ const PatientTable = ({ rows, columns, pageSize, setOpen, setPatientId }: Patien
         else if (column == MEDICAL_FILE) return { ...basicProp, renderCell: BUTTON };
         return basicProp;
     });
-    console.log(rows);
     return <DataGrid rows={rows} columns={columnsDef} pageSize={pageSize} />;
 };
