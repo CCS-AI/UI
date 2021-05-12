@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { VictoryAxis, VictoryBar, VictoryLabel, VictoryChart, VictoryLine, VictoryScatter, VictoryTheme } from 'victory';
+import { VictoryAxis, VictoryChart, VictoryLine, VictoryScatter, VictoryTheme } from 'victory';
+import { SelectPointType } from './PointType';
+import { ExamPointTypes, pointTypeToImage, pointTypeToStyle } from '../../../models/entities/examPointTypes';
 
-type Props = {};
-type Data = {
+type Props = {
+    data: Data[];
+};
+export type Data = {
     x: number;
     y: number;
-    type?: string;
+    type: ExamPointTypes;
 };
 
 const normalizeX = (realX: number, xMargin: number) => {
@@ -48,10 +52,59 @@ export const xAxisPoints = [250, 500, 750, 1000, 1500, 2000, 3000, 4000, 6000, 8
 export const invisiblePoints = [750, 1500, 3000, 6000];
 export const yAxisPoints = [-10, 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120];
 
-const CreateExamination = ({}: Props) => {
+export const CreateExamination = () => {
     const [data, setData] = useState<Data[]>([]);
 
+    const addData = (point: Data) => {
+        setData(data.concat(point));
+    };
+
+    return (
+        <div className={'point-type-container'}>
+            <SelectPointType addData={addData} />
+            <Exam data={data} />
+        </div>
+    );
+};
+
+const Exam = ({ data }: Props) => {
+    const [dataPoints, setDataPoints] = useState<Data[]>([]);
+
+    useEffect(() => {
+        setDataPoints(data);
+    }, [data]);
+
     const xMargin = 8000 / xAxisPoints.length;
+    const dataByTypes = () => {
+        let result: { [type: number]: Data[] } = {};
+        Object.values(ExamPointTypes).forEach((value) => {
+            const keyAsNum = Number(value);
+            const array = dataPoints.filter((point) => point.type == keyAsNum);
+            result[keyAsNum] = array != null ? array : [];
+        });
+
+        return result;
+    };
+
+    const getDataLines = () => {
+        const dataTypesDict = dataByTypes();
+        let linesArray: any = [];
+        {
+            Object.keys(dataTypesDict).map((key) => {
+                const keyAsNumber = Number(key);
+                console.log(dataTypesDict[keyAsNumber]);
+                linesArray.push(
+                    <VictoryLine
+                        style={{ data: pointTypeToStyle(keyAsNumber) }}
+                        data={dataTypesDict[keyAsNumber].map((point) => normalizePoint(point, xMargin))}
+                    />
+                );
+            });
+        }
+
+        return linesArray;
+    };
+
     return (
         <VictoryChart
             theme={VictoryTheme.material}
@@ -62,7 +115,10 @@ const CreateExamination = ({}: Props) => {
                     target: 'parent',
                     eventHandlers: {
                         onClick: (e: any, props) => {
-                            setData([...data, { x: Math.floor(Math.random() * 8000) + 250, y: Math.floor(Math.random() * 120) + 0, type: 'test' }]);
+                            setDataPoints([
+                                ...dataPoints,
+                                { x: Math.floor(Math.random() * 8000) + 250, y: Math.floor(Math.random() * 120) + 0, type: ExamPointTypes.L0 }
+                            ]);
                             return [];
                         }
                     }
@@ -80,17 +136,19 @@ const CreateExamination = ({}: Props) => {
                 }}
             />
             <VictoryAxis dependentAxis tickValues={yAxisPoints} domain={[0, 120]} />
-            <VictoryLine data={data.map((point) => normalizePoint(point, xMargin))} />
-            <VictoryScatter data={data.map((point) => normalizePoint(point, xMargin))} dataComponent={<CatPoint />} />
+
+            {getDataLines()}
+            <VictoryScatter data={dataPoints.map((point) => normalizePoint(point, xMargin))} dataComponent={<ImagePoint />} />
         </VictoryChart>
     );
 };
-type CatPointProps = {
+type ImagePointProps = {
     x: number;
     y: number;
     datum: {
         _y: number;
         _x: number;
+        type: ExamPointTypes;
     };
 };
 const CatPoint = (props: any) => {
@@ -103,12 +161,16 @@ const CatPoint = (props: any) => {
     );
 };
 
-const LabelPoint = (props: any) => {
+const ImagePoint = (props: any) => {
+    console.log(props);
     const { x, y, datum } = props;
+    const pointType: ExamPointTypes = datum.type;
+    console.log(pointType);
     return (
-        <text x={x} y={y} fontSize={4}>
-            ({x},{y})
-        </text>
+        <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg" x={x} y={y}>
+            <image href={pointTypeToImage(pointType)} height="10" width="10" />
+        </svg>
     );
 };
+
 export default CreateExamination;
