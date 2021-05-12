@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { DataGrid, GridColDef, GridCellParams, GridRowId } from '@material-ui/data-grid';
 import './styles/table.css';
-import { Button, Dialog } from '@material-ui/core';
+import { Button, Dialog, DialogTitle } from '@material-ui/core';
 import SearchBar from 'material-ui-search-bar';
 import PatientMedicalFileDetails from '../PatientMedicalFile';
+import { RootState } from '../../../state/store/store';
+import { patientMedicalFileSelector } from '../../../state/ducks/patientMedicalfile/selectors';
+import { PatientMedicalFile } from '../../../models/entities/pmf';
 
 export interface TableWithSearchProps {
     rows: any[];
@@ -42,7 +45,6 @@ export const PatientTableWithSearch = ({ rows, columns, pageSize }: TableWithSea
     return (
         <React.Fragment>
             <Dialog onClose={() => setOpen(false)} open={open}>
-                <div>somemodal</div>
                 <PatientMedicalFileDetails patientId={patientId} />
             </Dialog>
             <SearchBar
@@ -85,6 +87,6 @@ const PatientTable = ({ rows, columns, pageSize, setOpen, setPatientId }: Patien
         else if (column == MEDICAL_FILE) return { ...basicProp, renderCell: BUTTON };
         return basicProp;
     });
-
+    console.log(rows);
     return <DataGrid rows={rows} columns={columnsDef} pageSize={pageSize} />;
 };

@@ -3,14 +3,14 @@ import { localSDK as client } from '../../../sdk';
 import { PatientMedicalFile } from '../../../models/entities/pmf';
 
 export type patientsMedicalFileStateType = {
-    pmfInfo?: PatientMedicalFile;
+    patientMFInfo?: PatientMedicalFile;
 };
 
 export const patientMedicalFile: ModelConfig<patientsMedicalFileStateType> = {
     state: {},
     reducers: {
-        setPatientMedicalFile(state: patientsMedicalFileStateType, pmfInfo: PatientMedicalFile): patientsMedicalFileStateType {
-            return { ...state, pmfInfo };
+        setPatientMedicalFile(state: patientsMedicalFileStateType, patientMFInfo: PatientMedicalFile): patientsMedicalFileStateType {
+            return { ...state, patientMFInfo };
         }
     },
     effects: (dispatch: any) => ({
