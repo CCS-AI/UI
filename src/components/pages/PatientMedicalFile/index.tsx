@@ -37,7 +37,7 @@ const PatientMedicalFileDetails = ({ patientId, patientMedicalFileInfo, fetchPat
                             <ExaminationsResults
                                 examinationsRows={patientMedicalFileInfo.examinations}
                                 columns={Object.keys(patientMedicalFileInfo.examinations[0])}
-                                pageSize={5}
+                                pageSize={patientMedicalFileInfo.examinations.length}
                             />
                         </div>
                     )}

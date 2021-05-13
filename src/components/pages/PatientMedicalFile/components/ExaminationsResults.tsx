@@ -3,6 +3,8 @@ import { DataGrid, GridColDef, GridCellParams, GridRowId } from '@material-ui/da
 import '../styles/tableExaminations.css';
 import { Button } from '@material-ui/core';
 import { Examination } from '../../../../models/entities/examination';
+import { words } from 'lodash';
+import moment from 'moment';
 
 export interface TablehProps {
     examinationsRows: Examination[];
@@ -11,8 +13,8 @@ export interface TablehProps {
 }
 
 const examinationHebFields = require('./../../../../models/he.json')['examination'];
-
 export const ExaminationsResults = ({ examinationsRows, columns, pageSize }: TablehProps) => {
+    examinationsRows.forEach((row) => (moment(row.createdAt).format(), moment(row.updatedAt).format()));
     return (
         <React.Fragment>
             {/* <Button></Button> */}
@@ -38,6 +40,5 @@ const ExaminationsTable = ({ examinationsRows, columns, pageSize }: TablehProps)
         else if (column == EXAMINATION_INFO) return { ...basicProp, renderCell: BUTTON };
         return basicProp;
     });
-    console.log(examinationsRows);
     return <DataGrid rows={examinationsRows} columns={columnsDef} pageSize={pageSize} hideFooter={true} />;
 };
