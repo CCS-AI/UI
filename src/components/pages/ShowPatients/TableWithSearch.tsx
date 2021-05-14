@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
-import { DataGrid, GridColDef } from '@material-ui/data-grid';
+import { DataGrid, GridColDef, GridCellParams, GridRowId } from '@material-ui/data-grid';
 import './styles/table.css';
-import { Button } from '@material-ui/core';
+import { Button, Dialog, DialogContent, DialogTitle } from '@material-ui/core';
 import SearchBar from 'material-ui-search-bar';
+import PatientMedicalFileDetails from '../PatientMedicalFile';
+import { RootState } from '../../../state/store/store';
+import { patientMedicalFileSelector } from '../../../state/ducks/patientMedicalfile/selectors';
+import { PatientMedicalFile } from '../../../models/entities/pmf';
 
 export interface TableWithSearchProps {
     rows: any[];
@@ -14,6 +18,8 @@ const patientsHebFields = require('./../../../models/he.json')['patient'];
 
 export const PatientTableWithSearch = ({ rows, columns, pageSize }: TableWithSearchProps) => {
     const [filteredRaws, setFilterRaws] = useState(rows);
+    const [open, setOpen] = useState(false);
+    const [patientId, setPatientId] = useState('');
 
     const requestSearch = (searchValue: string) => {
         const filteredRows = rows.filter((row) => {
@@ -38,23 +44,43 @@ export const PatientTableWithSearch = ({ rows, columns, pageSize }: TableWithSea
 
     return (
         <React.Fragment>
+            <Dialog onClose={() => setOpen(false)} open={open}>
+                <DialogContent style={{ height: '1200px', width: '500px' }}>
+                    <PatientMedicalFileDetails patientId={patientId} />
+                </DialogContent>
+            </Dialog>
             <SearchBar
                 value={''}
                 onChange={(searchVal) => requestSearch(searchVal)}
                 onCancelSearch={() => cancelSearch()}
                 placeholder={'חפש לפי שם פרטי/משפחה/תעודת זהות'}
             />
-
-            <PatientTable rows={filteredRaws} columns={columns} pageSize={pageSize} />
+            <PatientTable rows={filteredRaws} columns={columns} pageSize={pageSize} setOpen={setOpen} setPatientId={setPatientId} />
         </React.Fragment>
     );
 };
-const PatientTable = ({ rows, columns, pageSize }: TableWithSearchProps) => {
+
+type PatientTableProps = TableWithSearchProps & {
+    patientId?: string;
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setPatientId: React.Dispatch<React.SetStateAction<string>>;
+};
+const PatientTable = ({ rows, columns, pageSize, setOpen, setPatientId }: PatientTableProps) => {
     // add show patient's medical file column
     const MEDICAL_FILE = 'medicalFile';
     if (!columns.includes(MEDICAL_FILE)) columns.push(MEDICAL_FILE);
 
-    const BUTTON = () => <Button className={'btn'}>הצג</Button>;
+    const BUTTON = (params: GridCellParams) => (
+        <Button
+            className={'btn'}
+            onClick={() => {
+                setOpen(true);
+                setPatientId('' + params.row.id);
+            }}
+        >
+            הצג
+        </Button>
+    );
     const HIDDEN_FIELDS = ['id', 'createdAt', 'updatedAt'];
     const columnsDef: GridColDef[] = columns.map((column) => {
         const basicProp = { field: column, width: 120, headerName: patientsHebFields[column] };
@@ -62,6 +88,5 @@ const PatientTable = ({ rows, columns, pageSize }: TableWithSearchProps) => {
         else if (column == MEDICAL_FILE) return { ...basicProp, renderCell: BUTTON };
         return basicProp;
     });
-
     return <DataGrid rows={rows} columns={columnsDef} pageSize={pageSize} />;
 };
