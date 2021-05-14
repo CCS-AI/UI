@@ -48,7 +48,6 @@ export const PatientTableWithSearch = ({ rows, columns, pageSize }: TableWithSea
                 <DialogContent style={{ height: '1200px', width: '500px' }}>
                     <PatientMedicalFileDetails patientId={patientId} />
                 </DialogContent>
-                \{' '}
             </Dialog>
             <SearchBar
                 value={''}
@@ -56,7 +55,6 @@ export const PatientTableWithSearch = ({ rows, columns, pageSize }: TableWithSea
                 onCancelSearch={() => cancelSearch()}
                 placeholder={'חפש לפי שם פרטי/משפחה/תעודת זהות'}
             />
-            <Button></Button>
             <PatientTable rows={filteredRaws} columns={columns} pageSize={pageSize} setOpen={setOpen} setPatientId={setPatientId} />
         </React.Fragment>
     );
