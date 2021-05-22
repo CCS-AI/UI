@@ -19,6 +19,8 @@
       "pmfId": "מזהה תיק רפואי",
       "createdAt": "תאריך יצירה",
       "updatedAt": "תאריך עדכון",
-      "info" : "הבדיקה"
+      "info" : "הבדיקה",
+      "speechAudiometry":"בדיקת דיבור",
+      "patientTestBackground": "רקע על המטופל"
   }
   }

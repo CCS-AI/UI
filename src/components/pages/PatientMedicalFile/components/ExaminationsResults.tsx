@@ -33,7 +33,7 @@ const ExaminationsTable = ({ examinationsRows, columns, pageSize }: TablehProps)
             הצג
         </Button>
     );
-    const HIDDEN_FIELDS = ['id', 'pmfId'];
+    const HIDDEN_FIELDS = ['id', 'pmfId', 'speechAudiometry', 'patientTestBackground'];
     const columnsDef: GridColDef[] = columns.map((column) => {
         const basicProp = { field: column, width: 150, headerName: examinationHebFields[column] };
         if (HIDDEN_FIELDS.includes(column)) return { ...basicProp, hide: true };

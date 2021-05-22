@@ -4,9 +4,6 @@ import './styles/table.css';
 import { Button, Dialog, DialogContent, DialogTitle } from '@material-ui/core';
 import SearchBar from 'material-ui-search-bar';
 import PatientMedicalFileDetails from '../PatientMedicalFile';
-import { RootState } from '../../../state/store/store';
-import { patientMedicalFileSelector } from '../../../state/ducks/patientMedicalfile/selectors';
-import { PatientMedicalFile } from '../../../models/entities/pmf';
 
 export interface TableWithSearchProps {
     rows: any[];
@@ -44,8 +41,8 @@ export const PatientTableWithSearch = ({ rows, columns, pageSize }: TableWithSea
 
     return (
         <React.Fragment>
-            <Dialog onClose={() => setOpen(false)} open={open}>
-                <DialogContent style={{ height: '1200px', width: '500px' }}>
+            <Dialog onClose={() => setOpen(false)} open={open} maxWidth="xl">
+                <DialogContent style={{ height: '1200px', width: '900px' }}>
                     <PatientMedicalFileDetails patientId={patientId} />
                 </DialogContent>
             </Dialog>

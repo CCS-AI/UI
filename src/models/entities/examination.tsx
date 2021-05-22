@@ -1,3 +1,5 @@
+import { speechAudiometry } from './SP';
+
 export type examinationType = 'AC' | 'AC+MASK' | 'BC' | 'BC+MASK' | 'WEBER' | 'NO_RESPONSE' | 'FF' | 'STENGER';
 
 export type examResult = {
@@ -13,4 +15,6 @@ export type Examination = {
     createdAt: Date;
     updatedAt: Date;
     info: Array<examResult>;
+    speechAudiometry: speechAudiometry;
+    patientTestBackground: string;
 };
