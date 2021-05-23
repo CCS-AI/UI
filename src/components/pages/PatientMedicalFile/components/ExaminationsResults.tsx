@@ -5,6 +5,7 @@ import { Button } from '@material-ui/core';
 import { Examination } from '../../../../models/entities/examination';
 import { words } from 'lodash';
 import moment from 'moment';
+import { formatHebDate } from '../../../../utils/date';
 
 export interface TablehProps {
     examinationsRows: Examination[];
@@ -34,11 +35,15 @@ const ExaminationsTable = ({ examinationsRows, columns, pageSize }: TablehProps)
         </Button>
     );
     const HIDDEN_FIELDS = ['id', 'pmfId'];
+    const DATE_FIELDS = ['createdAt', 'updatedAt'];
     const columnsDef: GridColDef[] = columns.map((column) => {
         const basicProp = { field: column, width: 150, headerName: examinationHebFields[column] };
         if (HIDDEN_FIELDS.includes(column)) return { ...basicProp, hide: true };
         else if (column == EXAMINATION_INFO) return { ...basicProp, renderCell: BUTTON };
+        else if (DATE_FIELDS.includes(column)) {
+            return { ...basicProp, valueFormatter: (params) => formatHebDate(params.value?.toString()) };
+        }
         return basicProp;
     });
-    return <DataGrid rows={examinationsRows} columns={columnsDef} pageSize={pageSize} hideFooter={true} />;
+    return <DataGrid rows={examinationsRows} columns={columnsDef} pageSize={pageSize} hideFooter={true} disableExtendRowFullWidth />;
 };

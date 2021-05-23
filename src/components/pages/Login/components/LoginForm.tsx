@@ -10,7 +10,7 @@ import loadScript from '../../../../utils/loadScript';
 import { Button, Avatar, CssBaseline, Paper, Box, Grid, Typography } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
-import loginBG from '../../../../static/images/loginbackground.jpg';
+import loginBG from '../../../../static/images/hearingbg.jpeg';
 
 declare global {
     interface Window {
@@ -59,7 +59,8 @@ const useStyles = makeStyles((theme) => ({
         backgroundRepeat: 'no-repeat',
         backgroundColor: theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
         backgroundSize: 'cover',
-        backgroundPosition: 'center'
+        backgroundPosition: 'center',
+        filter: 'blur(0.2px) brightness(1.1) hue-rotate(5deg) opacity(0.9) saturate(1.3) sepia(0.4)'
     },
     paper: {
         margin: theme.spacing(8, 4),
