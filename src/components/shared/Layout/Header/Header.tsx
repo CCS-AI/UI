@@ -6,7 +6,7 @@ import { userInfo } from '../../../../models/entities/user';
 import { RootState } from '../../../../state/store/store';
 import { userSelectors } from '../../../../state/ducks/user/selectors';
 import { Button } from '@material-ui/core';
-import ccsLogo from '../../../../static/images/hearing.png';
+import ccsLogo from '../../../../static/images/ccs-logo.png';
 
 type Props = RouteComponentProps & {
     userInfo?: userInfo;
@@ -22,11 +22,12 @@ const HeaderConnected = ({ userInfo, fetchUserInfo, history, logout }: Props) =>
     return (
         <HeaderContainer>
             <LogoContainer>
-                מערכת לניהול בדיקות שמיעה
                 <StyledLogo src={ccsLogo} alt="ccslogo" />
             </LogoContainer>
             <RightBar>
-                <Button onClick={logout}>התנתקות</Button>
+                <Button variant="outlined" onClick={logout}>
+                    התנתקות
+                </Button>
             </RightBar>
         </HeaderContainer>
     );
@@ -67,7 +68,8 @@ const RightBar = styled.div`
     }
 `;
 const StyledLogo = styled.img`
-    height: 30px;
+    height: 50px;
+    margin: 7px;
 `;
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HeaderConnected));

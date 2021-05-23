@@ -1,6 +1,7 @@
 import { Card } from '@material-ui/core';
 import React from 'react';
 import { Gender, HMO, Patient } from '../../../../models/entities/patient';
+import { formatHebDate } from '../../../../utils/date';
 
 type Props = {
     patient: Patient;
@@ -19,7 +20,7 @@ const PersonalDetails = ({ patient }: Props) => {
                         <h5>תעודת זהות: {patient.personalId ? ' ' + patient.personalId : ' *נתון לא קיים במערכת*'}</h5>
                     </div>
                     <div>
-                        <h5>תאריך לידה: {patient.birth ? ' ' + patient.birth : ' *נתון לא קיים במערכת*'}</h5>
+                        <h5>תאריך לידה: {patient.birth ? ' ' + formatHebDate(patient.birth) : ' *נתון לא קיים במערכת*'}</h5>
                     </div>
                     <div>
                         <h5>מין: {Gender[patient.gender] ? ' ' + Gender[patient.gender] : ' *נתון לא קיים במערכת*'}</h5>

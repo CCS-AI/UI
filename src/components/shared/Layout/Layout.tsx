@@ -70,6 +70,7 @@ const ContentWrapper = styled.div<{ marginRight?: number }>`
     height: calc(100% - 64px);
     position: absolute;
     top: 64px;
+    background: linear-gradient(360deg, rgba(221, 219, 210, 1) 0%, rgba(189, 183, 159, 1) 100%);
     @media screen and (max-width: 768px) {
         position: fixed;
         width: 100%;
