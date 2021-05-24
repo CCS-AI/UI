@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { match, Link, Redirect, withRouter, RouteComponentProps, useHistory } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import { FormTextInput } from '../../../shared/inputs/form';
-import Loader from '../../../shared/SmallComponents/Loader';
+import Loader, { BtnLoader } from '../../../shared/SmallComponents/Loader';
 import { styled } from '../../../shared/Theme/theme';
 import { connect } from 'react-redux';
 import { RootState } from '../../../../state/store/store';
@@ -73,11 +73,7 @@ const ResetPasswordForm = ({
                                     <FormTextInput name="passwordConfirm" placeHolder={localization.confirm_pwd} style={{ height: '40px' }} />
                                 </FieldContainer>
                                 <Button type="submit" disabled={!(dirty && isValid)}>
-                                    {isResetPassword ? (
-                                        <Loader width="20px" marginTop="0px" showText={false} color="white" />
-                                    ) : (
-                                        <span>{localization.send_btn}</span>
-                                    )}
+                                    {isResetPassword ? <BtnLoader /> : <span>{localization.send_btn}</span>}
                                 </Button>
                             </Form>
                         </FormContainer>

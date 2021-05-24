@@ -6,6 +6,7 @@ import { Patient } from '../../../models/entities/patient';
 import { patientSelector } from '../../../state/ducks/patient/selectors';
 import { PatientTableWithSearch } from './TableWithSearch';
 import Loader from '../../shared/SmallComponents/Loader';
+import { FlexPageContainer } from '../../shared/styled/styled';
 
 export type ShowAllPatientsProps = RouteComponentProps & {
     patients: Patient[] | undefined;
@@ -16,18 +17,17 @@ export type ShowAllPatientsProps = RouteComponentProps & {
 const ShowAllPatients = ({ patients, fetchPatients, showLoader }: ShowAllPatientsProps) => {
     useEffect(() => {
         fetchPatients();
-    }, []);
-
-    // if (!patients || !patients.length) {
-    //     return <div>no patients</div>;
-    // }
-
-    return showLoader ? (
-        <Loader showText={false} />
-    ) : !patients || !patients.length ? (
-        <div>No patients</div>
-    ) : (
-        <PatientTableWithSearch rows={patients} columns={Object.keys(patients[0])} pageSize={5}></PatientTableWithSearch>
+    }, [fetchPatients]);
+    return (
+        <FlexPageContainer>
+            {showLoader ? (
+                <Loader color="white" />
+            ) : !patients || !patients.length ? (
+                <div>No patients</div>
+            ) : (
+                <PatientTableWithSearch rows={patients} columns={Object.keys(patients[0])} pageSize={5}></PatientTableWithSearch>
+            )}
+        </FlexPageContainer>
     );
 };
 

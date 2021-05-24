@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Formik, Form } from 'formik';
 import { Link, match } from 'react-router-dom';
-import Loader from '../../../shared/SmallComponents/Loader';
+import Loader, { BtnLoader } from '../../../shared/SmallComponents/Loader';
 import { Checkbox } from '../../../shared/inputs/base';
 import { FormTextInput } from '../../../shared/inputs/form';
 import { styled } from '../../../shared/Theme/theme';
@@ -176,11 +176,7 @@ const LoginForm = ({ showLoader, error, login, match }: LoginPageProps) => {
                                         <FormTextInput required name="password" label="סיסמא" type="password" />
                                         <Checkbox value="remember" color="primary" text="זכור אותי" />
                                         <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
-                                            {showLoader || generatingCaptcha ? (
-                                                <Loader width="20px" marginTop="0px" showText={false} color="white" />
-                                            ) : (
-                                                <span>{'התחברות'}</span>
-                                            )}
+                                            {showLoader || generatingCaptcha ? <BtnLoader /> : <span>{'התחברות'}</span>}
                                         </Button>
                                         <Grid container>
                                             <Grid item xs>
