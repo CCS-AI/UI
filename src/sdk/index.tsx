@@ -32,9 +32,6 @@ class ccsSDK {
     patientMedicalFile() {
         return new PatientMedicalFile(this.baseUrl);
     }
-    speechAudiometry() {
-        return new speechAudiometry(this.baseUrl);
-    }
 }
 
 export const localSDK = new ccsSDK(`${process.env.REACT_APP_API_URL}`);

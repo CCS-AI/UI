@@ -1,5 +1,5 @@
 import { Dialog } from '@material-ui/core';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../../../state/store/store';
 import { PatientMedicalFile } from '../../../models/entities/pmf';
@@ -9,6 +9,8 @@ import { patientMedicalFileSelector } from '../../../state/ducks/patientMedicalf
 import { ExaminationsResults } from './components/ExaminationsResults';
 import StaticDateTimePicker from '../../shared/StaticDateTimePicker/StaticDateTimePicker';
 import SideEffectJS from 'side-effect-js';
+import { SpeechAudiometryDetails } from '../SpeechAudiometry';
+import { speechAudiometry } from '../../../models/entities/SP';
 
 type Props = {
     patientId: string;
@@ -19,10 +21,12 @@ type Props = {
 };
 
 const PatientMedicalFileDetails = ({ patientId, patientMedicalFileInfo, fetchPatientMedicalFile, setSingleProduct }: Props) => {
+    const [spInfo, setSpInfo] = useState<speechAudiometry | undefined>();
     useEffect(() => {
         setSingleProduct();
         fetchPatientMedicalFile(patientId);
     }, []);
+    console.log(spInfo);
     return (
         <>
             {patientMedicalFileInfo ? (
@@ -46,8 +50,8 @@ const PatientMedicalFileDetails = ({ patientId, patientMedicalFileInfo, fetchPat
                 <>
                     <div>
                         <h1>תיק רפואי לא קיים</h1>
+                        <SpeechAudiometryDetails setSpInfo={setSpInfo} />
                     </div>
-                    <Loader />
                 </>
             )}
         </>

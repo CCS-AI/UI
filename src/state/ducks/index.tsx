@@ -4,7 +4,6 @@ import { user } from './user/user';
 import { patient } from './patient/patient';
 import { examiner } from './examiner/examiner';
 import { patientMedicalFile } from './patientMedicalfile/patientMedicalFile';
-import { SpeechAudiometry } from './speechAudiometry/speechAudiometry';
 
 export interface RootModel {
     authentication: typeof authentication;
@@ -13,7 +12,6 @@ export interface RootModel {
     patient: typeof patient;
     examiner: typeof examiner;
     patientMedicalFile: typeof patientMedicalFile;
-    SpeechAudiometry: typeof SpeechAudiometry;
 }
 
 export const models: RootModel = {
@@ -22,6 +20,5 @@ export const models: RootModel = {
     user,
     patient,
     examiner,
-    patientMedicalFile,
-    SpeechAudiometry
+    patientMedicalFile
 };

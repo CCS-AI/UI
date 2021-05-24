@@ -9,20 +9,20 @@ import {
     GridCellValue,
     GridEditRowsModel
 } from '@material-ui/data-grid';
-import { speechAudiometry } from '../../../../models/entities/SP';
+import { sp, speechAudiometry } from '../../../../models/entities/SP';
 import { makeStyles, Switch } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     dataGrid: {
         direction: 'rtl',
-        height: '1000px'
+        height: '800px'
     }
 }));
 export interface spTableProps {
     rowsSP: any[];
     columnsSP: GridColDef[];
     pageSize: number;
-    UpdateSpeechAudiometry?: (sp: speechAudiometry) => void;
+    setSpInfo: React.Dispatch<React.SetStateAction<speechAudiometry | undefined>>;
 }
 const validateInputdB = (val: GridCellValue) => {
     let res = false;
@@ -39,7 +39,7 @@ const validateInputDisc = (val: GridCellValue) => {
     }
     return res;
 };
-export const SpeechAudiometryTable = ({ rowsSP, columnsSP, pageSize, UpdateSpeechAudiometry }: spTableProps) => {
+export const SpeechAudiometryTable = ({ rowsSP, columnsSP, pageSize, setSpInfo }: spTableProps) => {
     const [editRows, setRows] = useState(rowsSP);
     const classes = useStyles();
     const handleEditCellChangeCommitted = useCallback(
@@ -103,10 +103,48 @@ export const SpeechAudiometryTable = ({ rowsSP, columnsSP, pageSize, UpdateSpeec
                 return row;
             });
             setRows(updatedRows);
+            const _spInfo: speechAudiometry = {
+                SRT_db: {
+                    Rt: updatedRows[0].Rt,
+                    Lt: updatedRows[0].Lt,
+                    MaskLt: updatedRows[0].MaskLt,
+                    MaskRt: updatedRows[0].MaskRt,
+                    SF: updatedRows[0].SF
+                },
+                Disc: {
+                    Rt: updatedRows[1].Rt,
+                    Lt: updatedRows[1].Lt
+                },
+                dB: {
+                    Rt: updatedRows[2].Rt,
+                    Lt: updatedRows[2].Lt,
+                    MaskLt: updatedRows[2].MaskLt,
+                    MaskRt: updatedRows[2].MaskRt,
+                    SF: updatedRows[2].SF
+                },
+                MCL: {
+                    Rt: updatedRows[3].Rt,
+                    Lt: updatedRows[3].Lt,
+                    MaskLt: updatedRows[3].MaskLt,
+                    MaskRt: updatedRows[3].MaskRt,
+                    SF: updatedRows[3].SF
+                },
+                UCL: {
+                    Rt: updatedRows[4].Rt,
+                    Lt: updatedRows[4].Lt,
+                    MaskLt: updatedRows[4].MaskLt,
+                    MaskRt: updatedRows[4].MaskRt,
+                    SF: updatedRows[4].SF
+                },
+                VDL: {
+                    Rt: updatedRows[5].Rt,
+                    Lt: updatedRows[5].Lt
+                }
+            };
+            setSpInfo(_spInfo);
         },
         [editRows]
     );
-    console.log(editRows);
     return (
         <React.Fragment>
             <DataGrid

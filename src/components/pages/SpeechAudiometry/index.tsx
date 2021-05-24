@@ -1,40 +1,27 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../../../state/store/store';
 import { SpeechAudiometryTable } from '../SpeechAudiometry/components/SpeechAudiometryTable';
 import { speechAudiometry } from '../../../models/entities/SP';
-import { SpeechAudiometrySelector } from '../../../state/ducks/speechAudiometry/selectors';
+type Props = {
+    setSpInfo: React.Dispatch<React.SetStateAction<speechAudiometry | undefined>>;
+};
 
-export const SpeechAudiometryDetails = ({ UpdateSpeechAudiometry }: Props) => {
-    useEffect(() => {}, []);
+export const SpeechAudiometryDetails = ({ setSpInfo }: Props) => {
     return (
         <>
             <div>
                 <h3>Speech Audiometry</h3>
-                {UpdateSpeechAudiometry ? (
-                    <SpeechAudiometryTable rowsSP={InitRows} columnsSP={InitColumns} pageSize={6} UpdateSpeechAudiometry={UpdateSpeechAudiometry} />
-                ) : (
-                    <SpeechAudiometryTable rowsSP={InitRows} columnsSP={InitColumns} pageSize={6} UpdateSpeechAudiometry={undefined} />
-                )}
+                <SpeechAudiometryTable rowsSP={InitRows} columnsSP={InitColumns} pageSize={6} setSpInfo={setSpInfo} />
             </div>
         </>
     );
 };
 
-const mapStateToProps = (state: RootState) => ({
-    spInfo: SpeechAudiometrySelector.speechAudiometryInfo(state)
-});
+const mapStateToProps = (state: RootState) => ({});
 
-const mapDispatchToProps = (dispatch: any) => ({
-    UpdateSpeechAudiometry: (sp: speechAudiometry) => dispatch.speechAudiometry.setSpeechAudiometry(sp)
-});
+const mapDispatchToProps = (dispatch: any) => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(SpeechAudiometryDetails);
-
-type Props = {
-    // spInfo?: speechAudiometry;
-    UpdateSpeechAudiometry?: (sp: speechAudiometry) => void;
-    //setSpeechAudio :(sp: speechAudiometry) => void;
-};
 
 const InitColumns = [
     { field: 'empty', headerName: '--', width: 150, editable: false },
