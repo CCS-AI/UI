@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
-import Loader from '../../../shared/SmallComponents/Loader';
+import { BtnLoader } from '../../../shared/SmallComponents/Loader';
 import { FormDropDown, FormTextInput } from '../../../shared/inputs/form';
 import { styled } from '../../../shared/Theme/theme';
 import { Button } from '@material-ui/core';
@@ -95,11 +95,7 @@ const CreatePatientForm = ({ showLoader, error, createPatient }: CreatePatientPr
                                     <FormTextInput required label="תאריך לידה" name="birth" type="Date" />
                                 </Flex>
                                 <Button type="submit" fullWidth variant="contained" color="primary">
-                                    {showLoader || false ? (
-                                        <Loader width="20px" marginTop="0px" showText={false} color="white" />
-                                    ) : (
-                                        <span>{'הוספה'}</span>
-                                    )}
+                                    {showLoader || false ? <BtnLoader /> : <span>{'הוספה'}</span>}
                                 </Button>
                                 <ErrorMsg>{error}</ErrorMsg>
                             </Form>

@@ -108,9 +108,7 @@ const Home = ({ userInfo }: Props) => {
     );
 };
 const Container = styled.div`
-    height: inherit;
     padding: 30px;
-    overflow: hidden;
 `;
 const WelcomeTexts = styled.div`
     background: white;

@@ -4,6 +4,7 @@ import RegisterExaminerForm from './components/RegisterExaminerForm';
 import { connect } from 'react-redux';
 import { Examiner } from '../../../models/entities/examiner';
 import { authenticationSelectors } from '../../../state/ducks/authentication/selectors';
+import { FlexPageContainer } from '../../shared/styled/styled';
 
 type RegisterExaminerProps = {
     showLoader: boolean;
@@ -12,7 +13,11 @@ type RegisterExaminerProps = {
 };
 
 const RegisterExaminerPage = ({ showLoader, error, registerExaminer }: RegisterExaminerProps) => {
-    return <RegisterExaminerForm showLoader={showLoader} error={error} registerExaminer={registerExaminer} />;
+    return (
+        <FlexPageContainer>
+            <RegisterExaminerForm showLoader={showLoader} error={error} registerExaminer={registerExaminer} />
+        </FlexPageContainer>
+    );
 };
 const mapStateToProps = (state: RootState) => ({
     showLoader: state.loading.effects.authentication.loginAsync,

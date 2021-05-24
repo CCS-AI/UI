@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { match, Link } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import { FormTextInput } from '../../../shared/inputs/form';
-import Loader from '../../../shared/SmallComponents/Loader';
+import Loader, { BtnLoader } from '../../../shared/SmallComponents/Loader';
 import { styled } from '../../../shared/Theme/theme';
 import { connect } from 'react-redux';
 import { RootState } from '../../../../state/store/store';
@@ -42,11 +42,7 @@ const ForgotPasswordForm = ({ forgotPassword, error, isEmailSending, localizatio
                                     <FormTextInput name="email" placeHolder={localization.email} style={{ height: '40px' }} />
                                 </FieldContainer>
                                 <Button type="submit" disabled={!(dirty && isValid)}>
-                                    {isEmailSending ? (
-                                        <Loader width="20px" marginTop="0px" showText={false} color="white" />
-                                    ) : (
-                                        <span>{localization.send_btn}</span>
-                                    )}
+                                    {isEmailSending ? <BtnLoader /> : <span>{localization.send_btn}</span>}
                                 </Button>
                             </Form>
                         </FormContainer>

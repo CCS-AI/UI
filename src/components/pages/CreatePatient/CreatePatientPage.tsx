@@ -4,6 +4,7 @@ import CreatePatientForm from './components/CreatePatientForm';
 import { connect } from 'react-redux';
 import { Patient } from '../../../models/entities/patient';
 import { authenticationSelectors } from '../../../state/ducks/authentication/selectors';
+import { FlexPageContainer } from '../../shared/styled/styled';
 
 type CreatePatientProps = {
     showLoader: boolean;
@@ -12,7 +13,11 @@ type CreatePatientProps = {
 };
 
 const CreatePatientPage = ({ showLoader, error, createPatient }: CreatePatientProps) => {
-    return <CreatePatientForm showLoader={showLoader} error={error} createPatient={createPatient} />;
+    return (
+        <FlexPageContainer>
+            <CreatePatientForm showLoader={showLoader} error={error} createPatient={createPatient} />
+        </FlexPageContainer>
+    );
 };
 const mapStateToProps = (state: RootState) => ({
     showLoader: state.loading.effects.authentication.loginAsync,

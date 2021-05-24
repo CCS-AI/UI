@@ -24,17 +24,18 @@ const Layout = ({ children }: PropsWithChildren<Props>) => {
             </HeaderWrapper>
             {/* <ResponsiveDrawerConnected> */}
             {/* <SideBar printMode={printMode}> */}
+            <Wrapper>
+                <SidebarGuard>
+                    <SideBar
+                        open={openSideBar}
+                        setOpenSideBar={setOpenSideBar}
+                        image={'https://www.rcac.org/wp-content/uploads/2016/08/sidebar-ad-background.jpg'}
+                        title={'מערכת לניהול בדיקות שמיעה'}
+                    />
+                </SidebarGuard>
 
-            <SidebarGuard>
-                <SideBar
-                    open={openSideBar}
-                    setOpenSideBar={setOpenSideBar}
-                    image={'https://www.rcac.org/wp-content/uploads/2016/08/sidebar-ad-background.jpg'}
-                    title={'מערכת לניהול בדיקות שמיעה'}
-                />
-            </SidebarGuard>
-
-            <ContentWrapper marginRight={openSideBar ? pageMarginRightOpen : pageMarginRightClose}>{children}</ContentWrapper>
+                <ContentWrapper marginRight={openSideBar ? pageMarginRightOpen : pageMarginRightClose}>{children}</ContentWrapper>
+            </Wrapper>
         </LayoutContainer>
     );
 };
@@ -61,21 +62,24 @@ const HeaderWrapper = styled.div<{ printMode?: boolean }>`
 
 const LayoutContainer = styled.div`
     height: 100%;
+    display: flex;
+    flex-direction: column;
+`;
+const Wrapper = styled.div`
+    height: calc(100% - 64px);
+    right: 0;
+    top: 64px;
+    display: flex;
+    width: 100%;
+    position:absolute;
+}
 `;
 const ContentWrapper = styled.div<{ marginRight?: number }>`
-    ${(props) => `margin-right: ${props.marginRight}px;`}
     width: calc(100% - ${(props) => props.marginRight}px);
     overflow-y: overlay;
     z-index: 50;
-    height: calc(100% - 64px);
-    position: absolute;
-    top: 64px;
+    height: 100%;
     background: linear-gradient(360deg, rgba(221, 219, 210, 1) 0%, rgba(189, 183, 159, 1) 100%);
-    @media screen and (max-width: 768px) {
-        position: fixed;
-        width: 100%;
-        height: calc(100% - 40px - 64px);
-    }
 `;
 
 export default Layout;
