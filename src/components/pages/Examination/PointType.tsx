@@ -1,8 +1,9 @@
 import React, { ReactElement, useState } from 'react';
 import Popup from 'reactjs-popup';
 import { IconButton, Button, TextField, Avatar } from '@material-ui/core';
-import { ExamPointTypes, pointTypeToImage } from '../../../models/entities/examPointTypes';
+import { ExamPointTypes, examPointTypes, pointToImage, earTypes } from '../../../models/entities/examPointTypes';
 import './Exam.css';
+import Checkbox from '@material-ui/core/Checkbox';
 import { Data } from './CreateExamination';
 
 interface SelectPointTypeProps {
@@ -11,35 +12,40 @@ interface SelectPointTypeProps {
 
 export const SelectPointType = ({ addData }: SelectPointTypeProps) => {
     let popups: ReactElement[] = [];
-    Object.keys(ExamPointTypes).map((key) => {
-        // @ts-ignore
-        const value = ExamPointTypes[key];
-        if (!isNaN(value)) {
+
+    earTypes.forEach((ear) => {
+        examPointTypes.map((key) => {
+            const type = key as ExamPointTypes;
+            const earSide = ear as 'RIGHT' | 'LEFT';
             popups.push(
                 <Popup
                     trigger={
                         <IconButton>
-                            <Avatar variant="square" src={pointTypeToImage(value)}></Avatar>
+                            <Avatar variant="square" src={pointToImage(type, earSide)}></Avatar>
                         </IconButton>
                     }
                     position={'bottom center'}
                 >
-                    <NewPointForm type={value} addData={addData} />
+                    <NewPointForm data={{ x: -1, y: -1, type: type, ear: earSide, isNoResponse: false }} addData={addData} />
                 </Popup>
             );
-        }
+        });
     });
 
     return <div>{popups}</div>;
 };
 
 interface NewPointForm {
-    type: ExamPointTypes;
+    data: Data;
     addData: (point: Data) => void;
 }
 
-const NewPointForm = ({ type, addData }: NewPointForm) => {
-    const [state, setState] = useState({ type: type, x: -1, y: -1 });
+const NewPointForm = ({ data, addData }: NewPointForm) => {
+    const [state, setState] = useState({ ...data });
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setState({ ...state, isNoResponse: event.target.checked });
+    };
 
     const submitForm = () => {
         try {
@@ -59,20 +65,30 @@ const NewPointForm = ({ type, addData }: NewPointForm) => {
     };
 
     return (
-        <form style={{ direction: 'ltr' }}>
-            <div className={'formInput'}>
-                <label>X: </label>
-                <TextField placeholder={'250'} onChange={(event) => setState({ ...state, x: Number(event.target.value) })}>
-                    ofek
-                </TextField>
-            </div>
-            <div className={'formInput'}>
-                <label>Y: </label>
-                <TextField placeholder={'1'} onChange={(event) => setState({ ...state, y: Number(event.target.value) })}>
-                    rac
-                </TextField>
-            </div>
-            <Button onClick={submitForm}>Create</Button>
-        </form>
+        <div>
+            <label>Selected type: </label>
+            <IconButton>
+                <Avatar variant="square" src={pointToImage(state.type, state.ear)} style={{ width: 20, height: 20 }}></Avatar>
+            </IconButton>
+            <form style={{ direction: 'ltr' }}>
+                <div className={'formInput'}>
+                    <label>X: </label>
+                    <TextField placeholder={'250'} onChange={(event) => setState({ ...state, x: Number(event.target.value) })}>
+                        ofek
+                    </TextField>
+                </div>
+                <div className={'formInput'}>
+                    <label>Y: </label>
+                    <TextField placeholder={'1'} onChange={(event) => setState({ ...state, y: Number(event.target.value) })}>
+                        rac
+                    </TextField>
+                </div>
+                <div>
+                    <label>No response: </label>
+                    <Checkbox checked={state.isNoResponse} onChange={handleChange} inputProps={{ 'aria-label': 'primary checkbox' }} />
+                </div>
+                <Button onClick={submitForm}>Create</Button>
+            </form>
+        </div>
     );
 };

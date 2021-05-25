@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { VictoryAxis, VictoryChart, VictoryLine, VictoryScatter, VictoryTheme } from 'victory';
 import { SelectPointType } from './PointType';
-import { ExamPointTypes, pointTypeToImage, pointTypeToStyle } from '../../../models/entities/examPointTypes';
+import { earTypes, examPointTypes, ExamPointTypes, getBaseType, pointToImage, pointTypeToStyle } from '../../../models/entities/examPointTypes';
 
 type Props = {
     data: Data[];
+    width: number;
+    height: number;
 };
 export type Data = {
     x: number;
     y: number;
+    ear: 'RIGHT' | 'LEFT';
     type: ExamPointTypes;
+    isNoResponse: boolean;
 };
 
 const normalizeX = (realX: number, xMargin: number) => {
@@ -22,9 +26,9 @@ const unNormalizeX = (normalizeX: number, xMargin: number) => {
     return xAxisPoints[indexInXvalues];
 };
 
-export const roundXpoint = (x: number) => {
+export const roundXpoint = (x: number, width: number) => {
     if (x < xAxisPoints[0]) throw new Error(`Lower bound is ${xAxisPoints[0]}`);
-    let minDist = 10000; // bigger then any dist, must be 22000+.
+    let minDist = width; // bigger then any dist, must be 22000+.
     let roundedX = -1;
 
     // find closet x in X-Axis
@@ -35,16 +39,12 @@ export const roundXpoint = (x: number) => {
             minDist = dist;
         }
     });
-    console.log('*', roundedX);
     return roundedX;
 };
 
-export const normalizePoint = (point: Data, xMargin: number) => {
-    console.log(point);
+export const normalizePoint = (point: Data, xMargin: number, width: number) => {
     const newPoint = { ...point };
-    console.log('Should be x=', roundXpoint(newPoint.x), 'y=', newPoint.y);
-    newPoint.x = normalizeX(roundXpoint(newPoint.x), xMargin);
-    console.log(newPoint);
+    newPoint.x = normalizeX(roundXpoint(newPoint.x, width), xMargin);
     return newPoint;
 };
 
@@ -62,12 +62,12 @@ export const CreateExamination = () => {
     return (
         <div className={'point-type-container'}>
             <SelectPointType addData={addData} />
-            <Exam data={data} />
+            <Exam data={data} width={1000} height={800} />
         </div>
     );
 };
 
-const Exam = ({ data }: Props) => {
+const Exam = ({ data, width, height }: Props) => {
     const [dataPoints, setDataPoints] = useState<Data[]>([]);
 
     useEffect(() => {
@@ -76,69 +76,126 @@ const Exam = ({ data }: Props) => {
 
     const xMargin = 8000 / xAxisPoints.length;
     const dataByTypes = () => {
-        let result: { [type: number]: Data[] } = {};
-        Object.values(ExamPointTypes).forEach((value) => {
-            const keyAsNum = Number(value);
-            const array = dataPoints.filter((point) => point.type == keyAsNum);
-            result[keyAsNum] = array != null ? array : [];
+        let result: { [type: string]: { LEFT: Data[]; RIGHT: Data[] } } = {};
+        examPointTypes.forEach((value) => {
+            result[value] = { RIGHT: [], LEFT: [] };
+            earTypes.forEach((ear) => {
+                const array = dataPoints.filter((point) => point.type == value && point.ear == ear);
+                const earType = ear as 'RIGHT' | 'LEFT';
+                result[value][earType] = array != null ? array : [];
+            });
         });
 
         return result;
     };
 
-    const getDataLines = () => {
-        const dataTypesDict = dataByTypes();
+    const basePointsToAppendToDevLine = (base: Data[], developed: Data[], lastPoint: Data) => {
+        return previousPointInBase(base, developed, lastPoint).concat(afterPointInBase(base, developed, lastPoint));
+    };
+
+    const previousPointInBase = (base: Data[], developed: Data[], curDevPoint: Data) => {
+        const preInBase = base.filter((p) => p.x < curDevPoint.x);
+        const devX = developed.map((p) => p.x);
+        const preInBaseAndNotInDev = preInBase.filter((p) => !devX.includes(p.x));
+        return preInBaseAndNotInDev;
+    };
+
+    const afterPointInBase = (base: Data[], developed: Data[], curDevPoint: Data) => {
+        const preInBase = base.filter((p) => p.x > curDevPoint.x);
+        const devX = developed.map((p) => p.x);
+        const preInBaseAndNotInDev = preInBase.filter((p) => !devX.includes(p.x));
+        return preInBaseAndNotInDev;
+    };
+
+    const getPointsInLine = (data: { [p: string]: { LEFT: Data[]; RIGHT: Data[] } }, type: ExamPointTypes, ear: 'RIGHT' | 'LEFT') => {
+        if (getBaseType(type, ear) == 'None') {
+            // Filter only with the same type & ear.
+            return data[type][ear];
+        } else {
+            console.log('Detect a developed type!');
+            const baseType = getBaseType(type, ear) as ExamPointTypes;
+            const developedPoints = data[type][ear];
+            const basePoints = data[baseType][ear];
+            const devXpoints = developedPoints.map((p) => p.x);
+            const maxPointInDev = developedPoints.find((p) => p.x === Math.max(...devXpoints)) as Data;
+            const pointsFromBaseToAdd = basePointsToAppendToDevLine(basePoints, developedPoints, maxPointInDev);
+            return developedPoints.concat(pointsFromBaseToAdd);
+        }
+    };
+
+    const getDataLines = (dataByType: { [p: string]: { LEFT: Data[]; RIGHT: Data[] } }) => {
+        // assume dataByType is a normalized dict!
         let linesArray: any = [];
+        console.log(dataByType);
         {
-            Object.keys(dataTypesDict).map((key) => {
-                const keyAsNumber = Number(key);
-                console.log(dataTypesDict[keyAsNumber]);
-                linesArray.push(
-                    <VictoryLine
-                        style={{ data: pointTypeToStyle(keyAsNumber) }}
-                        data={dataTypesDict[keyAsNumber].map((point) => normalizePoint(point, xMargin))}
-                    />
-                );
+            examPointTypes.map((key) => {
+                Object.keys(dataByType[key]).forEach((ear) => {
+                    const earAsType = ear as 'RIGHT' | 'LEFT';
+                    const typeOfPoint = key as ExamPointTypes;
+                    if (dataByType[key][earAsType].length > 0)
+                        linesArray.push(
+                            <VictoryLine
+                                style={{ data: pointTypeToStyle(earAsType, typeOfPoint) }}
+                                data={getPointsInLine(dataByType, typeOfPoint, earAsType)}
+                            />
+                        );
+                });
             });
         }
 
         return linesArray;
     };
 
+    const normalizedDataByType = (data: { [p: string]: { LEFT: Data[]; RIGHT: Data[] } }) => {
+        let results: { [p: string]: { LEFT: Data[]; RIGHT: Data[] } } = {};
+        Object.keys(data).forEach((key) => {
+            results[key] = { RIGHT: [], LEFT: [] };
+            results[key].RIGHT = data[key].RIGHT ? data[key].RIGHT.map((data) => normalizePoint(data, xMargin, width)) : [];
+            results[key].LEFT = data[key].LEFT ? data[key].LEFT.map((data) => normalizePoint(data, xMargin, width)) : [];
+        });
+        return results;
+    };
+
+    const moveCloseNormalizedPoints = (data: { [p: string]: { LEFT: Data[]; RIGHT: Data[] } }) => {
+        const MOVE_STEP = width / 12;
+        const Y_SCOPE = 2;
+        const normalizedPoints = Object.values(data)
+            .map((dataType) => [...dataType.LEFT, ...dataType.RIGHT])
+            .flat(1);
+        normalizedPoints.forEach((p1) => {
+            let closedPoints: Data[] = [];
+            normalizedPoints.forEach((p2) => {
+                if (p1 != p2 && p1.x == p2.x && Math.abs(p1.y - p2.y) <= Y_SCOPE) closedPoints.push(p2);
+            });
+            let counter = 1;
+            closedPoints.forEach((p) => {
+                p.x += MOVE_STEP * counter;
+                counter++;
+            });
+        });
+    };
+
+    const dataByTypeNormalized = normalizedDataByType(dataByTypes());
+    moveCloseNormalizedPoints(dataByTypeNormalized);
+    const allNormalizedPoints = Object.values(dataByTypeNormalized)
+        .map((dataType) => [...dataType.LEFT, ...dataType.RIGHT])
+        .flat(1);
+    console.log(allNormalizedPoints);
     return (
-        <VictoryChart
-            theme={VictoryTheme.material}
-            width={1000}
-            height={500}
-            events={[
-                {
-                    target: 'parent',
-                    eventHandlers: {
-                        onClick: (e: any, props) => {
-                            setDataPoints([
-                                ...dataPoints,
-                                { x: Math.floor(Math.random() * 8000) + 250, y: Math.floor(Math.random() * 120) + 0, type: ExamPointTypes.L0 }
-                            ]);
-                            return [];
-                        }
-                    }
-                }
-            ]}
-        >
+        <VictoryChart theme={VictoryTheme.material} width={1000} height={500}>
             <VictoryAxis
                 tickValues={xAxisPoints.map((x) => normalizeX(x, xMargin))}
                 domain={[250, 8000]}
                 style={{ ticks: { padding: 5 } }}
                 tickFormat={(t, i) => {
-                    console.log(t);
                     if (invisiblePoints.includes(unNormalizeX(t, xMargin))) return '';
                     return unNormalizeX(t, xMargin);
                 }}
             />
             <VictoryAxis dependentAxis tickValues={yAxisPoints} domain={[0, 120]} />
 
-            {getDataLines()}
-            <VictoryScatter data={dataPoints.map((point) => normalizePoint(point, xMargin))} dataComponent={<ImagePoint />} />
+            {getDataLines(dataByTypeNormalized)}
+            <VictoryScatter data={allNormalizedPoints} dataComponent={<ImagePoint />} />
         </VictoryChart>
     );
 };
@@ -162,13 +219,11 @@ const CatPoint = (props: any) => {
 };
 
 const ImagePoint = (props: any) => {
-    console.log(props);
     const { x, y, datum } = props;
-    const pointType: ExamPointTypes = datum.type;
-    console.log(pointType);
+
     return (
         <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg" x={x} y={y}>
-            <image href={pointTypeToImage(pointType)} height="10" width="10" />
+            <image href={pointToImage(datum.type, datum.ear, datum.isNoResponse)} height="10" width="10" />
         </svg>
     );
 };
