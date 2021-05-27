@@ -21,12 +21,10 @@ type Props = {
 };
 
 const PatientMedicalFileDetails = ({ patientId, patientMedicalFileInfo, fetchPatientMedicalFile, setSingleProduct }: Props) => {
-    const [spInfo, setSpInfo] = useState<speechAudiometry | undefined>();
     useEffect(() => {
         setSingleProduct();
         fetchPatientMedicalFile(patientId);
     }, []);
-    console.log(spInfo);
     return (
         <>
             {patientMedicalFileInfo ? (
@@ -50,7 +48,6 @@ const PatientMedicalFileDetails = ({ patientId, patientMedicalFileInfo, fetchPat
                 <>
                     <div>
                         <h1>תיק רפואי לא קיים</h1>
-                        <SpeechAudiometryDetails setSpInfo={setSpInfo} />
                     </div>
                 </>
             )}

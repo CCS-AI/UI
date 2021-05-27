@@ -38,7 +38,7 @@ const InitRows = [
         empty: 'SRT_db',
         Rt: 0,
         MaskRt: 0,
-        Lt: '0',
+        Lt: 0,
         MaskLt: 0,
         SF: ' '
     },
@@ -47,7 +47,7 @@ const InitRows = [
         empty: 'Disc %',
         Rt: 0,
         MaskRt: 0,
-        Lt: '0',
+        Lt: 0,
         MaskLt: 0,
         SF: ' '
     },
@@ -56,7 +56,7 @@ const InitRows = [
         empty: 'dB',
         Rt: 0,
         MaskRt: 0,
-        Lt: '0',
+        Lt: 0,
         MaskLt: 0,
         SF: ' '
     },
@@ -65,7 +65,7 @@ const InitRows = [
         empty: 'MCL',
         Rt: 0,
         MaskRt: 0,
-        Lt: '0',
+        Lt: 0,
         MaskLt: 0,
         SF: ' '
     },
@@ -74,7 +74,7 @@ const InitRows = [
         empty: 'UCL',
         Rt: 0,
         MaskRt: 0,
-        Lt: '0',
+        Lt: 0,
         MaskLt: 0,
         SF: ' '
     },
@@ -83,7 +83,7 @@ const InitRows = [
         empty: 'VDL',
         Rt: 0,
         MaskRt: 0,
-        Lt: '0',
+        Lt: 0,
         MaskLt: 0,
         SF: ' '
     }

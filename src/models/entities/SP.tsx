@@ -11,6 +11,7 @@ export type speechAudiometry = {
     Disc: {
         Rt: number;
         Lt: number;
+        SF: string;
     };
     dB: sp;
     MCL: sp;
@@ -18,5 +19,6 @@ export type speechAudiometry = {
     VDL: {
         Rt: number; // between 0-120
         Lt: number; // between 0-120
+        SF: string;
     };
 };

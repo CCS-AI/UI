@@ -112,8 +112,9 @@ export const SpeechAudiometryTable = ({ rowsSP, columnsSP, pageSize, setSpInfo }
                     SF: updatedRows[0].SF
                 },
                 Disc: {
-                    Rt: updatedRows[1].Rt,
-                    Lt: updatedRows[1].Lt
+                    Rt: updatedRows[1].Rt / 100,
+                    Lt: updatedRows[1].Lt / 100,
+                    SF: updatedRows[1].SF
                 },
                 dB: {
                     Rt: updatedRows[2].Rt,
@@ -138,7 +139,8 @@ export const SpeechAudiometryTable = ({ rowsSP, columnsSP, pageSize, setSpInfo }
                 },
                 VDL: {
                     Rt: updatedRows[5].Rt,
-                    Lt: updatedRows[5].Lt
+                    Lt: updatedRows[5].Lt,
+                    SF: updatedRows[5].SF
                 }
             };
             setSpInfo(_spInfo);

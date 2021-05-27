@@ -4,7 +4,6 @@ import Patient from './controllers/patient/patient';
 import Examiner from './controllers/examiner/examiner';
 import PatientApiMock from './controllers/patient/patientMock';
 import PatientMedicalFile from './controllers/medicalFile/medicalFile';
-import speechAudiometry from './controllers/speechAudio/speechAudio';
 
 class ccsSDK {
     private baseUrl: string;
