@@ -1,4 +1,4 @@
-import { FormControl, FormHelperText, MenuItem, Select } from '@material-ui/core';
+import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@material-ui/core';
 import React from 'react';
 
 export type Option = {
@@ -23,12 +23,15 @@ export type BaseProps = {
     error?: string;
     preventPopoverBug?: boolean;
     multiple?: boolean;
+    variant?: 'filled' | 'outlined' | 'standard';
+    fullWidth?: boolean;
 };
 
-const DropDown = ({ value, options, placeHolder, disabled, onChange, onBlur, hasError, error, multiple }: BaseProps) => {
+const DropDown = ({ value, options, placeHolder, disabled, onChange, onBlur, hasError, error, multiple, variant, fullWidth }: BaseProps) => {
     return (
-        <FormControl error={hasError}>
-            <Select multiple={multiple} disabled={disabled} placeholder={placeHolder} value={value} onChange={onChange} onBlur={onBlur}>
+        <FormControl error={hasError} variant={variant} fullWidth={fullWidth}>
+            <InputLabel>{placeHolder}</InputLabel>
+            <Select multiple={multiple} disabled={disabled} label={placeHolder} value={value} onChange={onChange} onBlur={onBlur}>
                 {options.map((option, index) => {
                     return (
                         <MenuItem key={index} value={option.value}>
@@ -44,6 +47,8 @@ const DropDown = ({ value, options, placeHolder, disabled, onChange, onBlur, has
 DropDown.defaultProps = {
     width: '100%',
     height: 'auto',
-    style: ''
+    style: '',
+    variant: 'outlined',
+    fullWidth: true
 };
 export default DropDown;

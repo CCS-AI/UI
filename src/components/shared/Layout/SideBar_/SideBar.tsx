@@ -23,7 +23,7 @@ export const SIDEBAR_HEADERS = ['מטפלים', 'מטופלים', 'בדיקות'
 
 export const SideBar = ({ setOpenSideBar, open, image, title, permission = Permission.UNDEFINED }: SideBarProps) => {
     return (
-        <ProSidebar width="240px" rtl={true} collapsed={!open} className={'pro-sidebar'} style={{ paddingTop: 64, color: 'white' }} image={image}>
+        <ProSidebar width="240px" rtl={true} collapsed={!open} className={'pro-sidebar'} style={{ color: 'white' }} image={image}>
             <SidebarHeader>
                 <div
                     style={{

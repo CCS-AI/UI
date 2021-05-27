@@ -2,28 +2,21 @@ import React from 'react';
 import { RootState } from '../../../state/store/store';
 import RegisterExaminerForm from './components/RegisterExaminerForm';
 import { connect } from 'react-redux';
-import { Link, match } from 'react-router-dom';
 import { Examiner } from '../../../models/entities/examiner';
 import { authenticationSelectors } from '../../../state/ducks/authentication/selectors';
+import { FlexPageContainer } from '../../shared/styled/styled';
 
 type RegisterExaminerProps = {
     showLoader: boolean;
     error: string;
     registerExaminer: (examiner: Examiner) => void;
-    match: match;
 };
 
-const RegisterExaminerPage = ({ showLoader, error, registerExaminer, match }: RegisterExaminerProps) => {
+const RegisterExaminerPage = ({ showLoader, error, registerExaminer }: RegisterExaminerProps) => {
     return (
-        <div>
-            <RegisterExaminerForm
-                showLoader={showLoader}
-                error={error}
-                registerExaminer={registerExaminer}
-                match={match}
-                /** here send props you need */
-            />
-        </div>
+        <FlexPageContainer>
+            <RegisterExaminerForm showLoader={showLoader} error={error} registerExaminer={registerExaminer} />
+        </FlexPageContainer>
     );
 };
 const mapStateToProps = (state: RootState) => ({

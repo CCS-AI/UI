@@ -4,6 +4,10 @@ import './styles/table.css';
 import { Button, Dialog, DialogContent, DialogTitle } from '@material-ui/core';
 import SearchBar from 'material-ui-search-bar';
 import PatientMedicalFileDetails from '../PatientMedicalFile';
+import { RootState } from '../../../state/store/store';
+import { patientMedicalFileSelector } from '../../../state/ducks/patientMedicalfile/selectors';
+import { PatientMedicalFile } from '../../../models/entities/pmf';
+import { formatHebDate } from '../../../utils/date';
 
 export interface TableWithSearchProps {
     rows: any[];
@@ -41,8 +45,8 @@ export const PatientTableWithSearch = ({ rows, columns, pageSize }: TableWithSea
 
     return (
         <React.Fragment>
-            <Dialog onClose={() => setOpen(false)} open={open} maxWidth="xl">
-                <DialogContent style={{ height: '1200px', width: '900px' }}>
+            <Dialog fullWidth maxWidth="lg" onClose={() => setOpen(false)} open={open}>
+                <DialogContent>
                     <PatientMedicalFileDetails patientId={patientId} />
                 </DialogContent>
             </Dialog>
@@ -78,11 +82,15 @@ const PatientTable = ({ rows, columns, pageSize, setOpen, setPatientId }: Patien
             הצג
         </Button>
     );
-    const HIDDEN_FIELDS = ['id', 'createdAt', 'updatedAt'];
+    const HIDDEN_FIELDS = ['id', 'createdAt', 'updatedAt', 'organizationId'];
+    const DATE_FIELDS = ['createdAt', 'updatedAt', 'birth'];
     const columnsDef: GridColDef[] = columns.map((column) => {
         const basicProp = { field: column, width: 120, headerName: patientsHebFields[column] };
         if (HIDDEN_FIELDS.includes(column)) return { ...basicProp, hide: true };
         else if (column == MEDICAL_FILE) return { ...basicProp, renderCell: BUTTON };
+        else if (DATE_FIELDS.includes(column)) {
+            return { ...basicProp, valueFormatter: (params) => formatHebDate(params.value?.toString()) };
+        }
         return basicProp;
     });
     return <DataGrid rows={rows} columns={columnsDef} pageSize={pageSize} />;

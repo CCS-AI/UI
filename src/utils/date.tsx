@@ -20,3 +20,9 @@ export function getDatesRange(code: string) {
     }
     return range;
 }
+export function formatHebDate(date?: string | Date) {
+    return formatDate('DD/MM/YYYY', date);
+}
+export function formatDate(format: string, date?: string | Date) {
+    return moment(date).isValid() ? moment(date).format(format) : '';
+}
