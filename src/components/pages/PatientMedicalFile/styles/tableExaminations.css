@@ -2,16 +2,16 @@
     z-index: 50;
 }
 
-.ForwardRef-root-1 {
+.ForwardRef-root {
     justify-content: unset !important;
 }
-
 .ForwardRef-searchContainer-7 {
     width: 300px !important;
 }
 
 .MuiDataGrid-main {
     width: 1441px;
+    height: 300px;
 }
 
 .MuiDataGrid-root.MuiDataGrid-root {
@@ -19,7 +19,7 @@
     margin-right: 40px;
 }
 
-.MuiPaper-root.ForwardRef-root-1.MuiPaper-elevation1.MuiPaper-rounded {
+.MuiPaper-root.ForwardRef-root.MuiPaper-elevation1.MuiPaper-rounded {
     width: 360px;
     margin: 40px;
 }

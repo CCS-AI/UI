@@ -13,5 +13,12 @@
         "organizationId": "שם הארגון",
         "personalId": "תעודת זהות",
             "medicalFile": "תיק רפואי"
-    }
+    },
+    "examination":{
+      "id": "מזהה",
+      "pmfId": "מזהה תיק רפואי",
+      "createdAt": "תאריך יצירה",
+      "updatedAt": "תאריך עדכון",
+      "info" : "הבדיקה"
+  }
   }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled } from '../Theme/theme';
-import loaderImg from '../../../static/images/hearing.png';
+import loaderImg from '../../../static/images/ccs-icon.png';
 import { keyframes } from 'styled-components';
 import { CircularProgress } from '@material-ui/core';
 
@@ -10,20 +10,41 @@ type LoaderStyle = {
     showText?: boolean;
     color?: string;
 };
-
-const Loader = ({ width, marginTop, showText, color }: LoaderStyle) => {
+export const BtnLoader = ({ width, marginTop, color }: LoaderStyle) => {
     return (
-        <LoaderWrapper width={width} marginTop={marginTop}>
-            {/* <img src={loaderImg} alt="ccs loader" /> */}
+        <LoaderWrapper width={width} marginTop={marginTop} color={color}>
             <CircularProgress color="inherit" />
-            {showText && <span>Loading...</span>}
         </LoaderWrapper>
     );
 };
+const Loader = ({ width, marginTop, showText, color }: LoaderStyle) => {
+    return (
+        <LoaderWrapper width={width} marginTop={marginTop} color={color}>
+            <PageLoaderWrapper>
+                <img width="50px" src={loaderImg} alt="ccs loader" />
+                <CircularProgress style={{ position: 'absolute' }} size={55} color="inherit" />
+            </PageLoaderWrapper>
+            {showText && <span style={{ color: 'inherit' }}>טוען...</span>}
+        </LoaderWrapper>
+    );
+};
+BtnLoader.defaultProps = {
+    width: '20px',
+    marginTop: '0px',
+    showText: false,
+    color: 'white'
+};
 Loader.defaultProps = {
     showText: true,
-    color: '#1d2e3d'
+    marginTop: '0px',
+    color: '#64bae3ad'
 };
+const PageLoaderWrapper = styled.div`
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
 const Rotate = keyframes`
     to {transform: rotateZ(720deg);}
 `;
@@ -43,8 +64,8 @@ const LoaderWrapper = styled.div<LoaderStyle>`
     }
 
     & img {
-        width: ${(props) => props.width ?? '64px'};
-        animation: ${Rotate} 4s linear infinite;
+        // width: ${(props) => props.width ?? '64px'};
+        // animation: ${Rotate} 4s linear infinite;
     }
 `;
 

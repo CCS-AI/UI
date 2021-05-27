@@ -41,12 +41,12 @@ export class Patient {
     }
 }
 
-enum Gender {
+export enum Gender {
     MALE = 1,
     FEMALE
 }
 
-enum HMO { //KUPAT HOLIM
+export enum HMO { //KUPAT HOLIM
     CLALIT = 1,
     MACABI,
     LEUMIT

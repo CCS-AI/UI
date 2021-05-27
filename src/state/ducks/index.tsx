@@ -3,6 +3,7 @@ import { localization } from './localization/localization';
 import { user } from './user/user';
 import { patient } from './patient/patient';
 import { examiner } from './examiner/examiner';
+import { patientMedicalFile } from './patientMedicalfile/patientMedicalFile';
 
 export interface RootModel {
     authentication: typeof authentication;
@@ -10,6 +11,7 @@ export interface RootModel {
     user: typeof user;
     patient: typeof patient;
     examiner: typeof examiner;
+    patientMedicalFile: typeof patientMedicalFile;
 }
 
 export const models: RootModel = {
@@ -17,5 +19,6 @@ export const models: RootModel = {
     localization,
     user,
     patient,
-    examiner
+    examiner,
+    patientMedicalFile
 };

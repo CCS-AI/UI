@@ -11,6 +11,9 @@ body {
     background-color: #ffffff !important;
     height: 100%;
 }
+button {
+    font-family: 'Heebo', sans-serif !important;
+}
 
 #root {
     height: 100%;
