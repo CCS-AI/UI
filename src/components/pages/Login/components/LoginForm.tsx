@@ -11,6 +11,8 @@ import { Button, Avatar, CssBaseline, Paper, Box, Grid, Typography } from '@mate
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import loginBG from '../../../../static/images/hearingbg.jpeg';
+import ccsLogo from '../../../../static/images/ccs-logo.png';
+import { RoundedButton } from '../../../shared/form/StyledFormShared';
 
 declare global {
     interface Window {
@@ -70,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
     },
     avatar: {
         margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main
+        backgroundColor: theme.palette.primary.dark
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -169,15 +171,17 @@ const LoginForm = ({ showLoader, error, login, match }: LoginPageProps) => {
                                         <LockOutlinedIcon />
                                     </Avatar>
                                     <Typography component="h1" variant="h5">
-                                        התחברות
+                                        כניסה
                                     </Typography>
                                     <Form className={classes.form} noValidate>
                                         <FormTextInput required label="איימיל" name="email" autoFocus />
                                         <FormTextInput required name="password" label="סיסמא" type="password" />
                                         <Checkbox value="remember" color="primary" text="זכור אותי" />
-                                        <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
-                                            {showLoader || generatingCaptcha ? <BtnLoader /> : <span>{'התחברות'}</span>}
-                                        </Button>
+                                        <Footer>
+                                            <RoundedButton type="submit" variant="contained" color="primary" size="large" className={classes.submit}>
+                                                {showLoader || generatingCaptcha ? <BtnLoader /> : <span>{'התחברות'}</span>}
+                                            </RoundedButton>
+                                        </Footer>
                                         <Grid container>
                                             <Grid item xs>
                                                 <Link to={'/forgotpwd'}>שכחת סיסמא?</Link>
@@ -188,8 +192,9 @@ const LoginForm = ({ showLoader, error, login, match }: LoginPageProps) => {
                                         </Grid>
 
                                         <ErrorMsg>{error}</ErrorMsg>
-                                        <Box mt={5}>
+                                        <Box mt={5} style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
                                             <Copyright />
+                                            <img width={200} style={{ marginTop: '25px' }} src={ccsLogo} alt="CCS" />
                                         </Box>
                                     </Form>
                                 </div>
@@ -217,19 +222,9 @@ const ErrorMsg = styled.div`
     color: red;
     text-align: center;
 `;
-const ForgetPWText = styled.span`
-    margin: 12px;
-    color: #008ac9;
-    cursor: pointer;
-`;
 
-const FormContainer = styled.div`
-    width: 50%;
-    min-width: 250px;
+const Footer = styled.div`
+    display: flex;
+    justify-content: center;
 `;
-
-const FieldContainer = styled.div`
-    margin-top: 12px;
-`;
-
 export default LoginForm;

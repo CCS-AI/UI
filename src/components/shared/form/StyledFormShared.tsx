@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from '@material-ui/core';
+import { Button, Card } from '@material-ui/core';
 import { styled } from '../Theme/theme';
 
 export const FormCard = styled(Card)`
@@ -43,4 +43,19 @@ export const TableHeader = styled.div`
     align-items: center;
     border-radius: 5px;
     color: #1c2e3b;
+`;
+export const RoundedButton = styled(Button)`
+    border-radius: 42px !important;
+`;
+export const SuccessContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    flex-direction: column;
+    margin-top: 50px;
+    .material-icons {
+        font-size: 120px;
+        color: #96d1eb;
+    }
 `;

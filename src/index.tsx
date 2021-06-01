@@ -28,7 +28,7 @@ theme = createMuiTheme({
     palette: {
         primary: {
             light: '#bfe3f4',
-            main: '#bfe3f4',
+            main: '#96d1eb',
             dark: '#96d1eb',
             contrastText: '#1a2d3c'
         }

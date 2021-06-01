@@ -25,6 +25,15 @@ const MuiDataGrid = ({ rootStyles, height, ...rest }: Props) => {
         backgroundColor: 'white',
         '&.MuiDataGrid-root': {
             height
+        },
+        '&.MuiDataGrid-root .MuiDataGrid-columnsContainer': {
+            background: '#1a2c3b'
+        },
+        '&.MuiDataGrid-root .MuiDataGrid-columnHeader': {
+            color: 'white'
+        },
+        '&.MuiDataGrid-root .MuiSvgIcon-fontSizeSmall': {
+            color: 'white'
         }
     };
 

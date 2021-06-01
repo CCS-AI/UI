@@ -14,7 +14,7 @@ export interface SideBarProps {
     open: boolean;
     image: string;
     title: string;
-    permission?: Permission;
+    permission?: number;
     setOpenSideBar: React.Dispatch<React.SetStateAction<boolean>>;
 }
 

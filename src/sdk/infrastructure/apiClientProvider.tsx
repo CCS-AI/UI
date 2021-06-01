@@ -75,7 +75,13 @@ export class ApiClient implements IApiClient {
             };
         }
         if (response.url.indexOf('files/download') !== -1 || resBuffer) return response;
-        return await response.json();
+        let res = 'SUCCESS';
+        try {
+            res = await response.json();
+        } catch (e) {
+            //error json
+        }
+        return res;
     }
 
     //utils
