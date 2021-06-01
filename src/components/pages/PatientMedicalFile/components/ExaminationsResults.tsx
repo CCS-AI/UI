@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { DataGrid, GridColDef, GridCellParams, GridRowId } from '@material-ui/data-grid';
-import '../styles/tableExaminations.css';
 import { Button } from '@material-ui/core';
 import { Examination } from '../../../../models/entities/examination';
 import { words } from 'lodash';

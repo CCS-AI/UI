@@ -24,13 +24,20 @@ let theme;
 const plugins = [...jssPreset().plugins];
 document.body.dir = dir || '';
 theme = createMuiTheme({
-    direction: dir
+    direction: dir,
+    palette: {
+        primary: {
+            light: '#bfe3f4',
+            main: '#bfe3f4',
+            dark: '#96d1eb',
+            contrastText: '#1a2d3c'
+        }
+    }
 });
 if (dir === 'rtl') {
     plugins.push(rtl());
 }
 const jss = create({ plugins });
-
 ReactDOM.render(
     <ThemeProvider theme={theme}>
         <StylesProvider jss={jss}>

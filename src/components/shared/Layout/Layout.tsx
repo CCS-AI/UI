@@ -79,7 +79,6 @@ const ContentWrapper = styled.div<{ marginRight?: number }>`
     overflow-y: overlay;
     z-index: 50;
     height: 100%;
-    background: linear-gradient(360deg, rgba(221, 219, 210, 1) 0%, rgba(189, 183, 159, 1) 100%);
+    background: linear-gradient(360deg, rgb(191 227 244) 0%, rgb(105 208 80 / 15%) 100%);
 `;
-
 export default Layout;
