@@ -16,6 +16,7 @@ export const examiner: ModelConfig<examinerStateType> = {
     effects: (dispatch: any) => ({
         async registerExaminer(examiner: Examiner) {
             const newExaminer = await client.examiner().registerExaminer(examiner);
+            return true;
         }
     })
 };

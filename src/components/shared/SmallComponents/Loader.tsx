@@ -13,7 +13,7 @@ type LoaderStyle = {
 export const BtnLoader = ({ width, marginTop, color }: LoaderStyle) => {
     return (
         <LoaderWrapper width={width} marginTop={marginTop} color={color}>
-            <CircularProgress color="inherit" />
+            <CircularProgress size={30} color="inherit" />
         </LoaderWrapper>
     );
 };

@@ -8,20 +8,18 @@ import { FlexPageContainer } from '../../shared/styled/styled';
 
 type RegisterExaminerProps = {
     showLoader: boolean;
-    error: string;
-    registerExaminer: (examiner: Examiner) => void;
+    registerExaminer: (examiner: Examiner) => Promise<boolean>;
 };
 
-const RegisterExaminerPage = ({ showLoader, error, registerExaminer }: RegisterExaminerProps) => {
+const RegisterExaminerPage = ({ showLoader, registerExaminer }: RegisterExaminerProps) => {
     return (
         <FlexPageContainer>
-            <RegisterExaminerForm showLoader={showLoader} error={error} registerExaminer={registerExaminer} />
+            <RegisterExaminerForm showLoader={showLoader} registerExaminer={registerExaminer} />
         </FlexPageContainer>
     );
 };
 const mapStateToProps = (state: RootState) => ({
-    showLoader: state.loading.effects.authentication.loginAsync,
-    error: authenticationSelectors.loginError(state)
+    showLoader: state.loading.effects.examiner.registerExaminer
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
