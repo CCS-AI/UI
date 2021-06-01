@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { DataGrid, GridColDef, GridCellParams, GridRowId } from '@material-ui/data-grid';
-import './styles/table.css';
 import { Button, Dialog, DialogContent, DialogTitle } from '@material-ui/core';
 import SearchBar from 'material-ui-search-bar';
 import PatientMedicalFileDetails from '../PatientMedicalFile';
@@ -8,6 +7,8 @@ import { RootState } from '../../../state/store/store';
 import { patientMedicalFileSelector } from '../../../state/ducks/patientMedicalfile/selectors';
 import { PatientMedicalFile } from '../../../models/entities/pmf';
 import { formatHebDate } from '../../../utils/date';
+import MuiDataGrid from '../../shared/MuiDataGrid/MuiDataGrid';
+import { TableCard, TableHeader } from '../../shared/form/StyledFormShared';
 
 export interface TableWithSearchProps {
     rows: any[];
@@ -44,20 +45,24 @@ export const PatientTableWithSearch = ({ rows, columns, pageSize }: TableWithSea
     };
 
     return (
-        <React.Fragment>
+        <>
+            <TableHeader>צפייה במטופלים</TableHeader>
             <Dialog fullWidth maxWidth="lg" onClose={() => setOpen(false)} open={open}>
                 <DialogContent>
                     <PatientMedicalFileDetails patientId={patientId} />
                 </DialogContent>
             </Dialog>
+            <br />
+            <br />
             <SearchBar
                 value={''}
                 onChange={(searchVal) => requestSearch(searchVal)}
                 onCancelSearch={() => cancelSearch()}
                 placeholder={'חפש לפי שם פרטי/משפחה/תעודת זהות'}
+                style={{ boxShadow: 'none' }}
             />
             <PatientTable rows={filteredRaws} columns={columns} pageSize={pageSize} setOpen={setOpen} setPatientId={setPatientId} />
-        </React.Fragment>
+        </>
     );
 };
 
@@ -73,7 +78,8 @@ const PatientTable = ({ rows, columns, pageSize, setOpen, setPatientId }: Patien
 
     const BUTTON = (params: GridCellParams) => (
         <Button
-            className={'btn'}
+            color="primary"
+            variant="contained"
             onClick={() => {
                 setOpen(true);
                 setPatientId('' + params.row.id);
@@ -93,5 +99,5 @@ const PatientTable = ({ rows, columns, pageSize, setOpen, setPatientId }: Patien
         }
         return basicProp;
     });
-    return <DataGrid rows={rows} columns={columnsDef} pageSize={pageSize} />;
+    return <MuiDataGrid rows={rows} columns={columnsDef} />;
 };

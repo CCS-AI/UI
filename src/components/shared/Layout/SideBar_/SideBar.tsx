@@ -91,6 +91,6 @@ const SidebarOpenButton = styled.div`
     align-items: center;
     justify-content: center;
     position: absolute;
-    bottom: 70px;
+    bottom: 0;
     left: 15px;
 `;
