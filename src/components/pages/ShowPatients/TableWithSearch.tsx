@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-import { DataGrid, GridColDef, GridCellParams, GridRowId } from '@material-ui/data-grid';
-import { Button, Dialog, DialogContent, DialogTitle } from '@material-ui/core';
+import { GridColDef, GridCellParams } from '@material-ui/data-grid';
+import { Button } from '@material-ui/core';
 import SearchBar from 'material-ui-search-bar';
-import PatientMedicalFileDetails from '../PatientMedicalFile';
-import { RootState } from '../../../state/store/store';
-import { patientMedicalFileSelector } from '../../../state/ducks/patientMedicalfile/selectors';
-import { PatientMedicalFile } from '../../../models/entities/pmf';
 import { formatHebDate } from '../../../utils/date';
 import MuiDataGrid from '../../shared/MuiDataGrid/MuiDataGrid';
-import { TableCard, TableHeader } from '../../shared/form/StyledFormShared';
+import { TableHeader } from '../../shared/form/StyledFormShared';
+import { Link } from 'react-router-dom';
+import { PagesRoutes } from '../../../routing/PagesRoutes';
 
 export interface TableWithSearchProps {
     rows: any[];
@@ -20,8 +18,6 @@ const patientsHebFields = require('./../../../models/he.json')['patient'];
 
 export const PatientTableWithSearch = ({ rows, columns, pageSize }: TableWithSearchProps) => {
     const [filteredRaws, setFilterRaws] = useState(rows);
-    const [open, setOpen] = useState(false);
-    const [patientId, setPatientId] = useState('');
 
     const requestSearch = (searchValue: string) => {
         const filteredRows = rows.filter((row) => {
@@ -47,11 +43,6 @@ export const PatientTableWithSearch = ({ rows, columns, pageSize }: TableWithSea
     return (
         <>
             <TableHeader>צפייה במטופלים</TableHeader>
-            <Dialog fullWidth maxWidth="lg" onClose={() => setOpen(false)} open={open}>
-                <DialogContent>
-                    <PatientMedicalFileDetails patientId={patientId} />
-                </DialogContent>
-            </Dialog>
             <br />
             <br />
             <SearchBar
@@ -61,32 +52,23 @@ export const PatientTableWithSearch = ({ rows, columns, pageSize }: TableWithSea
                 placeholder={'חפש לפי שם פרטי/משפחה/תעודת זהות'}
                 style={{ boxShadow: 'none' }}
             />
-            <PatientTable rows={filteredRaws} columns={columns} pageSize={pageSize} setOpen={setOpen} setPatientId={setPatientId} />
+            <PatientTable rows={filteredRaws} columns={columns} pageSize={pageSize} />
         </>
     );
 };
 
-type PatientTableProps = TableWithSearchProps & {
-    patientId?: string;
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    setPatientId: React.Dispatch<React.SetStateAction<string>>;
-};
-const PatientTable = ({ rows, columns, pageSize, setOpen, setPatientId }: PatientTableProps) => {
+type PatientTableProps = TableWithSearchProps & {};
+const PatientTable = ({ rows, columns, pageSize }: PatientTableProps) => {
     // add show patient's medical file column
     const MEDICAL_FILE = 'medicalFile';
     if (!columns.includes(MEDICAL_FILE)) columns.push(MEDICAL_FILE);
 
     const BUTTON = (params: GridCellParams) => (
-        <Button
-            color="primary"
-            variant="contained"
-            onClick={() => {
-                setOpen(true);
-                setPatientId('' + params.row.id);
-            }}
-        >
-            הצג
-        </Button>
+        <Link style={{ textDecoration: 'none' }} to={{ pathname: `${PagesRoutes.Patients}/${params.row.id}` }}>
+            <Button color="secondary" variant="contained">
+                הצג
+            </Button>
+        </Link>
     );
     const HIDDEN_FIELDS = ['id', 'createdAt', 'updatedAt', 'organizationId'];
     const DATE_FIELDS = ['createdAt', 'updatedAt', 'birth'];

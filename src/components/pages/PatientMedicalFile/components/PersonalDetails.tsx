@@ -1,51 +1,128 @@
-import { Card } from '@material-ui/core';
 import React from 'react';
 import { Gender, HMO, Patient } from '../../../../models/entities/patient';
 import { formatHebDate } from '../../../../utils/date';
+import { styled } from '../../../shared/Theme/theme';
+import Avatar, { Props as AvatarProps } from 'avataaars';
+import MaterialAvatar from '@material-ui/core/Avatar';
 
 type Props = {
     patient: Patient;
 };
 
 const PersonalDetails = ({ patient }: Props) => {
+    const detailNullMessage = ' *נתון לא קיים במערכת*';
+    const gender = Gender[patient.gender];
+    const avatarCommonProps: AvatarProps = {
+        style: { width: '100px', height: '100px' },
+        avatarStyle: 'Circle',
+        clotheType: 'GraphicShirt',
+        clotheColor: 'Blue02',
+        graphicType: 'Bear'
+    } as AvatarProps;
     return (
         <>
             {patient ? (
-                <Card style={{ border: 'none', boxShadow: 'none' }}>
-                    <h3>פרטים אישיים</h3>
-                    <div>
-                        <h5>שם מלא: {' ' + patient.firstName + ' ' + patient.lastName}</h5>
-                    </div>
-                    <div>
-                        <h5>תעודת זהות: {patient.personalId ? ' ' + patient.personalId : ' *נתון לא קיים במערכת*'}</h5>
-                    </div>
-                    <div>
-                        <h5>תאריך לידה: {patient.birth ? ' ' + formatHebDate(patient.birth) : ' *נתון לא קיים במערכת*'}</h5>
-                    </div>
-                    <div>
-                        <h5>מין: {Gender[patient.gender] ? ' ' + Gender[patient.gender] : ' *נתון לא קיים במערכת*'}</h5>
-                    </div>
-                    <div>
-                        <h5>כתובת: {patient.address ? ' ' + patient.address : ' *נתון לא קיים במערכת*'}</h5>
-                    </div>
-                    <div>
-                        <h5>מספר טלפון 1: {patient.phone1 ? ' ' + patient.phone1 : ' *נתון לא קיים במערכת*'}</h5>
-                    </div>
-                    <div>
-                        <h5>מספר טלפון 2: {patient.phone2 ? ' ' + patient.phone2 : ' *נתון לא קיים במערכת*'}</h5>
-                    </div>
-                    <div>
-                        <h5>מייל: {patient.email ? ' ' + patient.email : ' *נתון לא קיים במערכת*'}</h5>
-                    </div>
-                    <div>
-                        <h5>קופת חולים: {HMO[patient.hmo] ? ' ' + HMO[patient.hmo] : ' *נתון לא קיים במערכת*'}</h5>
-                    </div>
-                </Card>
+                <PersonalCard>
+                    <Header>פרטים אישיים:</Header>
+                    <AvatarContainer>
+                        {!gender ? (
+                            <MaterialAvatar style={{ width: '80px', height: '80px' }} />
+                        ) : gender === 'MALE' ? (
+                            <Avatar
+                                {...avatarCommonProps}
+                                topType="ShortHairShortRound"
+                                hairColor="Platinum"
+                                facialHairType="BeardLight"
+                                facialHairColor="BlondeGolden"
+                                eyebrowType="DefaultNatural"
+                                mouthType="Smile"
+                                skinColor="Yellow"
+                            />
+                        ) : (
+                            <Avatar {...avatarCommonProps} />
+                        )}
+                    </AvatarContainer>
+
+                    <Container>
+                        <BoxContainer>
+                            <Title>שם מלא:</Title>
+                            <Value>{' ' + patient.firstName + ' ' + patient.lastName}</Value>
+                        </BoxContainer>
+                        <BoxContainer>
+                            <Title>תעודת זהות:</Title>
+                            <Value>{patient.personalId ? ' ' + patient.personalId : detailNullMessage}</Value>
+                        </BoxContainer>
+                        <BoxContainer>
+                            <Title>תאריך לידה:</Title>
+                            <Value>{patient.birth ? ' ' + formatHebDate(patient.birth) : detailNullMessage}</Value>
+                        </BoxContainer>
+                        <BoxContainer>
+                            <Title>מין:</Title>
+                            <Value>{Gender[patient.gender] ? ' ' + Gender[patient.gender] : detailNullMessage}</Value>
+                        </BoxContainer>
+                        <BoxContainer>
+                            <Title>כתובת:</Title>
+                            <Value>{patient.address ? ' ' + patient.address : detailNullMessage}</Value>
+                        </BoxContainer>
+                        <BoxContainer>
+                            <Title>מספר טלפון 1:</Title>
+                            <Value>{patient.phone1 ? ' ' + patient.phone1 : detailNullMessage}</Value>
+                        </BoxContainer>
+                        <BoxContainer>
+                            <Title>מספר טלפון 2:</Title>
+                            <Value>{patient.phone2 ? ' ' + patient.phone2 : detailNullMessage}</Value>
+                        </BoxContainer>
+                        <BoxContainer>
+                            <Title>מייל:</Title>
+                            <Value>{patient.email ? ' ' + patient.email : detailNullMessage}</Value>
+                        </BoxContainer>
+                        <BoxContainer>
+                            <Title>קופת חולים:</Title>
+                            <Value>{HMO[patient.hmo] ? ' ' + HMO[patient.hmo] : detailNullMessage}</Value>
+                        </BoxContainer>
+                    </Container>
+                </PersonalCard>
             ) : (
-                <h3>אין נתונים</h3>
+                <div></div>
             )}
         </>
     );
 };
 
+const PersonalCard = styled.div`
+    border: 1px solid #f3f3f3;
+    padding: 20px 10px;
+    border-radius: 5px;
+    position: relative;
+`;
+const AvatarContainer = styled.div`
+    position: absolute;
+    left: -40px;
+    top: -45px;
+    background: white;
+`;
+const Container = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    > * {
+        width: 200px;
+        max-width: 200px;
+        margin-left: 20px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+`;
+const Header = styled.div`
+    font-size: 21px;
+    color: #1d2e3c;
+    font-weight: bold;
+`;
+const BoxContainer = styled.div``;
+const Title = styled.div`
+    font-size: 18px;
+`;
+const Value = styled.div`
+    font-size: 14px;
+    color: #b7b7b7;
+`;
 export default PersonalDetails;

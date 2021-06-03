@@ -9,6 +9,7 @@ type LoaderStyle = {
     marginTop?: string;
     showText?: boolean;
     color?: string;
+    center?: boolean;
 };
 export const BtnLoader = ({ width, marginTop, color }: LoaderStyle) => {
     return (
@@ -17,9 +18,9 @@ export const BtnLoader = ({ width, marginTop, color }: LoaderStyle) => {
         </LoaderWrapper>
     );
 };
-const Loader = ({ width, marginTop, showText, color }: LoaderStyle) => {
+const Loader = ({ width, marginTop, showText, color, center }: LoaderStyle) => {
     return (
-        <LoaderWrapper width={width} marginTop={marginTop} color={color}>
+        <LoaderWrapper width={width} marginTop={marginTop} color={color} center={center}>
             <PageLoaderWrapper>
                 <img width="50px" src={loaderImg} alt="ccs loader" />
                 <CircularProgress style={{ position: 'absolute' }} size={55} color="inherit" />
@@ -57,6 +58,7 @@ const LoaderWrapper = styled.div<LoaderStyle>`
     justify-content: center;
     align-items: center;
     color: ${(props) => props.color};
+    ${(props) => (props.center ? 'height:100%;' : '')}
     & span {
         font-size: 18px;
         margin-top: 16px;
