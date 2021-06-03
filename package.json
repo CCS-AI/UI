@@ -19,6 +19,7 @@
         "@types/node-fetch": "^2.5.7",
         "@types/recharts": "^1.8.15",
         "@types/yup": "^0.29.5",
+        "avataaars": "^1.2.2",
         "draft-convert": "^2.1.10",
         "draft-js": "^0.11.7",
         "draft-js-export-html": "^1.4.1",
