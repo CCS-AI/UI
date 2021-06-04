@@ -6,5 +6,6 @@ export const PagesRoutes = {
     Patients: '/patients',
     PatientMedicalFile: '/patients/medicalFile',
     RegisterExaminer: '/examiner/register',
-    CreateExamination: '/examination/create'
+    CreateExamination: '/examination/create',
+    QuestionnaireTest: '/questionnaire'
 };
