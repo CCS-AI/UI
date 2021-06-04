@@ -9,7 +9,7 @@ import { authenticationSelectors } from '../state/ducks/authentication/selectors
 import Loader from '../components/shared/SmallComponents/Loader';
 import UserGuard from '../components/shared/guards/UserGuard';
 
-const AuthRoute = ({ token, refreshToken, refreshTokenError, component, printMode, setPrintMode, featureFlags, ...rest }: any) => {
+const AuthRoute = ({ token, refreshToken, refreshTokenError, component, fetchUserInfoLoader, ...rest }: any) => {
     let loginRefer = PagesRoutes.Login;
     if (rest.location.pathname !== '/') {
         loginRefer += `?refer=${encodeURIComponent(rest.location.pathname + rest.location.search)}`;
@@ -28,9 +28,13 @@ const AuthRoute = ({ token, refreshToken, refreshTokenError, component, printMod
                         Authentication.SetToken(token);
                         return (
                             <Layout>
-                                <UserGuard>
-                                    <Component {...props} />
-                                </UserGuard>
+                                {fetchUserInfoLoader ? (
+                                    <Loader center />
+                                ) : (
+                                    <UserGuard>
+                                        <Component {...props} />
+                                    </UserGuard>
+                                )}
                             </Layout>
                         );
                     } else return null;
@@ -42,7 +46,8 @@ const AuthRoute = ({ token, refreshToken, refreshTokenError, component, printMod
 
 const mapStateToProps = (state: RootState) => ({
     token: authenticationSelectors.token(state),
-    refreshTokenError: !!state.error.effects.authentication.refreshToken
+    refreshTokenError: !!state.error.effects.authentication.refreshToken,
+    fetchUserInfoLoader: state.loading.effects.user.fetchUserInfo
 });
 const mapDispatchToProps = (dispatch: any) => ({
     refreshToken: dispatch.authentication.refreshToken

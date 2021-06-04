@@ -10,15 +10,17 @@ import QuestionnaireApi from '../../../sdk/controllers/questionnaire/questionnai
 import { RootState } from '../../../state/store/store';
 import { FormDropDown } from '../../shared/inputs/form';
 import { DropDown } from '../../shared/inputs/base';
+import CreateQuestnnaireForm from './components/QuestionnaireForm';
 
 export type ShowQuestionnairesProps = {
+    showLoader: boolean;
     //  questionnaires: Questionnaire[] | undefined;
     //fetchQuestionnaires: () => Promise<Questionnaire[]>;
     // getQuestionnaire: (questionnaireId: string) => Promise<Questionnaire>;
     //showLoader: boolean;
 };
 
-const ShowQuestionnaire = ({}: ShowQuestionnairesProps) => {
+const ShowQuestionnaire = ({ showLoader }: ShowQuestionnairesProps) => {
     //const [questionnaires, setQuestionnaires] = useState<Questionnaire[] | undefined>();
     //const [questionnaire, setQuestionnaire] = useState<Questionnaire | undefined>();
     const [type, setType] = useState('');
@@ -42,12 +44,14 @@ const ShowQuestionnaire = ({}: ShowQuestionnairesProps) => {
                         setType(target.value);
                     }}
                 />
-                <h3>שאלון האנמנזה</h3>
+                <CreateQuestnnaireForm showLoader={showLoader} />
             </FlexPageContainer>
         </div>
     );
 };
-const mapStateToProps = (state: RootState) => ({});
+const mapStateToProps = (state: RootState) => ({
+    showLoader: state.loading.effects.patient.createPatient
+});
 
 const mapDispatchToProps = (dispatch: any) => ({});
 

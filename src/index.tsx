@@ -31,6 +31,12 @@ theme = createMuiTheme({
             main: '#96d1eb',
             dark: '#96d1eb',
             contrastText: '#1a2d3c'
+        },
+        secondary: {
+            light: '#1d394d',
+            main: '#1b2d3a',
+            dark: '#1b2d3a',
+            contrastText: '#fff'
         }
     }
 });
