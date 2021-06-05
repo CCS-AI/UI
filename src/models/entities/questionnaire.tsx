@@ -1,4 +1,4 @@
-export type questionR = {
+export type QuestionR = {
     id: string;
     name: string;
     answers: string[];
@@ -23,4 +23,4 @@ export type Questionnaire = {
     questions: Array<Question>;
 };
 
-export type questionnaireResult = Array<questionR>;
+export type QuestionnaireResult = Array<QuestionR>;

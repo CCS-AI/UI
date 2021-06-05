@@ -1,66 +1,88 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Form, FieldArray } from 'formik';
 import { BtnLoader } from '../../../shared/SmallComponents/Loader';
-import { FormCheckbox, FormDropDown, FormTextArea, FormTextInput } from '../../../shared/inputs/form';
 import { styled } from '../../../shared/Theme/theme';
-import { Button, Checkbox, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, Typography } from '@material-ui/core';
-import { createPatientSchema } from '../../../../validationSchemas/createPatientForm';
-import { Patient } from '../../../../models/entities/patient';
+import { Button, Checkbox, FormControl, FormControlLabel, FormLabel, Grid, Input, Radio, RadioGroup, Typography } from '@material-ui/core';
 import { FormCard, FormHeader, Flex, RoundedButton, SuccessContainer } from '../../../shared/form/StyledFormShared';
 import SaveIcon from '@material-ui/icons/Save';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import { questionR, Question, Questionnaire } from '../../../../models/entities/questionnaire';
+import { QuestionR, Question, Questionnaire, Answer, QuestionnaireResult } from '../../../../models/entities/questionnaire';
+import { isEqual, result } from 'lodash';
 
 type CreateQuestionnaireProps = {
     showLoader: boolean;
-
-    // createPatient: (patient: Patient) => Promise<boolean>;
-    // getQuestionnaire: (questionnaireId: string) => Promise<Questionnaire>;};
-    //uestionnaire: Questionnaire;
+    questionnaire: Questionnaire;
+    setQuestionnaireResInfo: React.Dispatch<React.SetStateAction<QuestionnaireResult | undefined>>;
 };
 
-const emptyQuestionRes = { id: '', name: '', answers: [] } as questionR;
-const emptyQ = { id: '', name: '', questionnaireId: '', answers: [] } as Question;
-const initQ = {
-    id: '123',
-    name: 'האם חלית בקורונה',
-    questionnaireId: 'sdfds',
-    answers: [
-        { id: '2313', name: 'כן', questionId: '123' },
-        { id: '2314', name: 'לא', questionId: '123' },
-        { id: '2315', name: 'אולי', questionId: '123' }
-    ]
+const emptyQuestionnaire = { id: '', name: '', questions: [] } as Questionnaire;
+const emptyQquestionnaireRes = [] as QuestionnaireResult;
+
+export const initRes = (copyQuestionnaire: Questionnaire) => {
+    let initResQ = emptyQuestionnaire;
+    initResQ.id = copyQuestionnaire.id;
+    initResQ.name = copyQuestionnaire.name;
+    copyQuestionnaire.questions.forEach((q) => {
+        let tmpQ = {
+            id: q.id,
+            name: q.name,
+            questionnaireId: q.questionnaireId,
+            answers: []
+        } as Question;
+        initResQ.questions.push(tmpQ);
+    });
+    return initResQ;
 };
 
-const CreateQuestnnaireForm = ({ showLoader }: CreateQuestionnaireProps) => {
+export const convertToQuestnnairResult = (resultQ: Questionnaire) => {
+    let qr = emptyQquestionnaireRes;
+    resultQ.questions.forEach((q) => {
+        let ansString: string[] = [];
+        q.answers.forEach((ans) => {
+            ansString.push(ans.name);
+        });
+        let tmpQR = {
+            id: q.id,
+            name: q.name,
+            answers: ansString
+        };
+        qr.push(tmpQR);
+    });
+    return qr;
+};
+
+const CreateQuestnnaireForm = ({ showLoader, questionnaire, setQuestionnaireResInfo }: CreateQuestionnaireProps) => {
     const [showSuccess, setShowSuccess] = useState(false);
-    const initialValues = { questions: [initQ] };
-    const [resultValues, setResultValues] = useState(initialValues);
-    // const initRes () =>{
-    //     resultValues.forEach((q) => {
-    // )}
-    // };
+    const initialValues = { questions: questionnaire.questions };
+    const [resultValues, setRes] = useState(emptyQuestionnaire);
 
+    useEffect(() => {
+        setRes(initRes(questionnaire));
+    }, []);
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>, resultValues: Questionnaire, ans: Answer, indexQ: number) => {
+        if (event.target.checked == false) {
+            let filtered = resultValues.questions[indexQ].answers.filter(function (value, index, arr) {
+                return !isEqual(value, ans);
+            });
+            resultValues.questions[indexQ].answers = filtered;
+        } else {
+            let newAnswer = {
+                id: ans.id,
+                name: ans.name,
+                questionId: ans.questionId
+            } as Answer;
+            resultValues.questions[indexQ].answers.push(newAnswer);
+        }
+    };
     return (
         <>
             <Formik
                 initialValues={initialValues}
                 onSubmit={(values) => {
-                    console.log('my values', resultValues);
-                    // createPatient({
-                    //     firstName: values.firstName,
-                    //     lastName: values.lastName,
-                    //     gender: values.gender || 1,
-                    //     birth: values.birth,
-                    //     address: values.address,
-                    //     phone1: values.phone2,
-                    //     phone2: values.phone1,
-                    //     email: values.email.trim(),
-                    //     hmo: values.hmo || 1,
-                    //     personalId: values.personalId
-                    // } as Patient).then((value) => {
-                    //     if (value) setShowSuccess(true);
-                    // });
+                    console.log('valueRes ', resultValues);
+                    let convertedQ = convertToQuestnnairResult(resultValues);
+                    setQuestionnaireResInfo(convertedQ);
+                    setShowSuccess(true);
                 }}
             >
                 {(formik) => {
@@ -77,29 +99,44 @@ const CreateQuestnnaireForm = ({ showLoader }: CreateQuestionnaireProps) => {
                                 <Form>
                                     {values.questions.map((q, indexQ) => {
                                         return (
-                                            <FormControl component="fieldset">
-                                                <FormLabel component="legend">{q.name}</FormLabel>
-                                                <RadioGroup aria-label="ans" name="ans">
-                                                    {q.answers.map((ans, indexA) => {
-                                                        return (
-                                                            <FormControlLabel
-                                                                control={
-                                                                    <Checkbox
-                                                                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                                                            resultValues.questions[indexQ].answers = [
-                                                                                resultValues.questions[indexQ].answers[indexA]
-                                                                            ];
-                                                                        }}
-                                                                        name={ans.id}
-                                                                    />
-                                                                }
-                                                                label={ans.name}
-                                                            />
-                                                        );
-                                                        // return <FormControlLabel value={ans.id} control={<Radio />} label={ans.name} />
-                                                    })}
-                                                </RadioGroup>
-                                            </FormControl>
+                                            <div>
+                                                <FormControl>
+                                                    <FormLabel>{q.name}</FormLabel>
+                                                    <RadioGroup aria-label="ans" name="ans">
+                                                        {q.answers.map((ans, indexA) => {
+                                                            return (
+                                                                <FormControlLabel
+                                                                    control={
+                                                                        <Checkbox
+                                                                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                                                                handleChange(event, resultValues, ans, indexQ);
+                                                                                // if (event.target.checked == false) {
+                                                                                //     let filtered = resultValues.questions[indexQ].answers.filter(
+                                                                                //         function (value, index, arr) {
+                                                                                //             return !isEqual(value, ans);
+                                                                                //         }
+                                                                                //     );
+                                                                                //     resultValues.questions[indexQ].answers = filtered;
+                                                                                // } else {
+                                                                                //     let newAnswer = {
+                                                                                //         id: ans.id,
+                                                                                //         name: ans.name,
+                                                                                //         questionId: ans.questionId
+                                                                                //     } as Answer;
+                                                                                //     resultValues.questions[indexQ].answers.push(newAnswer);
+                                                                                // }
+                                                                            }}
+                                                                            name={ans.id}
+                                                                        />
+                                                                    }
+                                                                    value={ans.name}
+                                                                    label={ans.name}
+                                                                />
+                                                            );
+                                                        })}
+                                                    </RadioGroup>
+                                                </FormControl>
+                                            </div>
                                         );
                                     })}
                                     <Footer>
