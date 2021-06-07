@@ -12,10 +12,12 @@ type CreateQuestionnaireProps = {
     showLoader: boolean;
     questionnaire: Questionnaire;
     setQuestionnaireResInfo: React.Dispatch<React.SetStateAction<QuestionnaireResult | undefined>>;
+    setdisabledDropDown: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const emptyQuestionnaire = { id: '', name: '', questions: [] } as Questionnaire;
 const emptyQquestionnaireRes = [] as QuestionnaireResult;
+const emptyQarray: Question[] = [];
 
 export const initRes = (copyQuestionnaire: Questionnaire) => {
     let initResQ = emptyQuestionnaire;
@@ -50,15 +52,13 @@ export const convertToQuestnnairResult = (resultQ: Questionnaire) => {
     return qr;
 };
 
-const CreateQuestnnaireForm = ({ showLoader, questionnaire, setQuestionnaireResInfo }: CreateQuestionnaireProps) => {
+const CreateQuestnnaireForm = ({ showLoader, questionnaire, setQuestionnaireResInfo, setdisabledDropDown }: CreateQuestionnaireProps) => {
     const [showSuccess, setShowSuccess] = useState(false);
-    const initialValues = { questions: questionnaire.questions };
-    const [resultValues, setRes] = useState(emptyQuestionnaire);
+    const [resultValues, setRes] = useState<Questionnaire | undefined>();
 
     useEffect(() => {
         setRes(initRes(questionnaire));
     }, []);
-
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>, resultValues: Questionnaire, ans: Answer, indexQ: number) => {
         if (event.target.checked == false) {
             let filtered = resultValues.questions[indexQ].answers.filter(function (value, index, arr) {
@@ -77,12 +77,14 @@ const CreateQuestnnaireForm = ({ showLoader, questionnaire, setQuestionnaireResI
     return (
         <>
             <Formik
-                initialValues={initialValues}
+                initialValues={{ questions: questionnaire.questions }}
                 onSubmit={(values) => {
-                    console.log('valueRes ', resultValues);
-                    let convertedQ = convertToQuestnnairResult(resultValues);
-                    setQuestionnaireResInfo(convertedQ);
-                    setShowSuccess(true);
+                    if (resultValues) {
+                        let convertedQ = convertToQuestnnairResult(resultValues);
+                        setQuestionnaireResInfo(convertedQ);
+                        setShowSuccess(true);
+                        setdisabledDropDown(true);
+                    }
                 }}
             >
                 {(formik) => {
@@ -109,22 +111,9 @@ const CreateQuestnnaireForm = ({ showLoader, questionnaire, setQuestionnaireResI
                                                                     control={
                                                                         <Checkbox
                                                                             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                                                                handleChange(event, resultValues, ans, indexQ);
-                                                                                // if (event.target.checked == false) {
-                                                                                //     let filtered = resultValues.questions[indexQ].answers.filter(
-                                                                                //         function (value, index, arr) {
-                                                                                //             return !isEqual(value, ans);
-                                                                                //         }
-                                                                                //     );
-                                                                                //     resultValues.questions[indexQ].answers = filtered;
-                                                                                // } else {
-                                                                                //     let newAnswer = {
-                                                                                //         id: ans.id,
-                                                                                //         name: ans.name,
-                                                                                //         questionId: ans.questionId
-                                                                                //     } as Answer;
-                                                                                //     resultValues.questions[indexQ].answers.push(newAnswer);
-                                                                                // }
+                                                                                if (resultValues) {
+                                                                                    handleChange(event, resultValues, ans, indexQ);
+                                                                                }
                                                                             }}
                                                                             name={ans.id}
                                                                         />

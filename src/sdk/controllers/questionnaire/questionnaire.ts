@@ -1,3 +1,5 @@
+import { init } from '@rematch/core';
+import { questionnaire } from './../../../state/ducks/questionnaire/questionnaire';
 import BaseController from '..';
 import { Questionnaire } from '../../../models/entities/questionnaire';
 import IQuestionnaire from './IQuestionnaire';

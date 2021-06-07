@@ -7,81 +7,79 @@ import { styled } from '../../shared/Theme/theme';
 import { Flex, TableCard } from '../../shared/form/StyledFormShared';
 import { Questionnaire, QuestionnaireResult, QuestionR } from '../../../models/entities/questionnaire';
 import QuestionnaireApi from '../../../sdk/controllers/questionnaire/questionnaire';
-import { RootState } from '../../../state/store/store';
+import { dispatch, RootState } from '../../../state/store/store';
 import { FormDropDown } from '../../shared/inputs/form';
 import { DropDown } from '../../shared/inputs/base';
 import CreateQuestnnaireForm from './components/QuestionnaireForm';
+import { questionnaire } from '../../../state/ducks/questionnaire/questionnaire';
+import { values } from 'lodash';
+import { questionnaireSelector } from '../../../state/ducks/questionnaire/selectors';
+import { Button } from '@material-ui/core';
 
+const emptyQuestionnaires: Questionnaire[] = [];
 export type ShowQuestionnairesProps = {
     showLoader: boolean;
-    questionnaires: Questionnaire[] | undefined;
-    //setQuestionnaireResInfo:React.Dispatch<React.SetStateAction<questionR | undefined>>
-    //fetchQuestionnaires: () => Promise<Questionnaire[]>;
-    // getQuestionnaire: (questionnaireId: string) => Promise<Questionnaire>;
-    //showLoader: boolean;
+    questionnaireInfo?: Questionnaire;
+    fetchAllQuestionnaires: () => Promise<Questionnaire[]>;
+    getQuestionnaireById: (questionnaireId: string) => Promise<Questionnaire>;
 };
 
-export const initQ = {
-    id: 'Q123',
-    name: 'אנמנזההה',
-    questions: [
-        {
-            id: '123',
-            name: 'האם חלית בקורונה',
-            questionnaireId: 'Q123',
-            answers: [
-                { id: '2313', name: 'כן', questionId: '123' },
-                { id: '2314', name: 'לא', questionId: '123' },
-                { id: '2315', name: 'אולי', questionId: '123' }
-            ]
-        },
-        {
-            id: '124',
-            name: '2האם חלית בקורונה',
-            questionnaireId: 'Q123',
-            answers: [
-                { id: '2316', name: 'כן1', questionId: '124' },
-                { id: '2317', name: '1לא', questionId: '124' },
-                { id: '2318', name: '1אולי', questionId: '124' }
-            ]
-        }
-    ]
-} as Questionnaire;
+const emptyQuestionnaire = { id: '', name: '', questions: [] } as Questionnaire;
 
-const ShowQuestionnaire = ({ showLoader }: ShowQuestionnairesProps) => {
-    //const [questionnaires, setQuestionnaires] = useState<Questionnaire[] | undefined>();
-    //const [questionnaire, setQuestionnaire] = useState<Questionnaire | undefined>();
+export const ShowQuestionnaire = ({ showLoader, fetchAllQuestionnaires, getQuestionnaireById, questionnaireInfo }: ShowQuestionnairesProps) => {
+    const [questionnaires, setQuestionnaires] = useState<Questionnaire[]>();
+    const [questionnaire, setQuestionnaire] = useState<Questionnaire | undefined>();
     const [type, setType] = useState('');
     const [questionnaireResInfo, setQuestionnaireResInfo] = useState<QuestionnaireResult | undefined>();
-    //setQuestionnaires(QuestionnaireApi.fetchAllQuestionnaires())
-    // useEffect(() => {
-    //     fetchQuestionnaires();
-    // }, [fetchQuestionnaires]);
-
-    console.log('qr ', questionnaireResInfo);
+    const [disabledDropDown, setdisabledDropDown] = useState(false);
+    useEffect(() => {
+        fetchAllQuestionnaires().then((res) => {
+            setQuestionnaires(res);
+        });
+    }, []);
     return (
         <div>
             <FlexPageContainer>
                 <DropDown
                     options={[
-                        { value: 'id1', text: 'ABR אנמנזת תינוקות' },
-                        { value: 'id2', text: 'אנמנזת ילדים' },
+                        { value: 'Q123', text: 'ABR אנמנזת תינוקות' },
+                        { value: 'Q124', text: 'אנמנזת ילדים' },
                         { value: 'id3', text: 'אנמנזת מבוגרים' }
                     ]}
                     placeHolder="בחירת סוג האנמנזה"
-                    onChange={({ target }: React.ChangeEvent<{ value: any }>, child: React.ReactNode) => {
+                    onChange={async ({ target }: React.ChangeEvent<{ value: any }>, child: React.ReactNode) => {
                         setType(target.value);
+                        getQuestionnaireById(target.value).then((r) => {
+                            setQuestionnaire(r);
+                        });
                     }}
+                    disabled={disabledDropDown}
                 />
-                <CreateQuestnnaireForm showLoader={showLoader} questionnaire={initQ} setQuestionnaireResInfo={setQuestionnaireResInfo} />
             </FlexPageContainer>
+
+            {questionnaireInfo && questionnaireInfo.questions && questionnaireInfo.questions.length ? (
+                <Flex>
+                    <CreateQuestnnaireForm
+                        showLoader={showLoader}
+                        questionnaire={questionnaireInfo}
+                        setQuestionnaireResInfo={setQuestionnaireResInfo}
+                        setdisabledDropDown={setdisabledDropDown}
+                    />
+                </Flex>
+            ) : (
+                <div>No questionnaire</div>
+            )}
         </div>
     );
 };
 const mapStateToProps = (state: RootState) => ({
+    questionnaireInfo: questionnaireSelector.questionnaireInfo(state),
     showLoader: state.loading.effects.patient.createPatient
 });
 
-const mapDispatchToProps = (dispatch: any) => ({});
+const mapDispatchToProps = (dispatch: any) => ({
+    fetchAllQuestionnaires: () => dispatch.questionnaire.fetchAllQuestionnaires(),
+    getQuestionnaireById: (questionnaireId: string) => dispatch.questionnaire.getQuestionnaireById(questionnaireId)
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ShowQuestionnaire);
