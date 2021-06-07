@@ -21,18 +21,26 @@ export type ShowQuestionnairesProps = {
     showLoader: boolean;
     questionnaireInfo?: Questionnaire;
     fetchAllQuestionnaires: () => Promise<Questionnaire[]>;
+    setSingleQuestionnaire: () => void;
     getQuestionnaireById: (questionnaireId: string) => Promise<Questionnaire>;
 };
 
 const emptyQuestionnaire = { id: '', name: '', questions: [] } as Questionnaire;
 
-export const ShowQuestionnaire = ({ showLoader, fetchAllQuestionnaires, getQuestionnaireById, questionnaireInfo }: ShowQuestionnairesProps) => {
+export const ShowQuestionnaire = ({
+    showLoader,
+    fetchAllQuestionnaires,
+    getQuestionnaireById,
+    questionnaireInfo,
+    setSingleQuestionnaire
+}: ShowQuestionnairesProps) => {
     const [questionnaires, setQuestionnaires] = useState<Questionnaire[]>();
     const [questionnaire, setQuestionnaire] = useState<Questionnaire | undefined>();
     const [type, setType] = useState('');
     const [questionnaireResInfo, setQuestionnaireResInfo] = useState<QuestionnaireResult | undefined>();
     const [disabledDropDown, setdisabledDropDown] = useState(false);
     useEffect(() => {
+        setSingleQuestionnaire();
         fetchAllQuestionnaires().then((res) => {
             setQuestionnaires(res);
         });
@@ -79,7 +87,8 @@ const mapStateToProps = (state: RootState) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
     fetchAllQuestionnaires: () => dispatch.questionnaire.fetchAllQuestionnaires(),
-    getQuestionnaireById: (questionnaireId: string) => dispatch.questionnaire.getQuestionnaireById(questionnaireId)
+    getQuestionnaireById: (questionnaireId: string) => dispatch.questionnaire.getQuestionnaireById(questionnaireId),
+    setSingleQuestionnaire: () => dispatch.questionnaire.setSingleQuestionnaire()
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ShowQuestionnaire);

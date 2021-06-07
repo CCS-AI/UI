@@ -21,7 +21,9 @@ export const questionnaire: ModelConfig<questionnaireStateType> = {
         async getQuestionnaireById(questionnaireId: string) {
             const response = await client.questionnaire().getQuestionnaireById(questionnaireId);
             dispatch.questionnaire.setQuestionnaire(response);
-            // return response;
+        },
+        async setSingleQuestionnaire() {
+            dispatch.questionnaire.setQuestionnaire(null);
         }
     })
 };
