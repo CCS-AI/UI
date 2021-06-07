@@ -101,13 +101,14 @@ const CreateQuestnnaireForm = ({ showLoader, questionnaire, setQuestionnaireResI
                                 <Form>
                                     {values.questions.map((q, indexQ) => {
                                         return (
-                                            <div>
+                                            <div key={indexQ}>
                                                 <FormControl>
                                                     <FormLabel>{q.name}</FormLabel>
                                                     <RadioGroup aria-label="ans" name="ans">
                                                         {q.answers.map((ans, indexA) => {
                                                             return (
                                                                 <FormControlLabel
+                                                                    key={indexA}
                                                                     control={
                                                                         <Checkbox
                                                                             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {

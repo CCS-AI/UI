@@ -49,18 +49,23 @@ export const ShowQuestionnaire = ({
         <div>
             <FlexPageContainer>
                 <DropDown
-                    options={[
-                        { value: 'Q123', text: 'ABR אנמנזת תינוקות' },
-                        { value: 'Q124', text: 'אנמנזת ילדים' },
-                        { value: 'id3', text: 'אנמנזת מבוגרים' }
-                    ]}
+                    options={
+                        questionnaires?.map((q) => {
+                            return {
+                                value: q.id,
+                                text: q.name
+                            };
+                        }) || []
+                    }
                     placeHolder="בחירת סוג האנמנזה"
                     onChange={async ({ target }: React.ChangeEvent<{ value: any }>, child: React.ReactNode) => {
+                        setSingleQuestionnaire();
                         setType(target.value);
                         getQuestionnaireById(target.value).then((r) => {
                             setQuestionnaire(r);
                         });
                     }}
+                    value={type}
                     disabled={disabledDropDown}
                 />
             </FlexPageContainer>
