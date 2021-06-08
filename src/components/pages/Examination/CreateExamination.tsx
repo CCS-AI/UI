@@ -2,6 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { VictoryAxis, VictoryChart, VictoryLine, VictoryScatter, VictoryTheme } from 'victory';
 import { SelectPointType } from './PointType';
 import { earTypes, examPointTypes, ExamPointTypes, getBaseType, pointToImage, pointTypeToStyle } from '../../../models/entities/examPointTypes';
+import { SpeechAudiometryDetails } from '../../pages/SpeechAudiometry/index';
+import { speechAudiometry } from '../../../models/entities/SP';
+import { TextBox } from './TextBox';
+import Button from '@material-ui/core/Button';
+import { QuestionnaireResult } from '../../../models/entities/questionnaire';
+import { Examination } from '../../../models/entities/examination';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 type Props = {
     data: Data[];
@@ -14,6 +22,11 @@ export type Data = {
     ear: 'RIGHT' | 'LEFT';
     type: ExamPointTypes;
     isNoResponse: boolean;
+};
+
+type CreateExaminationProps = RouteComponentProps<{ pmfId: string }> & {
+    questionnaireResults: QuestionnaireResult;
+    postExamination: (examination: Examination) => Promise<any>;
 };
 
 const normalizeX = (realX: number, xMargin: number) => {
@@ -52,20 +65,72 @@ export const xAxisPoints = [250, 500, 750, 1000, 1500, 2000, 3000, 4000, 6000, 8
 export const invisiblePoints = [750, 1500, 3000, 6000];
 export const yAxisPoints = [-10, 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120];
 
-export const CreateExamination = () => {
+const CreateExamination = ({ questionnaireResults, postExamination, match }: CreateExaminationProps) => {
     const [data, setData] = useState<Data[]>([]);
+    const [spInfo, setSpInfo] = useState<speechAudiometry | undefined>(undefined);
+    const [pBackground, setPbackground] = useState<string>('');
 
     const addData = (point: Data) => {
         setData(data.concat(point));
     };
 
+    const callCreateExamination = () => {
+        const exmaination: Examination = {
+            pmfId: match.params.pmfId,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            info: data,
+            speechAudiometry: spInfo as speechAudiometry,
+            patientTestBackground: pBackground,
+            questionnaireResults: questionnaireResults
+        };
+        console.log(exmaination);
+        postExamination(exmaination).then((res) => console.log(res));
+    };
+
     return (
-        <div className={'point-type-container'}>
-            <SelectPointType addData={addData} />
-            <Exam data={data} width={1000} height={800} />
+        <div>
+            <div className={'point-type-container'}>
+                <SelectPointType addData={addData} />
+                <Exam data={data} width={1000} height={800} />
+            </div>
+            <div>
+                <SpeechAudiometryDetails setSpInfo={setSpInfo} />
+            </div>
+            <div
+                style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center'
+                }}
+            >
+                <h3>רקע מטופל</h3>
+                <TextBox initVal={pBackground} width={1000} rows={15} valueChange={setPbackground} />
+            </div>
+            <div
+                style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center'
+                }}
+            >
+                <Button variant="contained" color="primary" onClick={callCreateExamination}>
+                    סיום
+                </Button>
+            </div>
         </div>
     );
 };
+
+const mapDispatchToProps = (dispatch: any) => ({
+    postExamination: (examination: Examination) => dispatch.examination.postExamination(examination)
+});
+
+export default withRouter(connect(null, mapDispatchToProps)(CreateExamination));
 
 const Exam = ({ data, width, height }: Props) => {
     const [dataPoints, setDataPoints] = useState<Data[]>([]);
@@ -227,5 +292,3 @@ const ImagePoint = (props: any) => {
         </svg>
     );
 };
-
-export default CreateExamination;

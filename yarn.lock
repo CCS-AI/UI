@@ -1432,12 +1432,13 @@
     "react-is" "^16.8.0 || ^17.0.0"
     "react-transition-group" "^4.4.0"
 
-"@material-ui/data-grid@^4.0.0-alpha.22":
-  "integrity" "sha512-WiC5AzMfmSo6cdNoXxnlf6vPQBN4ZLpzewhSYat1SxwTtnjfGdoPjLsf7ho68Cau1atFjC+63lGrNE0+e/YqfQ=="
-  "resolved" "https://registry.npmjs.org/@material-ui/data-grid/-/data-grid-4.0.0-alpha.22.tgz"
-  "version" "4.0.0-alpha.22"
+"@material-ui/data-grid@^4.0.0-alpha.29":
+  "integrity" "sha512-dGL9nmiytpjvlY9vFJKUCtXf9eGMb0zxt5+M9hXEKYK8BOYTi+Po5y4YZp4kQ2PojFu78CDz2/gP3u51GxaF3A=="
+  "resolved" "https://registry.npmjs.org/@material-ui/data-grid/-/data-grid-4.0.0-alpha.29.tgz"
+  "version" "4.0.0-alpha.29"
   dependencies:
     "@material-ui/utils" "^5.0.0-alpha.14"
+    "clsx" "^1.0.4"
     "prop-types" "^15.7.2"
     "reselect" "^4.0.0"
 
@@ -1518,15 +1519,15 @@
     "react-is" "^16.8.0 || ^17.0.0"
 
 "@material-ui/utils@^5.0.0-alpha.14":
-  "integrity" "sha512-58B978wD2zon+hEtZIj9uW500JXBXfwgUd3TFN0qoRZ/A+T18fPR6YYbcMpzm8/7Hoh/Xr04jqzzvY4gfNUmUg=="
-  "resolved" "https://registry.npmjs.org/@material-ui/utils/-/utils-5.0.0-alpha.27.tgz"
-  "version" "5.0.0-alpha.27"
+  "integrity" "sha512-jzXUtTntCC7fumvXvT+scHj6t/A+qUKJ3XM/C1ZtPmPg4dA5+XmhD8uU9wZU3IuaDb66LJdZnfnhRD72052k+Q=="
+  "resolved" "https://registry.npmjs.org/@material-ui/utils/-/utils-5.0.0-alpha.33.tgz"
+  "version" "5.0.0-alpha.33"
   dependencies:
     "@babel/runtime" "^7.4.4"
     "@types/prop-types" "^15.7.3"
     "@types/react-is" "^16.7.1 || ^17.0.0"
     "prop-types" "^15.7.2"
-    "react-is" "^16.8.0 || ^17.0.0"
+    "react-is" "^17.0.0"
 
 "@material-ui/x-grid@^4.0.0-alpha.22":
   "integrity" "sha512-AMakMc1yLcQiFZJ6UPlbLSXll2DWdC/LvCY8d3w5t0sQ5uy+XK2AI9ALmEbHh71vKktyYp2UmJS1noUtHWjMRg=="
@@ -2645,6 +2646,14 @@
     "postcss" "^7.0.32"
     "postcss-value-parser" "^4.1.0"
 
+"avataaars@^1.2.2":
+  "integrity" "sha512-cX12MRjt92hWKPff+hNHW7xZ4UAs/gcNN9gf/RSRs6VO1C4oEh6//jhF4JmboO40LZGZRJNS3b8G/9SNaptUpQ=="
+  "resolved" "https://registry.npmjs.org/avataaars/-/avataaars-1.2.2.tgz"
+  "version" "1.2.2"
+  dependencies:
+    "lodash" ">=4.17.11"
+    "prop-types" "^15.6.0"
+
 "aws-sign2@~0.7.0":
   "integrity" "sha1-tG6JCTSpWR8tL2+G1+ap8bP+dqg="
   "resolved" "https://registry.npmjs.org/aws-sign2/-/aws-sign2-0.7.0.tgz"
@@ -3248,9 +3257,9 @@
     "lodash.uniq" "^4.5.0"
 
 "caniuse-lite@^1.0.0", "caniuse-lite@^1.0.30000981", "caniuse-lite@^1.0.30001035", "caniuse-lite@^1.0.30001109", "caniuse-lite@^1.0.30001135":
-  "integrity" "sha512-kiNKvihW0m36UhAFnl7bOAv0i1K1f6wpfVtTF5O5O82XzgtBnb05V0XeV3oZ968vfg2sRNChsHw8ASH2hDfoYQ=="
-  "resolved" "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001150.tgz"
-  "version" "1.0.30001150"
+  "integrity" "sha512-5yBd5nWCBS+jWKTcHOzXwo5xzcj4ePE/yjtkZyUV1BTUmrBaA9MRGC+e7mxnqXSA90CmCA8L3eKLaSUkt099IQ=="
+  "resolved" "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001230.tgz"
+  "version" "1.0.30001230"
 
 "capture-exit@^2.0.0":
   "integrity" "sha512-PiT/hQmTonHhl/HFGN+Lx3JJUznrVYJ3+AQsnthneZbvW7x+f08Tk7yLJTLEOUvBTbduLeeBkxEaYXUOUrRq6g=="
@@ -7743,7 +7752,7 @@
   "resolved" "https://registry.npmjs.org/lodash.uniq/-/lodash.uniq-4.5.0.tgz"
   "version" "4.5.0"
 
-"lodash@^4.17.11", "lodash@^4.17.13", "lodash@^4.17.14", "lodash@^4.17.15", "lodash@^4.17.19", "lodash@^4.17.5", "lodash@>=3.5 <5", "lodash@~4.17.4":
+"lodash@^4.17.11", "lodash@^4.17.13", "lodash@^4.17.14", "lodash@^4.17.15", "lodash@^4.17.19", "lodash@^4.17.5", "lodash@>=3.5 <5", "lodash@>=4.17.11", "lodash@~4.17.4":
   "integrity" "sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ=="
   "resolved" "https://registry.npmjs.org/lodash/-/lodash-4.17.19.tgz"
   "version" "4.17.19"
@@ -9882,7 +9891,7 @@
     "strip-ansi" "6.0.0"
     "text-table" "0.2.0"
 
-"react-dom@^16.13.1", "react-dom@>=16":
+"react-dom@^16.13.1":
   "integrity" "sha512-81PIMmVLnCNLO/fFOQxdQkvEq/+Hfpv24XNJfpyZhTRfO0QcmQIF/PgCa1zCOj2w1hrn12MFLyaJ/G0+Mxtfag=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-16.13.1.tgz"
   "version" "16.13.1"
@@ -9911,6 +9920,11 @@
   "integrity" "sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ=="
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   "version" "16.13.1"
+
+"react-is@^17.0.0":
+  "integrity" "sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w=="
+  "resolved" "https://registry.npmjs.org/react-is/-/react-is-17.0.2.tgz"
+  "version" "17.0.2"
 
 "react-lifecycles-compat@^3.0.4":
   "integrity" "sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA=="
@@ -10102,7 +10116,7 @@
     "loose-envify" "^1.4.0"
     "prop-types" "^15.6.2"
 
-"react@^16.13.1", "react@>=16":
+"react@^16.13.1":
   "integrity" "sha512-YMZQQq32xHLX0bz5Mnibv1/LHb3Sqzngu7xstSM+vrkE5Kzr9xE0yMByK5kMoTK30YVJE61WfbxIFFvfeDKT1w=="
   "resolved" "https://registry.npmjs.org/react/-/react-16.13.1.tgz"
   "version" "16.13.1"

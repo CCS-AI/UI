@@ -26,7 +26,7 @@ const Routes = ({}: Props) => {
                 <AuthRoute component={ShowAllPatients} exact path={PagesRoutes.Patients} />
                 <AuthRoute component={SinglePatient} path={PagesRoutes.Patients + '/:patientId'} />
                 <AuthRoute component={Home} exact path={PagesRoutes.Home} />
-                <AuthRoute component={CreateExamination} exact path={PagesRoutes.CreateExamination} />
+                <AuthRoute component={CreateExamination} path={PagesRoutes.CreateExamination} />
                 <Route path={PagesRoutes.Login}>
                     <LoginPageConnected />
                 </Route>
