@@ -1,43 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import Loader from '../../shared/SmallComponents/Loader';
 import { FlexPageContainer } from '../../shared/styled/styled';
-import { styled } from '../../shared/Theme/theme';
 import { Flex, TableCard } from '../../shared/form/StyledFormShared';
 import { Questionnaire, QuestionnaireResult, QuestionR } from '../../../models/entities/questionnaire';
-import QuestionnaireApi from '../../../sdk/controllers/questionnaire/questionnaire';
 import { dispatch, RootState } from '../../../state/store/store';
-import { FormDropDown } from '../../shared/inputs/form';
 import { DropDown } from '../../shared/inputs/base';
 import CreateQuestnnaireForm from './components/QuestionnaireForm';
-import { questionnaire } from '../../../state/ducks/questionnaire/questionnaire';
-import { values } from 'lodash';
 import { questionnaireSelector } from '../../../state/ducks/questionnaire/selectors';
-import { Button } from '@material-ui/core';
 
-const emptyQuestionnaires: Questionnaire[] = [];
 export type ShowQuestionnairesProps = {
     showLoader: boolean;
     questionnaireInfo?: Questionnaire;
     fetchAllQuestionnaires: () => Promise<Questionnaire[]>;
     setSingleQuestionnaire: () => void;
     getQuestionnaireById: (questionnaireId: string) => Promise<Questionnaire>;
+    setQuestionnaireResInfo: React.Dispatch<React.SetStateAction<QuestionnaireResult | undefined>>;
 };
 
-const emptyQuestionnaire = { id: '', name: '', questions: [] } as Questionnaire;
-
-export const ShowQuestionnaire = ({
+// export const ShowQuestionnaire {{}} //for debug
+const ShowQuestionnaire = ({
     showLoader,
     fetchAllQuestionnaires,
     getQuestionnaireById,
     questionnaireInfo,
-    setSingleQuestionnaire
+    setSingleQuestionnaire,
+    setQuestionnaireResInfo
 }: ShowQuestionnairesProps) => {
     const [questionnaires, setQuestionnaires] = useState<Questionnaire[]>();
     const [questionnaire, setQuestionnaire] = useState<Questionnaire | undefined>();
     const [type, setType] = useState('');
-    const [questionnaireResInfo, setQuestionnaireResInfo] = useState<QuestionnaireResult | undefined>();
     const [disabledDropDown, setdisabledDropDown] = useState(false);
     useEffect(() => {
         setSingleQuestionnaire();

@@ -17,7 +17,6 @@ type CreateQuestionnaireProps = {
 
 const emptyQuestionnaire = { id: '', name: '', questions: [] } as Questionnaire;
 const emptyQquestionnaireRes = [] as QuestionnaireResult;
-const emptyQarray: Question[] = [];
 
 export const initRes = (copyQuestionnaire: Questionnaire) => {
     let initResQ = emptyQuestionnaire;
@@ -35,19 +34,22 @@ export const initRes = (copyQuestionnaire: Questionnaire) => {
     return initResQ;
 };
 
-export const convertToQuestnnairResult = (resultQ: Questionnaire) => {
+export const convertToQuestnnairResult = (resultQ: Questionnaire, selectedQId: string) => {
     let qr = emptyQquestionnaireRes;
+    console.log(selectedQId);
     resultQ.questions.forEach((q) => {
-        let ansString: string[] = [];
-        q.answers.forEach((ans) => {
-            ansString.push(ans.name);
-        });
-        let tmpQR = {
-            id: q.id,
-            name: q.name,
-            answers: ansString
-        };
-        qr.push(tmpQR);
+        if (q.questionnaireId == selectedQId) {
+            let ansString: string[] = [];
+            q.answers.forEach((ans) => {
+                ansString.push(ans.name);
+            });
+            let tmpQR = {
+                id: q.id,
+                name: q.name,
+                answers: ansString
+            };
+            qr.push(tmpQR);
+        }
     });
     return qr;
 };
@@ -80,7 +82,7 @@ const CreateQuestnnaireForm = ({ showLoader, questionnaire, setQuestionnaireResI
                 initialValues={{ questions: questionnaire.questions }}
                 onSubmit={(values) => {
                     if (resultValues) {
-                        let convertedQ = convertToQuestnnairResult(resultValues);
+                        let convertedQ = convertToQuestnnairResult(resultValues, values.questions[0].questionnaireId);
                         setQuestionnaireResInfo(convertedQ);
                         setShowSuccess(true);
                         setdisabledDropDown(true);
