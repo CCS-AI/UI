@@ -27,6 +27,7 @@ export type Data = {
 type CreateExaminationProps = RouteComponentProps<{ pmfId: string }> & {
     questionnaireResults: QuestionnaireResult;
     postExamination: (examination: Examination) => Promise<any>;
+    pmfid?: string;
 };
 
 const normalizeX = (realX: number, xMargin: number) => {
@@ -65,7 +66,7 @@ export const xAxisPoints = [250, 500, 750, 1000, 1500, 2000, 3000, 4000, 6000, 8
 export const invisiblePoints = [750, 1500, 3000, 6000];
 export const yAxisPoints = [-10, 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120];
 
-const CreateExamination = ({ questionnaireResults, postExamination, match }: CreateExaminationProps) => {
+const CreateExamination = ({ questionnaireResults, postExamination, match, pmfid }: CreateExaminationProps) => {
     const [data, setData] = useState<Data[]>([]);
     const [spInfo, setSpInfo] = useState<speechAudiometry | undefined>(undefined);
     const [pBackground, setPbackground] = useState<string>('');
@@ -75,15 +76,14 @@ const CreateExamination = ({ questionnaireResults, postExamination, match }: Cre
     };
 
     const callCreateExamination = () => {
+        const medicalFileId = pmfid ? pmfid : match.params.pmfId;
         const exmaination: Examination = {
-            pmfId: match.params.pmfId,
-            createdAt: new Date(),
-            updatedAt: new Date(),
+            pmfId: medicalFileId,
             info: data,
             speechAudiometry: spInfo as speechAudiometry,
             patientTestBackground: pBackground,
             questionnaireResults: questionnaireResults
-        };
+        } as Examination;
         console.log(exmaination);
         postExamination(exmaination).then((res) => console.log(res));
     };
