@@ -53,8 +53,9 @@ export const pointTypeToStyle = (ear: 'RIGHT' | 'LEFT', type: ExamPointTypes) =>
     const isStrokeDasharray = stroked_types.includes(type);
     const DASH_LINE_SIZE = 3;
 
-    let style: { stroke: string; strokeDasharray?: number } = {
-        stroke: color
+    let style: { stroke: string; strokeDasharray?: number; strokeWidth: number } = {
+        stroke: color,
+        strokeWidth: 1
     };
 
     if (isStrokeDasharray) style['strokeDasharray'] = DASH_LINE_SIZE;
