@@ -13,7 +13,7 @@ export default class QuestionnaireApi extends BaseController implements IQuestio
         return response;
     }
     async getQuestionnaireById(questionnaireId: string) {
-        const response = await this.client.get(`/questionnair/${questionnaireId}`);
+        const response = await this.client.get(`/questionnaire/${questionnaireId}`);
         return response;
     }
 }

@@ -13,7 +13,6 @@ import ShowAllPatients from './components/pages/ShowPatients/ShowAllPatietns';
 import CreateExamination from './components/pages/Examination/CreateExamination';
 import ShowQuestionnaire from './components/pages/QuestionnaireForm';
 import SinglePatient from './components/pages/SinglePatient';
-import ShowQuestionnaireTest from './components/pages/QuestionnaireForm/qTest';
 
 type Props = {};
 
@@ -29,7 +28,6 @@ const Routes = ({}: Props) => {
                 <AuthRoute component={SinglePatient} path={PagesRoutes.Patients + '/:patientId'} />
                 <AuthRoute component={Home} exact path={PagesRoutes.Home} />
                 <AuthRoute component={CreateExamination} exact path={PagesRoutes.CreateExamination} />
-                <AuthRoute component={ShowQuestionnaireTest} exact path={PagesRoutes.QuestionnaireTest} />
                 <Route path={PagesRoutes.Login}>
                     <LoginPageConnected />
                 </Route>

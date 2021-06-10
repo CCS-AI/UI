@@ -34,7 +34,7 @@ class ccsSDK {
         return new PatientMedicalFile(this.baseUrl);
     }
     questionnaire() {
-        this.isMock = true;
+        this.isMock = false;
         if (this.isMock) return new QuestionnaireMock(this.baseUrl);
         return new Questionnaire(this.baseUrl);
     }

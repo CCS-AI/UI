@@ -17,7 +17,6 @@ export type ShowQuestionnairesProps = {
     setQuestionnaireResInfo: React.Dispatch<React.SetStateAction<QuestionnaireResult | undefined>>;
 };
 
-// export const ShowQuestionnaire {{}} //for debug
 const ShowQuestionnaire = ({
     showLoader,
     fetchAllQuestionnaires,
