@@ -38,6 +38,7 @@ class ccsSDK {
         this.isMock = false;
         if (this.isMock) return new QuestionnaireMock(this.baseUrl);
         return new Questionnaire(this.baseUrl);
+    }
     examination() {
         return new ExaminationAPI(this.baseUrl);
     }

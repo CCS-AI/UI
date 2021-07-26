@@ -6,5 +6,6 @@ export const PagesRoutes = {
     Patients: '/patients',
     SinglePatient: '/patients/:patientId',
     RegisterExaminer: '/examiner/register',
-    CreateExamination: '/examination/create/:pmfId'
+    CreateExamination: '/examination/create/:pmfId',
+    SingleExaminationSummary: '/examination'
 };

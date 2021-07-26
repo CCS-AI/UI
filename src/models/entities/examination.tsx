@@ -3,6 +3,7 @@ import { Data } from '../../components/pages/Examination/CreateExamination';
 import { QuestionnaireResult } from './questionnaire';
 
 export type Examination = {
+    id: string;
     pmfId: string;
     createdAt: Date;
     updatedAt: Date;
