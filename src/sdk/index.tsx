@@ -6,6 +6,7 @@ import PatientApiMock from './controllers/patient/patientMock';
 import PatientMedicalFile from './controllers/medicalFile/medicalFile';
 import Questionnaire from './controllers/questionnaire/questionnaire';
 import QuestionnaireMock from './controllers/questionnaire/questionnaireMock';
+import ExaminationAPI from './controllers/examintion/examination';
 
 class ccsSDK {
     private baseUrl: string;
@@ -37,6 +38,8 @@ class ccsSDK {
         this.isMock = false;
         if (this.isMock) return new QuestionnaireMock(this.baseUrl);
         return new Questionnaire(this.baseUrl);
+    examination() {
+        return new ExaminationAPI(this.baseUrl);
     }
 }
 

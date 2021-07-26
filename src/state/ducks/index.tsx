@@ -5,6 +5,7 @@ import { patient } from './patient/patient';
 import { examiner } from './examiner/examiner';
 import { patientMedicalFile } from './patientMedicalfile/patientMedicalFile';
 import { questionnaire } from './questionnaire/questionnaire';
+import { examination } from './examination/examination';
 
 export interface RootModel {
     authentication: typeof authentication;
@@ -14,6 +15,7 @@ export interface RootModel {
     examiner: typeof examiner;
     patientMedicalFile: typeof patientMedicalFile;
     questionnaire: typeof questionnaire;
+    examination: typeof examination;
 }
 
 export const models: RootModel = {
@@ -23,5 +25,6 @@ export const models: RootModel = {
     patient,
     examiner,
     patientMedicalFile,
-    questionnaire
+    questionnaire,
+    examination
 };
