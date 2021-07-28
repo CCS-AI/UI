@@ -1,20 +1,13 @@
 import { speechAudiometry } from './SP';
-
-export type examinationType = 'AC' | 'AC+MASK' | 'BC' | 'BC+MASK' | 'WEBER' | 'NO_RESPONSE' | 'FF' | 'STENGER';
-
-export type examResult = {
-    x: number;
-    y: number;
-    ear: 'RIGHT' | 'LEFT';
-    type: examinationType;
-};
+import { Data } from '../../components/pages/Examination/CreateExamination';
+import { QuestionnaireResult } from './questionnaire';
 
 export type Examination = {
-    id: string;
     pmfId: string;
     createdAt: Date;
     updatedAt: Date;
-    info: Array<examResult>;
+    info: Array<Data>;
     speechAudiometry: speechAudiometry;
     patientTestBackground: string;
+    questionnaireResults: QuestionnaireResult;
 };
