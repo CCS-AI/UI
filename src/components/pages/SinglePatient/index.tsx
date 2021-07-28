@@ -39,7 +39,12 @@ const SinglePatient = ({ fetchPatientMedicalFile, patientMedicalFileInfo, showLo
                     <div>No Patient</div>
                 ) : (
                     <>
-                        <NewExamination open={newExamOpen} setOpen={setNewExamOpen} />
+                        <NewExamination
+                            open={newExamOpen}
+                            setOpen={setNewExamOpen}
+                            pmfId={patientMedicalFileInfo.id}
+                            patientId={patientMedicalFileInfo.patientId}
+                        />
                         <TableHeader>תיק רפואי</TableHeader>
                         <br />
                         <Link to={{ pathname: PagesRoutes.Patients }} style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>

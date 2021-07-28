@@ -11,6 +11,7 @@ import {
 } from '@material-ui/data-grid';
 import { sp, speechAudiometry } from '../../../../models/entities/SP';
 import { makeStyles, Switch } from '@material-ui/core';
+import MuiDataGrid from '../../../shared/MuiDataGrid/MuiDataGrid';
 
 const useStyles = makeStyles((theme) => ({
     dataGrid: {
@@ -149,13 +150,7 @@ export const SpeechAudiometryTable = ({ rowsSP, columnsSP, pageSize, setSpInfo }
     );
     return (
         <React.Fragment>
-            <DataGrid
-                rows={editRows}
-                columns={columnsSP}
-                pageSize={pageSize}
-                className={classes.dataGrid}
-                onEditCellChangeCommitted={handleEditCellChangeCommitted}
-            />
+            <MuiDataGrid rows={editRows} columns={columnsSP} onEditCellChangeCommitted={handleEditCellChangeCommitted} height="400px" hideFooter />
         </React.Fragment>
     );
 };

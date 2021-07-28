@@ -3,7 +3,7 @@ import { TextField } from '@material-ui/core';
 
 export interface TextBoxProps {
     initVal: string;
-    width: number;
+    width: number | string;
     rows: number;
     valueChange: (text: string) => void;
 }
@@ -19,7 +19,6 @@ export const TextBox = (props: TextBoxProps) => {
                 color="secondary"
                 onChange={(event) => props.valueChange(event.target.value)}
             />
-            ;
         </div>
     );
 };
