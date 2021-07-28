@@ -11,6 +11,7 @@ import RegisterExaminerPage from './components/pages/RegisterExaminer/RegisterEx
 import Home from './components/pages/Home';
 import ShowAllPatients from './components/pages/ShowPatients/ShowAllPatietns';
 import CreateExamination from './components/pages/Examination/CreateExamination';
+import ShowQuestionnaire from './components/pages/QuestionnaireForm';
 import SinglePatient from './components/pages/SinglePatient';
 
 type Props = {};
