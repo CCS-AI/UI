@@ -62,11 +62,6 @@ export const SideBar = ({ setOpenSideBar, open, image, title, permission = Permi
                     בדיקות
                 </MenuItem>
                 <SubMenu title="פעולות על בדיקות" className={'Menu'} hidden={hasPermissionToCategory(permission, 'פעולות על בדיקות')}>
-                    <MenuItem>
-                        עוד דברים
-                        <Link to={PagesRoutes.QuestionnaireTest} />
-                    </MenuItem>
-
                     <MenuItem>עוד דברים 2</MenuItem>
                     <MenuItem>
                         אליאל טסט

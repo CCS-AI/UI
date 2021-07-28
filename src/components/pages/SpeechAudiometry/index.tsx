@@ -25,10 +25,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(SpeechAudiometryDeta
 
 const InitColumns = [
     { field: 'empty', headerName: '--', width: 150, editable: false },
-    { field: 'Rt', headerName: 'Rt', type: 'number', width: 150, editable: true },
-    { field: 'MaskRt', headerName: 'MaskRt', type: 'number', width: 150, editable: true },
-    { field: 'Lt', headerName: 'Lt', type: 'number', width: 150, editable: true },
-    { field: 'MaskLt', headerName: 'MaskLt', type: 'number', width: 150, editable: true },
+    { field: 'Rt', headerName: 'Rt', type: 'string', width: 150, editable: true },
+    { field: 'MaskRt', headerName: 'MaskRt', type: 'string', width: 150, editable: true },
+    { field: 'Lt', headerName: 'Lt', type: 'string', width: 150, editable: true },
+    { field: 'MaskLt', headerName: 'MaskLt', type: 'string', width: 150, editable: true },
     { field: 'SF', headerName: 'SF', type: 'string', width: 150, editable: true }
 ];
 

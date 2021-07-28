@@ -9,7 +9,7 @@ export default class ExaminationAPI extends BaseController implements IExaminati
     }
 
     async postExamination(examination: Examination): Promise<any> {
-        const response = await this.client.post(`/examination/create`, JSON.stringify(examination));
+        const response = await this.client.post(`/examination`, JSON.stringify(examination));
         return response;
     }
 }

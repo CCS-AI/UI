@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import Popup from 'reactjs-popup';
-import { IconButton, Button, TextField, Avatar } from '@material-ui/core';
+import { IconButton, Button, TextField, Avatar, Popover } from '@material-ui/core';
 import {
     ExamPointTypes,
     examPointTypes,
@@ -18,31 +18,47 @@ interface SelectPointTypeProps {
     addData: (point: Data) => void;
 }
 
+const PopOverState = ({ type, earSide, addData }: { type: ExamPointTypes; earSide: 'RIGHT' | 'LEFT'; addData: (point: Data) => void }) => {
+    const [open, setOpen] = useState(false);
+    const id = open ? 'simple-popover-' + type : undefined;
+    return (
+        <div>
+            <IconButton aria-describedby={id} onClick={() => setOpen(true)}>
+                <Avatar variant="square" src={pointToImage(type, earSide)}></Avatar>
+            </IconButton>
+            <Popover
+                id={id}
+                open={open}
+                // contentStyle={{ zIndex: 2000, userSelect: 'none' }}
+                // arrowStyle={{ color: 'black' }}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center'
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center'
+                }}
+                onClose={() => setOpen(false)}
+            >
+                <NewPointForm data={{ x: -1, y: -1, type: type, ear: earSide, isNoResponse: false }} addData={addData} />
+            </Popover>
+        </div>
+    );
+};
 export const SelectPointType = ({ addData }: SelectPointTypeProps) => {
     let popups: ReactElement[] = [];
 
     earTypes.forEach((ear) => {
         examPointTypes
             .filter((examType) => !examType.includes(NO_RES_SUFFIX))
-            .map((key) => {
+            .forEach((key) => {
                 const type = key as ExamPointTypes;
                 const earSide = ear as 'RIGHT' | 'LEFT';
-                popups.push(
-                    <Popup
-                        trigger={
-                            <IconButton>
-                                <Avatar variant="square" src={pointToImage(type, earSide)}></Avatar>
-                            </IconButton>
-                        }
-                        position={'bottom center'}
-                    >
-                        <NewPointForm data={{ x: -1, y: -1, type: type, ear: earSide, isNoResponse: false }} addData={addData} />
-                    </Popup>
-                );
+                popups.push(<PopOverState type={type} earSide={earSide} addData={addData} />);
             });
     });
-
-    return <div>{popups}</div>;
+    return <div style={{ display: 'flex', position: 'relative' }}>{popups}</div>;
 };
 
 interface NewPointForm {
@@ -77,29 +93,34 @@ const NewPointForm = ({ data, addData }: NewPointForm) => {
     };
 
     return (
-        <div>
-            <label>Selected type: </label>
-            <IconButton>
-                <Avatar variant="square" src={pointToImage(state.type, state.ear)} style={{ width: 20, height: 20 }}></Avatar>
-            </IconButton>
+        <div style={{ padding: '30px', paddingTop: '5px' }}>
+            <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                <IconButton>
+                    <Avatar variant="square" src={pointToImage(state.type, state.ear)} style={{ width: 40, height: 40 }}></Avatar>
+                </IconButton>
+            </div>
             <form style={{ direction: 'ltr' }}>
                 <div className={'formInput'}>
                     <label>X: </label>
-                    <TextField placeholder={'250-8000'} onChange={(event) => setState({ ...state, x: Number(event.target.value) })}>
-                        ofek
-                    </TextField>
+                    <TextField
+                        placeholder={'250-8000'}
+                        onChange={(event) => {
+                            console.log(event);
+                            setState({ ...state, x: Number(event.target.value) });
+                        }}
+                    />
                 </div>
                 <div className={'formInput'}>
                     <label>Y: </label>
-                    <TextField placeholder={'0-120'} onChange={(event) => setState({ ...state, y: Number(event.target.value) })}>
-                        rac
-                    </TextField>
+                    <TextField placeholder={'0-120'} onChange={(event) => setState({ ...state, y: Number(event.target.value) })} />
                 </div>
                 <div hidden={!noResTypes.includes(state.type)}>
                     <label>No response: </label>
                     <Checkbox checked={state.isNoResponse} onChange={handleChange} inputProps={{ 'aria-label': 'primary checkbox' }} />
                 </div>
-                <Button onClick={submitForm}>Create</Button>
+                <Button style={{ width: '100%' }} variant="outlined" color="secondary" onClick={submitForm}>
+                    הוסף
+                </Button>
             </form>
         </div>
     );
