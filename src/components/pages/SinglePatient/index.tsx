@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps, useHistory, Link } from 'react-router-dom';
 import { RootState } from '../../../state/store/store';
@@ -11,6 +11,8 @@ import { ExaminationsTable } from '../PatientMedicalFile/components/Examinations
 import { Button } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import PersonalDetails from '../PatientMedicalFile/components/PersonalDetails';
+import { PagesRoutes } from '../../../routing/PagesRoutes';
+import NewExamination from '../Examination/NewExamination';
 
 export type ShowAllPatientsProps = RouteComponentProps<{ patientId: string }> & {
     patientMedicalFileInfo?: PatientMedicalFile;
@@ -19,12 +21,12 @@ export type ShowAllPatientsProps = RouteComponentProps<{ patientId: string }> & 
 };
 
 const SinglePatient = ({ fetchPatientMedicalFile, patientMedicalFileInfo, showLoader, match }: ShowAllPatientsProps) => {
-    const history = useHistory();
+    const [newExamOpen, setNewExamOpen] = useState(false);
     useEffect(() => {
         fetchPatientMedicalFile(match.params.patientId);
     }, [fetchPatientMedicalFile, match.params.patientId]);
     const CreateBtn = (style?: React.CSSProperties) => (
-        <Button color="secondary" variant="outlined" style={{ width: 'auto', ...style }} startIcon={<AddIcon />}>
+        <Button color="secondary" variant="outlined" style={{ width: 'auto', ...style }} startIcon={<AddIcon />} onClick={() => setNewExamOpen(true)}>
             יצירת בדיקה
         </Button>
     );
@@ -37,9 +39,10 @@ const SinglePatient = ({ fetchPatientMedicalFile, patientMedicalFileInfo, showLo
                     <div>No Patient</div>
                 ) : (
                     <>
+                        <NewExamination open={newExamOpen} setOpen={setNewExamOpen} />
                         <TableHeader>תיק רפואי</TableHeader>
                         <br />
-                        <Link to={{}} onClick={() => history.goBack()} style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+                        <Link to={{ pathname: PagesRoutes.Patients }} style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
                             <span className="material-icons">chevron_right</span>
                             <span style={{ textDecoration: 'underline' }}>חזור לצפייה במטופלים</span>
                         </Link>
