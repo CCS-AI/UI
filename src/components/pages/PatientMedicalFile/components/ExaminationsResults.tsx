@@ -29,7 +29,7 @@ export const ExaminationsTable = ({ examinationsRows, columns, pageSize }: Table
             </Button>
         </Link>
     );
-    const HIDDEN_FIELDS = ['id', 'pmfId', 'speechAudiometry', 'patientTestBackground'];
+    const HIDDEN_FIELDS = ['id', 'pmfId', 'speechAudiometry', 'patientTestBackground', 'questionnaireResultId'];
     const DATE_FIELDS = ['createdAt', 'updatedAt'];
     const columnsDef: GridColDef[] = columns.map((column) => {
         const basicProp = { field: column, width: 150, headerName: examinationHebFields[column] };

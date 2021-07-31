@@ -10,6 +10,9 @@ import { QuestionnaireResult } from '../../../models/entities/questionnaire';
 import { Examination } from '../../../models/entities/examination';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { RoundedButton } from '../../shared/form/StyledFormShared';
+import { BtnLoader } from '../../shared/SmallComponents/Loader';
+import SaveIcon from '@material-ui/icons/Save';
 
 type Props = {
     data: Data[];
@@ -25,9 +28,11 @@ export type Data = {
 };
 
 type CreateExaminationProps = RouteComponentProps<{ pmfId: string }> & {
-    questionnaireResults: QuestionnaireResult;
-    postExamination: (examination: Examination) => Promise<any>;
+    questionnaireResults?: QuestionnaireResult;
+    postExamination: (examination: Examination, patientId: string) => Promise<any>;
     pmfid?: string;
+    patientId: string;
+    submitCallback?: () => void;
 };
 
 const normalizeX = (realX: number, xMargin: number) => {
@@ -66,16 +71,18 @@ export const xAxisPoints = [250, 500, 750, 1000, 1500, 2000, 3000, 4000, 6000, 8
 export const invisiblePoints = [750, 1500, 3000, 6000];
 export const yAxisPoints = [-10, 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120];
 
-const CreateExamination = ({ questionnaireResults, postExamination, match, pmfid }: CreateExaminationProps) => {
+const CreateExamination = ({ questionnaireResults, postExamination, match, pmfid, submitCallback, patientId }: CreateExaminationProps) => {
     const [data, setData] = useState<Data[]>([]);
     const [spInfo, setSpInfo] = useState<speechAudiometry | undefined>(undefined);
     const [pBackground, setPbackground] = useState<string>('');
+    const [showLoader, setLoader] = useState(false);
 
     const addData = (point: Data) => {
         setData(data.concat(point));
     };
 
     const callCreateExamination = () => {
+        setLoader(true);
         const medicalFileId = pmfid ? pmfid : match.params.pmfId;
         const exmaination: Examination = {
             pmfId: medicalFileId,
@@ -84,8 +91,13 @@ const CreateExamination = ({ questionnaireResults, postExamination, match, pmfid
             patientTestBackground: pBackground,
             questionnaireResults: questionnaireResults
         } as Examination;
-        console.log(exmaination);
-        postExamination(exmaination).then((res) => console.log(res));
+        postExamination(exmaination, patientId)
+            .then((res) => {})
+            .finally(() => {
+                setLoader(false);
+            });
+
+        if (submitCallback) submitCallback();
     };
 
     return (
@@ -94,40 +106,51 @@ const CreateExamination = ({ questionnaireResults, postExamination, match, pmfid
                 <SelectPointType addData={addData} />
                 <Exam data={data} width={1000} height={800} />
             </div>
-            <div>
-                <SpeechAudiometryDetails setSpInfo={setSpInfo} />
+            <div style={{ display: 'flex' }}>
+                <div style={{ width: '50%', marginLeft: '30px' }}>
+                    <SpeechAudiometryDetails setSpInfo={setSpInfo} />
+                </div>
+                <div
+                    style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        width: '50%'
+                    }}
+                >
+                    <h3>רקע מטופל</h3>
+                    <TextBox initVal={pBackground} width="100%" rows={19} valueChange={setPbackground} />
+                </div>
             </div>
             <div
                 style={{
                     flex: 1,
                     justifyContent: 'center',
                     display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    margin: '20px 0'
                 }}
             >
-                <h3>רקע מטופל</h3>
-                <TextBox initVal={pBackground} width={1000} rows={15} valueChange={setPbackground} />
-            </div>
-            <div
-                style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center'
-                }}
-            >
-                <Button variant="contained" color="primary" onClick={callCreateExamination}>
-                    סיום
-                </Button>
+                <RoundedButton
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    startIcon={<SaveIcon />}
+                    onClick={callCreateExamination}
+                    disabled={!data.length || !pBackground}
+                >
+                    {showLoader ? <BtnLoader /> : <span>{'שמירה'}</span>}
+                </RoundedButton>
             </div>
         </div>
     );
 };
 
 const mapDispatchToProps = (dispatch: any) => ({
-    postExamination: (examination: Examination) => dispatch.examination.postExamination(examination)
+    postExamination: (examination: Examination, patientId: string) => dispatch.examination.postExamination({ examination, patientId })
 });
 
 export default withRouter(connect(null, mapDispatchToProps)(CreateExamination));
@@ -191,22 +214,19 @@ const Exam = ({ data, width, height }: Props) => {
     const getDataLines = (dataByType: { [p: string]: { LEFT: Data[]; RIGHT: Data[] } }) => {
         // assume dataByType is a normalized dict!
         let linesArray: any = [];
-        console.log(dataByType);
-        {
-            examPointTypes.map((key) => {
-                Object.keys(dataByType[key]).forEach((ear) => {
-                    const earAsType = ear as 'RIGHT' | 'LEFT';
-                    const typeOfPoint = key as ExamPointTypes;
-                    if (dataByType[key][earAsType].length > 0)
-                        linesArray.push(
-                            <VictoryLine
-                                style={{ data: pointTypeToStyle(earAsType, typeOfPoint) }}
-                                data={getPointsInLine(dataByType, typeOfPoint, earAsType)}
-                            />
-                        );
-                });
+        examPointTypes.map((key) => {
+            Object.keys(dataByType[key]).forEach((ear) => {
+                const earAsType = ear as 'RIGHT' | 'LEFT';
+                const typeOfPoint = key as ExamPointTypes;
+                if (dataByType[key][earAsType].length > 0)
+                    linesArray.push(
+                        <VictoryLine
+                            style={{ data: pointTypeToStyle(earAsType, typeOfPoint) }}
+                            data={getPointsInLine(dataByType, typeOfPoint, earAsType)}
+                        />
+                    );
             });
-        }
+        });
 
         return linesArray;
     };
@@ -245,7 +265,6 @@ const Exam = ({ data, width, height }: Props) => {
     const allNormalizedPoints = Object.values(dataByTypeNormalized)
         .map((dataType) => [...dataType.LEFT, ...dataType.RIGHT])
         .flat(1);
-    console.log(allNormalizedPoints);
     return (
         <VictoryChart theme={VictoryTheme.material} width={1000} height={500}>
             <VictoryAxis

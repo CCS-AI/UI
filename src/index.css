@@ -11,6 +11,11 @@ body {
     background-color: #ffffff !important;
     height: 100%;
 }
+.MuiFormLabel-root,
+.MuiButtonBase-root,
+.MuiSelect-root {
+    font-family: 'Heebo', sans-serif !important;
+}
 button {
     font-family: 'Heebo', sans-serif !important;
 }

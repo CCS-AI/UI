@@ -13,9 +13,10 @@ export const examination: ModelConfig<examinationStateType> = {
         }
     },
     effects: (dispatch: any) => ({
-        postExamination(examination: Examination) {
-            console.log('Post create examination with body: ', examination);
-            return client.examination().postExamination(examination);
+        postExamination({ patientId, examination }: { examination: Examination; patientId: string }) {
+            const response = client.examination().postExamination(examination);
+            dispatch.patientMedicalFile.fetchPatientMedicalFile(patientId);
+            return response;
         },
         async getExaminationById(examinationId: string) {
             const response = await client.examination().getExaminationById(examinationId);

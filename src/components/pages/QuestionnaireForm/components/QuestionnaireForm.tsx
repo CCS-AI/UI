@@ -7,11 +7,12 @@ import { FormCard, FormHeader, Flex, RoundedButton, SuccessContainer } from '../
 import SaveIcon from '@material-ui/icons/Save';
 import { QuestionR, Question, Questionnaire, Answer, QuestionnaireResult } from '../../../../models/entities/questionnaire';
 import { isEqual, result } from 'lodash';
+import NavigateNextIcon from '@material-ui/icons/ChevronLeft';
 
 type CreateQuestionnaireProps = {
     showLoader: boolean;
     questionnaire: Questionnaire;
-    setQuestionnaireResInfo: React.Dispatch<React.SetStateAction<QuestionnaireResult | undefined>>;
+    setQuestionnaireResInfo: (result: QuestionnaireResult) => void;
     setdisabledDropDown: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -36,7 +37,6 @@ export const initRes = (copyQuestionnaire: Questionnaire) => {
 
 export const convertToQuestnnairResult = (resultQ: Questionnaire, selectedQId: string) => {
     let qr = emptyQquestionnaireRes;
-    console.log(selectedQId);
     resultQ.questions.forEach((q) => {
         if (q.questionnaireId == selectedQId) {
             let ansString: string[] = [];
@@ -55,7 +55,6 @@ export const convertToQuestnnairResult = (resultQ: Questionnaire, selectedQId: s
 };
 
 const CreateQuestnnaireForm = ({ showLoader, questionnaire, setQuestionnaireResInfo, setdisabledDropDown }: CreateQuestionnaireProps) => {
-    const [showSuccess, setShowSuccess] = useState(false);
     const [resultValues, setRes] = useState<Questionnaire | undefined>();
 
     useEffect(() => {
@@ -84,7 +83,6 @@ const CreateQuestnnaireForm = ({ showLoader, questionnaire, setQuestionnaireResI
                     if (resultValues) {
                         let convertedQ = convertToQuestnnairResult(resultValues, values.questions[0].questionnaireId);
                         setQuestionnaireResInfo(convertedQ);
-                        setShowSuccess(true);
                         setdisabledDropDown(true);
                     }
                 }}
@@ -92,53 +90,45 @@ const CreateQuestnnaireForm = ({ showLoader, questionnaire, setQuestionnaireResI
                 {(formik) => {
                     const { values, errors, touched, isValid } = formik;
                     return (
-                        <FormCard>
-                            <FormHeader>שאלון אנמנזה</FormHeader>
-                            {showSuccess ? (
-                                <SuccessContainer>
-                                    <span className="material-icons">check_circle</span>
-                                    <div>נוצר בהצלחה</div>
-                                </SuccessContainer>
-                            ) : (
-                                <Form>
-                                    {values.questions.map((q, indexQ) => {
-                                        return (
-                                            <div key={indexQ}>
-                                                <FormControl>
-                                                    <FormLabel>{q.name}</FormLabel>
-                                                    <RadioGroup aria-label="ans" name="ans">
-                                                        {q.answers.map((ans, indexA) => {
-                                                            return (
-                                                                <FormControlLabel
-                                                                    key={indexA}
-                                                                    control={
-                                                                        <Checkbox
-                                                                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                                                                if (resultValues) {
-                                                                                    handleChange(event, resultValues, ans, indexQ);
-                                                                                }
-                                                                            }}
-                                                                            name={ans.id}
-                                                                        />
-                                                                    }
-                                                                    value={ans.name}
-                                                                    label={ans.name}
-                                                                />
-                                                            );
-                                                        })}
-                                                    </RadioGroup>
-                                                </FormControl>
-                                            </div>
-                                        );
-                                    })}
-                                    <Footer>
-                                        <RoundedButton type="submit" variant="contained" color="primary" size="large" startIcon={<SaveIcon />}>
-                                            {showLoader ? <BtnLoader /> : <span>{'הוספה'}</span>}
-                                        </RoundedButton>
-                                    </Footer>
-                                </Form>
-                            )}
-                        </FormCard>
+                        <Form>
+                            <Container>
+                                {values.questions.map((q, indexQ) => {
+                                    return (
+                                        <div key={indexQ}>
+                                            <CustomFormControl>
+                                                <CustomFormLabel>{q.name}</CustomFormLabel>
+                                                <CustomRadioGroup aria-label="ans" name="ans">
+                                                    {q.answers.map((ans, indexA) => {
+                                                        return (
+                                                            <FormControlLabel
+                                                                key={indexA}
+                                                                control={
+                                                                    <Checkbox
+                                                                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                                                            if (resultValues) {
+                                                                                handleChange(event, resultValues, ans, indexQ);
+                                                                            }
+                                                                        }}
+                                                                        name={ans.id}
+                                                                    />
+                                                                }
+                                                                value={ans.name}
+                                                                label={ans.name}
+                                                            />
+                                                        );
+                                                    })}
+                                                </CustomRadioGroup>
+                                            </CustomFormControl>
+                                        </div>
+                                    );
+                                })}
+                            </Container>
+                            <Footer>
+                                <RoundedButton type="submit" variant="contained" color="primary" size="large" endIcon={<NavigateNextIcon />}>
+                                    {showLoader ? <BtnLoader /> : <span>{'הבא'}</span>}
+                                </RoundedButton>
+                            </Footer>
+                        </Form>
                     );
                 }}
             </Formik>
@@ -154,7 +144,29 @@ const ErrorMsg = styled.div`
 const Footer = styled.div`
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    margin: 20px 0;
 `;
-
+const Container = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    > * {
+        flex: 1;
+        flex-basis: 15%;
+    }
+    margin-top: 20px 0;
+`;
+const CustomFormControl = styled(FormControl)`
+    margin: 20px !important;
+`;
+const CustomRadioGroup = styled(RadioGroup)`
+    max-height: 200px;
+    overflow-y: auto;
+    flex-wrap: initial !important;
+    margin-top: 5px;
+`;
+const CustomFormLabel = styled(FormLabel)`
+    font-size: 18px !important;
+    font-weight: bold !important;
+    color: #1a2c3a !important;
+`;
 export default CreateQuestnnaireForm;
