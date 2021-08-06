@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
     DataGrid,
     GridColDef,
@@ -24,6 +24,7 @@ export interface spTableProps {
     columnsSP: GridColDef[];
     pageSize: number;
     setSpInfo: React.Dispatch<React.SetStateAction<speechAudiometry | undefined>>;
+    data?: any[];
 }
 const validateInputdB = (val: GridCellValue) => {
     let res = false;
@@ -40,8 +41,27 @@ const validateInputDisc = (val: GridCellValue) => {
     }
     return res;
 };
-export const SpeechAudiometryTable = ({ rowsSP, columnsSP, pageSize, setSpInfo }: spTableProps) => {
+export const InitData = (data: any) => {
+    let res = data;
+    let arr = [];
+    let index = 0;
+    if (res) {
+        arr = Object.keys(res).map((empty) => {
+            return {
+                id: index++,
+                empty,
+                ...res[empty]
+            };
+        });
+    }
+    return arr;
+};
+export const SpeechAudiometryTable = ({ rowsSP, columnsSP, pageSize, setSpInfo, data }: spTableProps) => {
     const [editRows, setRows] = useState(rowsSP);
+    const [dataRows, setDataRows] = useState<any[]>();
+    useEffect(() => {
+        setDataRows(InitData(data));
+    }, []);
     const classes = useStyles();
     const handleEditCellChangeCommitted = useCallback(
         ({ id, field, props }: GridEditCellPropsParams) => {
@@ -150,7 +170,26 @@ export const SpeechAudiometryTable = ({ rowsSP, columnsSP, pageSize, setSpInfo }
     );
     return (
         <React.Fragment>
-            <MuiDataGrid rows={editRows} columns={columnsSP} onEditCellChangeCommitted={handleEditCellChangeCommitted} height="400px" hideFooter />
+            {data && dataRows?.length ? (
+                (console.log(data),
+                (
+                    <MuiDataGrid
+                        rows={dataRows}
+                        columns={columnsSP}
+                        onEditCellChangeCommitted={handleEditCellChangeCommitted}
+                        height="400px"
+                        hideFooter
+                    />
+                ))
+            ) : (
+                <MuiDataGrid
+                    rows={editRows}
+                    columns={columnsSP}
+                    onEditCellChangeCommitted={handleEditCellChangeCommitted}
+                    height="400px"
+                    hideFooter
+                />
+            )}
         </React.Fragment>
     );
 };

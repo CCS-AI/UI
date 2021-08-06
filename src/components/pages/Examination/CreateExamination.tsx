@@ -155,7 +155,7 @@ const mapDispatchToProps = (dispatch: any) => ({
 
 export default withRouter(connect(null, mapDispatchToProps)(CreateExamination));
 
-const Exam = ({ data, width, height }: Props) => {
+export const Exam = ({ data, width, height }: Props) => {
     const [dataPoints, setDataPoints] = useState<Data[]>([]);
 
     useEffect(() => {

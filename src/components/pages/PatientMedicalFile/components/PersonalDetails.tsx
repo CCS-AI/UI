@@ -8,9 +8,9 @@ import MaterialAvatar from '@material-ui/core/Avatar';
 type Props = {
     patient: Patient;
 };
+export const detailNullMessage = ' *נתון לא קיים במערכת*';
 
 const PersonalDetails = ({ patient }: Props) => {
-    const detailNullMessage = ' *נתון לא קיים במערכת*';
     const gender = Gender[patient.gender];
     const avatarCommonProps: AvatarProps = {
         style: { width: '100px', height: '100px' },
@@ -101,7 +101,7 @@ const AvatarContainer = styled.div`
     top: -45px;
     background: white;
 `;
-const Container = styled.div`
+export const Container = styled.div`
     display: flex;
     flex-wrap: wrap;
     > * {
@@ -112,17 +112,18 @@ const Container = styled.div`
         margin-bottom: 10px;
     }
 `;
-const Header = styled.div`
+export const Header = styled.div`
     font-size: 21px;
     color: #1d2e3c;
     font-weight: bold;
 `;
-const BoxContainer = styled.div``;
-const Title = styled.div`
+export const BoxContainer = styled.div``;
+export const Title = styled.div`
     font-size: 18px;
 `;
-const Value = styled.div`
+export const Value = styled.div`
     font-size: 14px;
     color: #b7b7b7;
 `;
+
 export default PersonalDetails;
