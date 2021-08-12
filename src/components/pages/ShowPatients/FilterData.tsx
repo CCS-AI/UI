@@ -14,10 +14,13 @@ import { RoundedButton } from '../../shared/form/StyledFormShared';
 import SaveIcon from '@material-ui/icons/Save';
 import { BtnLoader } from '../../shared/SmallComponents/Loader';
 import { Filter } from '../../../models/entities/filter';
-
-type Props = {
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+type Props = RouteComponentProps & {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setFilterData: React.Dispatch<React.SetStateAction<Filter | undefined>>;
+    fetchPatients: (filter: Filter | undefined) => Promise<Patient[]>;
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -36,20 +39,21 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 type wizardModeType = 'FILTER-QUESTIONNAIRE' | 'FILTER-EXAMINATION';
-const FilterData = ({ open, setOpen }: Props) => {
+const FilterData = ({ open, setOpen, setFilterData, fetchPatients }: Props) => {
     const [questionnaireResInfo, setQuestionnaireResInfo] = useState<QuestionnaireResult>();
     const [wizardMode, setWizardMode] = useState<wizardModeType>('FILTER-QUESTIONNAIRE');
     function handleClose() {
+        const filter: Filter = {
+            questionnaireResults: questionnaireResInfo
+        } as Filter;
         setOpen(false);
+        fetchPatients(filter);
     }
     function handleSetQuestionnaire(result: QuestionnaireResult) {
         setQuestionnaireResInfo(result);
         setWizardMode('FILTER-EXAMINATION');
     }
     const submitFilter = () => {
-        const filter: Filter = {
-            questionnaireResults: questionnaireResInfo
-        } as Filter;
         return (
             <div>
                 <h3>FILTER-EXAMINATION</h3>
@@ -87,4 +91,10 @@ const FilterData = ({ open, setOpen }: Props) => {
         </Dialog>
     );
 };
-export default FilterData;
+
+// export default FilterData;
+const mapDispatchToProps = (dispatch: any) => ({
+    fetchPatients: () => dispatch.patient.fetchAllPatients()
+});
+
+export default withRouter(connect(null, mapDispatchToProps)(FilterData));
