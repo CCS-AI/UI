@@ -7,9 +7,9 @@ import { FlexPageContainer } from '../../shared/styled/styled';
 import { TableCard, TableHeader } from '../../shared/form/StyledFormShared';
 import { PatientMedicalFile } from '../../../models/entities/pmf';
 import { patientMedicalFileSelector } from '../../../state/ducks/patientMedicalfile/selectors';
-import { Button } from '@material-ui/core';
+import { Button, Container } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import PersonalDetails, { BoxContainer, Title, Value, detailNullMessage } from '../PatientMedicalFile/components/PersonalDetails';
+import PersonalDetails, { BoxContainer, Title, Value, detailNullMessage, PersonalCard } from '../PatientMedicalFile/components/PersonalDetails';
 import { Examination } from '../../../models/entities/examination';
 import { examinationSelector } from '../../../state/ducks/examination/selectors';
 import { PagesRoutes } from '../../../routing/PagesRoutes';
@@ -20,12 +20,13 @@ import { SelectPointType } from '../Examination/PointType';
 import { SpeechAudiometryDetails } from '../SpeechAudiometry';
 import { TextBox } from '../Examination/TextBox';
 import { TextArea } from './components/TextArea';
+import { Examiner } from '../../../models/entities/examiner';
 
 export type ShowSingleExaminationProps = RouteComponentProps<{ examinationId: string }> & {
     examinationInfo?: Examination;
     patientMedicalFileInfo?: PatientMedicalFile;
     showLoader: boolean;
-    getExaminationById: (examinationId: string) => void;
+    getExaminationById: (examinationId: string) => Promise<Examination>;
 };
 
 const SingleExamination = ({ getExaminationById, examinationInfo, patientMedicalFileInfo, showLoader, match }: ShowSingleExaminationProps) => {
@@ -54,10 +55,50 @@ const SingleExamination = ({ getExaminationById, examinationInfo, patientMedical
                             <span className="material-icons">chevron_right</span>
                             <span style={{ textDecoration: 'underline' }}>חזור לצפייה בתיק הרפואי </span>
                         </Link>
-                        <BoxContainer>
-                            <Title>תאריך הבדיקה:</Title>
-                            <Value>{examinationInfo.createdAt ? ' ' + formatHebDate(examinationInfo.createdAt) : detailNullMessage}</Value>
-                        </BoxContainer>
+                        <PersonalCard>
+                            <Container>
+                                <BoxContainer>
+                                    <Title>תאריך הבדיקה:</Title>
+                                    <Value>{examinationInfo.createdAt ? ' ' + formatHebDate(examinationInfo.createdAt) : detailNullMessage}</Value>
+                                </BoxContainer>
+                                <BoxContainer>
+                                    <Title>ת.ז של הנבדק:</Title>
+                                    <Value>
+                                        {patientMedicalFileInfo?.patient.personalId
+                                            ? ' ' + patientMedicalFileInfo.patient.personalId
+                                            : detailNullMessage}
+                                    </Value>
+                                </BoxContainer>
+                                <BoxContainer>
+                                    <Title>תאריך לידה של הנבדק:</Title>
+                                    <Value>
+                                        {patientMedicalFileInfo?.patient.birth
+                                            ? ' ' + formatHebDate(patientMedicalFileInfo.patient.birth)
+                                            : detailNullMessage}
+                                    </Value>
+                                </BoxContainer>
+                                <BoxContainer>
+                                    <Title>גיל בזמן הבדיקה:</Title>
+                                    <Value>{examinationInfo.ageOnCreate ? ' ' + examinationInfo.ageOnCreate : detailNullMessage}</Value>
+                                </BoxContainer>
+                                <BoxContainer>
+                                    <Title>שם פרטי - קלינאי תקשורת:</Title>
+                                    <Value>
+                                        {examinationInfo.examiner?.firstName ? ' ' + examinationInfo.examiner.firstName : detailNullMessage}
+                                    </Value>
+                                </BoxContainer>
+                                <BoxContainer>
+                                    <Title>שם משפחה - קלינאי תקשורת:</Title>
+                                    <Value>{examinationInfo.examiner?.lastName ? ' ' + examinationInfo.examiner.lastName : detailNullMessage}</Value>
+                                </BoxContainer>
+                                <BoxContainer>
+                                    <Title>רשיון - קלינאי תקשורת:</Title>
+                                    <Value>
+                                        {examinationInfo.examiner?.licenseNumber ? ' ' + examinationInfo.examiner.licenseNumber : detailNullMessage}
+                                    </Value>
+                                </BoxContainer>
+                            </Container>
+                        </PersonalCard>
                         {examinationInfo.info ? (
                             <div className={'point-type-container'}>
                                 <Exam data={examinationInfo.info} width={1000} height={800} />
@@ -81,11 +122,7 @@ const SingleExamination = ({ getExaminationById, examinationInfo, patientMedical
                             ></div>
 
                             <h3>סיכום והמלצות</h3>
-                            <TextArea
-                                deafultVal={examinationInfo.patientTestBackground ? examinationInfo.patientTestBackground : detailNullMessage}
-                                width="50%"
-                                rows={19}
-                            />
+                            <TextArea deafultVal={examinationInfo.summary ? examinationInfo.summary : detailNullMessage} width="50%" rows={19} />
                         </div>
                     </>
                 )}
@@ -100,7 +137,8 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    getExaminationById: (examinationId: string) => dispatch.examination.getExaminationById(examinationId)
+    getExaminationById: (examinationId: string) => dispatch.examination.getExaminationById(examinationId),
+    getExaminerByID: (examinerId: string) => dispatch.examiner.getExaminerByID(examinerId)
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SingleExamination));

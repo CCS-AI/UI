@@ -1,6 +1,7 @@
 import { speechAudiometry } from './SP';
 import { Data } from '../../components/pages/Examination/CreateExamination';
 import { QuestionnaireResult } from './questionnaire';
+import { Examiner } from './examiner';
 
 export type Examination = {
     id: string;
@@ -13,4 +14,5 @@ export type Examination = {
     questionnaireResults: QuestionnaireResult;
     ageOnCreate?: number;
     examinerId?: string;
+    examiner?: Examiner;
 };

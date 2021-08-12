@@ -89,7 +89,7 @@ const PersonalDetails = ({ patient }: Props) => {
     );
 };
 
-const PersonalCard = styled.div`
+export const PersonalCard = styled.div`
     border: 1px solid #f3f3f3;
     padding: 20px 10px;
     border-radius: 5px;
