@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { DataGrid, GridColDef, GridCellParams, GridRowId } from '@material-ui/data-grid';
 import { Button } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import { Examination } from '../../../../models/entities/examination';
 import moment from 'moment';
 import { formatHebDate } from '../../../../utils/date';
 import MuiDataGrid from '../../../shared/MuiDataGrid/MuiDataGrid';
 import { TableHeader } from '../../../shared/form/StyledFormShared';
+import { PagesRoutes } from '../../../../routing/PagesRoutes';
 
 export interface TablehProps {
     examinationsRows: Examination[];
@@ -21,9 +23,11 @@ export const ExaminationsTable = ({ examinationsRows, columns, pageSize }: Table
     if (!columns.includes(EXAMINATION_INFO)) columns.push(EXAMINATION_INFO);
 
     const BUTTON = (params: GridCellParams) => (
-        <Button color="secondary" variant="contained" onClick={() => {}}>
-            הצג
-        </Button>
+        <Link style={{ textDecoration: 'none' }} to={{ pathname: `${PagesRoutes.SingleExaminationSummary}/${params.row.id}` }}>
+            <Button color="secondary" variant="contained">
+                הצג
+            </Button>
+        </Link>
     );
     const HIDDEN_FIELDS = ['id', 'pmfId', 'speechAudiometry', 'patientTestBackground', 'questionnaireResultId'];
     const DATE_FIELDS = ['createdAt', 'updatedAt'];

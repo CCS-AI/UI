@@ -5,14 +5,15 @@ import { SpeechAudiometryTable } from '../SpeechAudiometry/components/SpeechAudi
 import { speechAudiometry } from '../../../models/entities/SP';
 type Props = {
     setSpInfo: React.Dispatch<React.SetStateAction<speechAudiometry | undefined>>;
+    data?: any;
 };
 
-export const SpeechAudiometryDetails = ({ setSpInfo }: Props) => {
+export const SpeechAudiometryDetails = ({ data, setSpInfo }: Props) => {
     return (
         <>
             <div>
                 <h3>Speech Audiometry</h3>
-                <SpeechAudiometryTable rowsSP={InitRows} columnsSP={InitColumns} pageSize={6} setSpInfo={setSpInfo} />
+                <SpeechAudiometryTable rowsSP={InitRows} columnsSP={InitColumns} pageSize={6} setSpInfo={setSpInfo} data={data} />
             </div>
         </>
     );
@@ -32,7 +33,7 @@ const InitColumns = [
     { field: 'SF', headerName: 'SF', type: 'string', width: 150, editable: true }
 ];
 
-const InitRows = [
+let InitRows = [
     {
         id: 1,
         empty: 'SRT_db',

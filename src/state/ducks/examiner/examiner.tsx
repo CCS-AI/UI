@@ -17,6 +17,10 @@ export const examiner: ModelConfig<examinerStateType> = {
         async registerExaminer(examiner: Examiner) {
             const newExaminer = await client.examiner().registerExaminer(examiner);
             return true;
+        },
+        async getExaminerByID(examinerId: string) {
+            const response = await client.examiner().getExaminerByID(examinerId);
+            return response;
         }
     })
 };
