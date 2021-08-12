@@ -11,5 +11,5 @@ export type Examination = {
     summary: string;
     questionnaireResults: QuestionnaireResult;
     ageOnCreate?: number;
-    examiner?: string;
+    examinerId?: string;
 };
