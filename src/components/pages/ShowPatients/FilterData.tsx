@@ -13,7 +13,7 @@ import { Patient } from '../../../models/entities/patient';
 import { RoundedButton } from '../../shared/form/StyledFormShared';
 import SaveIcon from '@material-ui/icons/Save';
 import { BtnLoader } from '../../shared/SmallComponents/Loader';
-import { Filter } from '../../../models/entities/filter';
+import { ExaminationFilterResult, Filter, PatientFilterDetails } from '../../../models/entities/filter';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 type Props = RouteComponentProps & {
@@ -41,10 +41,14 @@ const useStyles = makeStyles((theme) => ({
 type wizardModeType = 'FILTER-QUESTIONNAIRE' | 'FILTER-EXAMINATION';
 const FilterData = ({ open, setOpen, setFilterData, fetchPatients }: Props) => {
     const [questionnaireResInfo, setQuestionnaireResInfo] = useState<QuestionnaireResult>();
+    const [patientFilterDetails, setPatientFilterDetails] = useState<PatientFilterDetails>();
+    const [examinationFilterResult, seExaminationFilterResult] = useState<ExaminationFilterResult>();
     const [wizardMode, setWizardMode] = useState<wizardModeType>('FILTER-QUESTIONNAIRE');
     function handleClose() {
         const filter: Filter = {
-            questionnaireResults: questionnaireResInfo
+            questionnaireResults: questionnaireResInfo,
+            patientDetails: patientFilterDetails,
+            examinationResult: examinationFilterResult
         } as Filter;
         setOpen(false);
         fetchPatients(filter);
