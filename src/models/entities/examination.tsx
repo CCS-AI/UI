@@ -8,6 +8,6 @@ export type Examination = {
     updatedAt: Date;
     info: Array<Data>;
     speechAudiometry: speechAudiometry;
-    patientTestBackground: string;
+    background: string;
     questionnaireResults: QuestionnaireResult;
 };

@@ -88,7 +88,7 @@ const CreateExamination = ({ questionnaireResults, postExamination, match, pmfid
             pmfId: medicalFileId,
             info: data,
             speechAudiometry: spInfo as speechAudiometry,
-            patientTestBackground: pBackground,
+            background: pBackground,
             questionnaireResults: questionnaireResults
         } as Examination;
         postExamination(exmaination, patientId)
