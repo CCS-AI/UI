@@ -21,6 +21,8 @@
       "updatedAt": "תאריך עדכון",
       "info" : "הבדיקה",
       "speechAudiometry":"בדיקת דיבור",
-      "patientTestBackground": "רקע על המטופל"
+      "patientTestBackground": "רקע על המטופל",
+      "summary":"סיכום",
+      "ageOnCreate":"גיל בזמן הבדיקה"
   }
   }

@@ -7,9 +7,16 @@ import { FlexPageContainer } from '../../shared/styled/styled';
 import { TableCard, TableHeader } from '../../shared/form/StyledFormShared';
 import { PatientMedicalFile } from '../../../models/entities/pmf';
 import { patientMedicalFileSelector } from '../../../state/ducks/patientMedicalfile/selectors';
-import { Button, Container } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import PersonalDetails, { BoxContainer, Title, Value, detailNullMessage, PersonalCard } from '../PatientMedicalFile/components/PersonalDetails';
+import PersonalDetails, {
+    BoxContainer,
+    Title,
+    Value,
+    detailNullMessage,
+    PersonalCard,
+    Container
+} from '../PatientMedicalFile/components/PersonalDetails';
 import { Examination } from '../../../models/entities/examination';
 import { examinationSelector } from '../../../state/ducks/examination/selectors';
 import { PagesRoutes } from '../../../routing/PagesRoutes';
@@ -21,6 +28,8 @@ import { SpeechAudiometryDetails } from '../SpeechAudiometry';
 import { TextBox } from '../Examination/TextBox';
 import { TextArea } from './components/TextArea';
 import { Examiner } from '../../../models/entities/examiner';
+import PrintIcon from '@material-ui/icons/Print';
+import './index.css';
 
 export type ShowSingleExaminationProps = RouteComponentProps<{ examinationId: string }> & {
     examinationInfo?: Examination;
@@ -35,13 +44,20 @@ const SingleExamination = ({ getExaminationById, examinationInfo, patientMedical
         getExaminationById(match.params.examinationId);
     }, [getExaminationById, match.params.examinationId]);
     const CreateBtn = (style?: React.CSSProperties) => (
-        <Button color="secondary" variant="outlined" style={{ width: 'auto', ...style }} startIcon={<AddIcon />} onClick={() => window.print()}>
+        <Button
+            className="hide-on-print"
+            color="secondary"
+            variant="outlined"
+            style={{ width: 'auto', ...style }}
+            startIcon={<PrintIcon />}
+            onClick={() => window.print()}
+        >
             הדפסה
         </Button>
     );
     return (
         <FlexPageContainer>
-            <TableCard>
+            <TableCard className="table-card">
                 {showLoader ? (
                     <Loader />
                 ) : !examinationInfo ? (
@@ -51,7 +67,12 @@ const SingleExamination = ({ getExaminationById, examinationInfo, patientMedical
                         <TableHeader>תוצאות בדיקת שמיעה</TableHeader>
                         <>{CreateBtn({ display: 'flex', margin: '5px auto 5px 0' })}</>
                         <br />
-                        <Link to={{}} onClick={() => history.goBack()} style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+                        <Link
+                            className="hide-on-print"
+                            to={{}}
+                            onClick={() => history.goBack()}
+                            style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}
+                        >
                             <span className="material-icons">chevron_right</span>
                             <span style={{ textDecoration: 'underline' }}>חזור לצפייה בתיק הרפואי </span>
                         </Link>
@@ -106,7 +127,7 @@ const SingleExamination = ({ getExaminationById, examinationInfo, patientMedical
                         ) : (
                             <h3> נתוני גרף הבדיקה לא קיימים במערכת</h3>
                         )}
-                        <div style={{ display: 'flex' }}>
+                        <div className="examination-more-details" style={{ display: 'flex' }}>
                             <div style={{ width: '50%', marginLeft: '30px' }}>
                                 <SpeechAudiometryDetails data={examinationInfo.speechAudiometry} setSpInfo={() => {}} />
                             </div>
@@ -119,10 +140,10 @@ const SingleExamination = ({ getExaminationById, examinationInfo, patientMedical
                                     alignItems: 'center',
                                     width: '100%'
                                 }}
-                            ></div>
-
-                            <h3>סיכום והמלצות</h3>
-                            <TextArea deafultVal={examinationInfo.summary ? examinationInfo.summary : detailNullMessage} width="50%" rows={19} />
+                            >
+                                <h3>סיכום והמלצות</h3>
+                                <TextArea deafultVal={examinationInfo.summary ? examinationInfo.summary : detailNullMessage} width="100%" rows={19} />
+                            </div>
                         </div>
                     </>
                 )}
@@ -133,12 +154,11 @@ const SingleExamination = ({ getExaminationById, examinationInfo, patientMedical
 const mapStateToProps = (state: RootState) => ({
     patientMedicalFileInfo: patientMedicalFileSelector.patientMedicalFileInfo(state),
     examinationInfo: examinationSelector.examinationInfo(state),
-    showLoader: state.loading.effects.patientMedicalFile.fetchPatientMedicalFile
+    showLoader: state.loading.effects.examination.getExaminationById
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    getExaminationById: (examinationId: string) => dispatch.examination.getExaminationById(examinationId),
-    getExaminerByID: (examinerId: string) => dispatch.examiner.getExaminerByID(examinerId)
+    getExaminationById: (examinationId: string) => dispatch.examination.getExaminationById(examinationId)
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SingleExamination));

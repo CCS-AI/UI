@@ -19,12 +19,12 @@ const Layout = ({ children }: PropsWithChildren<Props>) => {
 
     return (
         <LayoutContainer>
-            <HeaderWrapper>
+            <HeaderWrapper className="hide-on-print">
                 <Header />
             </HeaderWrapper>
             {/* <ResponsiveDrawerConnected> */}
             {/* <SideBar printMode={printMode}> */}
-            <Wrapper>
+            <Wrapper className="main-wrapper">
                 <SidebarGuard>
                     <SideBar
                         open={openSideBar}
@@ -34,7 +34,9 @@ const Layout = ({ children }: PropsWithChildren<Props>) => {
                     />
                 </SidebarGuard>
 
-                <ContentWrapper marginRight={openSideBar ? pageMarginRightOpen : pageMarginRightClose}>{children}</ContentWrapper>
+                <ContentWrapper className="content-wrapper" marginRight={openSideBar ? pageMarginRightOpen : pageMarginRightClose}>
+                    {children}
+                </ContentWrapper>
             </Wrapper>
         </LayoutContainer>
     );
