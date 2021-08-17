@@ -13,6 +13,7 @@ import ShowAllPatients from './components/pages/ShowPatients/ShowAllPatietns';
 import CreateExamination from './components/pages/Examination/CreateExamination';
 import ShowQuestionnaire from './components/pages/QuestionnaireForm';
 import SinglePatient from './components/pages/SinglePatient';
+import FilterExamination from './components/pages/Examination/FilterExamination';
 
 type Props = {};
 

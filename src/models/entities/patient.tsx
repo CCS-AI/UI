@@ -46,8 +46,19 @@ export enum Gender {
     FEMALE
 }
 
+export enum GenderHE {
+    MALE = 'זכר',
+    FEMALE = 'נקבה'
+}
+
 export enum HMO { //KUPAT HOLIM
     CLALIT = 1,
     MACABI,
     LEUMIT
+}
+
+export enum HMO_HE { //KUPAT HOLIM
+    CLALIT = 'כללית',
+    MACABI = 'מכבי',
+    LEUMIT = 'לאומית'
 }
