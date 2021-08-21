@@ -22,7 +22,6 @@ export type ShowAllPatientsProps = RouteComponentProps & {
 
 const ShowAllPatients = ({ patients, fetchPatients, showLoader }: ShowAllPatientsProps) => {
     const [filterOpen, setFilterOpen] = useState(false);
-    const [filterData, setFilterData] = useState<Filter | undefined>();
     useEffect(() => {
         fetchPatients(undefined);
     }, []);
@@ -40,12 +39,11 @@ const ShowAllPatients = ({ patients, fetchPatients, showLoader }: ShowAllPatient
                     <div>No patients</div>
                 ) : (
                     <>
+                        <FilterData open={filterOpen} setOpen={setFilterOpen} />
                         <TableHeader>צפייה במטופלים</TableHeader>
                         <br />
                         <br />
                         {CreateBtn({ display: 'flex', margin: '5px auto 5px 0' })}
-                        {/* <FilterData open={filterOpen} setOpen={setFilterOpen} setFilterData={setFilterData} fetchPatients={fetchPatients} /> */}
-                        <FilterData open={filterOpen} setOpen={setFilterOpen} setFilterData={setFilterData} />
                         <PatientTableWithSearch rows={patients} columns={Object.keys(patients[0])} pageSize={5}></PatientTableWithSearch>
                     </>
                 )}
@@ -59,7 +57,8 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    fetchPatients: () => dispatch.patient.fetchAllPatients()
+    fetchPatients: (filter: Filter | undefined) => dispatch.patient.fetchAllPatients(filter),
+    setAllPatientsEmpty: () => dispatch.patient.setAllPatientsEmpty()
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ShowAllPatients));

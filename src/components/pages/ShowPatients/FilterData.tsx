@@ -16,10 +16,11 @@ import { BtnLoader } from '../../shared/SmallComponents/Loader';
 import { ExaminationFilterResult, Filter, PatientFilterDetails } from '../../../models/entities/filter';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { RootState } from '../../../state/store/store';
+import { patientSelector } from '../../../state/ducks/patient/selectors';
 type Props = RouteComponentProps & {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    setFilterData: React.Dispatch<React.SetStateAction<Filter | undefined>>;
     fetchPatients: (filter: Filter | undefined) => Promise<Patient[]>;
 };
 
@@ -39,20 +40,28 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 type wizardModeType = 'FILTER-QUESTIONNAIRE' | 'FILTER-EXAMINATION';
-const FilterData = ({ open, setOpen, setFilterData, fetchPatients }: Props) => {
+const FilterData = ({ open, setOpen, fetchPatients }: Props) => {
     const [questionnaireResInfo, setQuestionnaireResInfo] = useState<QuestionnaireResult>();
     const [patientFilterDetails, setPatientFilterDetails] = useState<PatientFilterDetails>();
     const [examinationFilterResult, seExaminationFilterResult] = useState<ExaminationFilterResult>();
     const [wizardMode, setWizardMode] = useState<wizardModeType>('FILTER-QUESTIONNAIRE');
-    function handleClose() {
-        const filter: Filter = {
+    const [showLoader, setLoader] = useState(false);
+
+    const handleClose = () => {
+        setLoader(true);
+        let filter: Filter = {
             questionnaireResults: questionnaireResInfo,
             patientDetails: patientFilterDetails,
             examinationResult: examinationFilterResult
         } as Filter;
-        setOpen(false);
-        fetchPatients(filter);
-    }
+        fetchPatients(filter)
+            .then((res) => {})
+            .finally(() => {
+                setLoader(false);
+                setOpen(false);
+            });
+    };
+
     function handleSetQuestionnaire(result: QuestionnaireResult) {
         setQuestionnaireResInfo(result);
         setWizardMode('FILTER-EXAMINATION');
@@ -69,7 +78,9 @@ const FilterData = ({ open, setOpen, setFilterData, fetchPatients }: Props) => {
                     startIcon={<SaveIcon />}
                     onClick={handleClose}
                     disabled={undefined}
-                ></RoundedButton>
+                >
+                    {showLoader ? <BtnLoader /> : <span>{'שמירה'}</span>}
+                </RoundedButton>
             </div>
         );
     };
@@ -89,16 +100,13 @@ const FilterData = ({ open, setOpen, setFilterData, fetchPatients }: Props) => {
             <DialogContent style={{ minHeight: '500px' }}>
                 {wizardMode === 'FILTER-QUESTIONNAIRE' && <QuestionnaireForm setQuestionnaireResInfo={handleSetQuestionnaire} />}
                 {wizardMode === 'FILTER-EXAMINATION' && submitFilter()}
-                <span>{'שמירה'}</span>
-                {/* {showLoader ? <BtnLoader /> : <span>{'שמירה'}</span>} */}
             </DialogContent>
         </Dialog>
     );
 };
 
-// export default FilterData;
 const mapDispatchToProps = (dispatch: any) => ({
-    fetchPatients: () => dispatch.patient.fetchAllPatients()
+    fetchPatients: (filter: Filter | undefined) => dispatch.patient.fetchAllPatients(filter)
 });
 
 export default withRouter(connect(null, mapDispatchToProps)(FilterData));
