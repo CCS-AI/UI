@@ -18,6 +18,8 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { RootState } from '../../../state/store/store';
 import { patientSelector } from '../../../state/ducks/patient/selectors';
+import { forEach } from 'lodash';
+import { questionnaireSelector } from '../../../state/ducks/questionnaire/selectors';
 type Props = RouteComponentProps & {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -65,7 +67,13 @@ const FilterData = ({ open, setOpen, fetchPatients }: Props) => {
     };
 
     function handleSetQuestionnaire(result: QuestionnaireResult) {
-        setQuestionnaireResInfo(result);
+        let questionnaireResFilter: QuestionnaireResult = [];
+        result.forEach((question) => {
+            if (question.answers && question.answers.length > 0) {
+                questionnaireResFilter.push(question);
+            }
+        });
+        setQuestionnaireResInfo(questionnaireResFilter);
         setWizardMode('FILTER-EXAMINATION');
     }
     const submitFilter = () => {
