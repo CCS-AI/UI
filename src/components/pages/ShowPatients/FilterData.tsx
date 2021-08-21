@@ -49,10 +49,12 @@ const FilterData = ({ open, setOpen, fetchPatients }: Props) => {
 
     const handleClose = () => {
         setLoader(true);
-        let filter: Filter = {
-            questionnaireResults: questionnaireResInfo,
-            patientDetails: patientFilterDetails,
-            examinationResult: examinationFilterResult
+        const filter = {
+            filter: {
+                questionnaireResults: questionnaireResInfo,
+                patientDetails: patientFilterDetails,
+                examinationResult: examinationFilterResult
+            }
         } as Filter;
         fetchPatients(filter)
             .then((res) => {})
