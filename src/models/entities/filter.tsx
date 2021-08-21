@@ -15,12 +15,13 @@ export type PatientFilterDetails = {
 };
 
 export type ExaminationFilterResult = {
-    examinationDate: Date;
+    examinationDate: string;
     ageOnCreate: number;
     examiner: string;
     frequency1: number;
     frequency2: number;
     type: ExamPointTypes;
-    operation: '<' | '>' | '=';
+    operation: '<' | '>' | '=' | '';
     operationNumber: number;
+    earSide: 'RIGHT' | 'LEFT' | '';
 };
