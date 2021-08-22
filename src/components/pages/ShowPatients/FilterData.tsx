@@ -53,7 +53,7 @@ const FilterData = ({ open, setOpen, fetchPatients }: Props) => {
         setLoader(true);
         const filter = {
             filter: {
-                questionnaireResults: questionnaireResInfo,
+                questionnaireResult: questionnaireResInfo,
                 patientDetails: patientFilterDetails,
                 examinationResult: examinationFilterResult
             }
