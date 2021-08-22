@@ -15,24 +15,25 @@ import { FlexPageContainer } from '../../shared/styled/styled';
 import { Gender, GenderHE, HMO, HMO_HE } from '../../../models/entities/patient';
 import { xAxisPoints } from './CreateExamination';
 import { Button } from '@material-ui/core';
+import { ExaminationFilterResult, PatientFilterDetails } from '../../../models/entities/filter';
 
-export type PatientFilterDetails = {
-    gender: Gender;
-    yearOfBirth: number;
-    hmo: HMO;
-};
-
-export type ExaminationFilterResult = {
-    examinationDate: string;
-    ageOnCreate: number;
-    examiner: string;
-    frequency1: number;
-    frequency2: number;
-    type: ExamPointTypes;
-    operation: '<' | '>' | '=' | '';
-    operationNumber: number;
-    earSide: 'RIGHT' | 'LEFT' | '';
-};
+// export type PatientFilterDetails = {
+//     gender: Gender;
+//     yearOfBirth: number;
+//     hmo: HMO;
+// };
+//
+// export type ExaminationFilterResult = {
+//     examinationDate: string;
+//     ageOnCreate: number;
+//     examiner: string;
+//     frequency1: number;
+//     frequency2: number;
+//     type: ExamPointTypes;
+//     operation: '<' | '>' | '=' | '';
+//     operationNumber: number;
+//     earSide: 'RIGHT' | 'LEFT' | '';
+// };
 
 export type FilterExaminationProps = RouteComponentProps & {
     //should changed to Examiner[]
@@ -71,6 +72,15 @@ const FilterExamination = ({
         };
     });
 
+    const findExaminerIdByName = (examinerName: string) => {
+        if (!examiners) return undefined;
+        console.log(examiners);
+        for (var i = 0; i < examiners.length; i++) {
+            if (examiners[i].firstName + ' ' + examiners[i].lastName == examinerName) return examiners[i].id;
+        }
+        return undefined;
+    };
+
     useEffect(() => {
         fetchExaminers();
     }, [fetchExaminers]);
@@ -82,39 +92,56 @@ const FilterExamination = ({
                 setPatientFilterDetails(undefined);
                 setExaminationFilterResult(undefined);
             }
+            console.log('Set undefined ');
             return;
         }
 
         let patientDetails: PatientFilterDetails = {} as PatientFilterDetails;
         if (state.patientDetails.gender != '' && state.patientDetails.gender != undefined)
             patientDetails['gender'] = state.patientDetails.gender == 'זכר' ? Gender.MALE : Gender.FEMALE;
+        else patientDetails['gender'] = undefined;
+
         if (state.patientDetails.birthYear != '' && state.patientDetails.birthYear != undefined)
             patientDetails['yearOfBirth'] = Number(state.patientDetails.birthYear);
+        else patientDetails['yearOfBirth'] = undefined;
+
         if (state.patientDetails.hmo != '' && state.patientDetails.hmo != undefined) {
             if (state.patientDetails.hmo == 'כללית') patientDetails['hmo'] = 1;
             else if (state.patientDetails.hmo == 'מכבי') patientDetails['hmo'] = 2;
             else patientDetails['hmo'] = 3;
-        }
+        } else patientDetails['hmo'] = undefined;
 
         let examDetails: ExaminationFilterResult = {} as ExaminationFilterResult;
 
         if (state.patientDetails.ageOnCreate != '' && state.patientDetails.ageOnCreate != undefined)
             examDetails['ageOnCreate'] = Number(state.patientDetails.ageOnCreate);
+        else examDetails['ageOnCreate'] = undefined;
+
         if (state.patientDetails.dateOfExamination != '' && state.patientDetails.dateOfExamination != undefined)
-            examDetails['examinationDate'] = state.patientDetails.dateOfExamination;
+            examDetails['examinationDate'] = new Date(state.patientDetails.dateOfExamination);
+        else examDetails['examinationDate'] = undefined;
         if (state.patientDetails.examinerName != '' && state.patientDetails.examinerName != undefined)
-            examDetails['examiner'] = state.patientDetails.examinerName;
+            examDetails['examiner'] = findExaminerIdByName(state.patientDetails.examinerName);
+        else examDetails['examiner'] = undefined;
+
         if (state.examination.frequency1 != '' && state.examination.frequency1 != undefined)
             examDetails['frequency1'] = Number(state.examination.frequency1);
+        else examDetails['frequency1'] = undefined;
+
         if (state.examination.frequency2 != '' && state.examination.frequency2 != undefined)
             examDetails['frequency2'] = Number(state.examination.frequency2);
+        else examDetails['frequency2'] = undefined;
         if (state.examination.earSide != '' && state.examination.earSide != undefined)
-            examDetails['earSide'] = state.examination.earSide as 'RIGHT' | 'LEFT' | '';
+            examDetails['earSide'] = state.examination.earSide as 'RIGHT' | 'LEFT' | undefined;
+        else examDetails['earSide'] = undefined;
         if (state.examination.operationNumber != '' && state.examination.operationNumber != undefined)
             examDetails['operationNumber'] = Number(state.examination.operationNumber);
+        else examDetails['operationNumber'] = undefined;
         if (state.examination.operation != '' && state.examination.operation != undefined)
-            examDetails['operation'] = state.examination.operation as '>' | '<' | '=' | '';
+            examDetails['operation'] = state.examination.operation as '>' | '<' | '=';
+        else examDetails['operation'] = undefined;
         if (state.examination.type != '' && state.examination.type != undefined) examDetails['type'] = state.examination.type as ExamPointTypes;
+        else examDetails['type'] = undefined;
 
         console.log(patientDetails, examDetails);
         if (setPatientFilterDetails && setExaminationFilterResult) {
@@ -388,9 +415,14 @@ const FilterExamination = ({
                                 </div>
                             </div>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 40 }}>
-                            <Button onClick={validateAndSendQuery}>חפש</Button>
-                        </div>
+                        <div
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                marginTop: 40
+                            }}
+                        ></div>
                     </div>
                 )}
             </TableCard>

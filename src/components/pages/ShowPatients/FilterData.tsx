@@ -20,6 +20,7 @@ import { RootState } from '../../../state/store/store';
 import { patientSelector } from '../../../state/ducks/patient/selectors';
 import { forEach } from 'lodash';
 import { questionnaireSelector } from '../../../state/ducks/questionnaire/selectors';
+import FilterExamination from '../Examination/FilterExamination';
 type Props = RouteComponentProps & {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -58,6 +59,9 @@ const FilterData = ({ open, setOpen, fetchPatients }: Props) => {
                 examinationResult: examinationFilterResult
             }
         } as Filter;
+
+        if (filter.filter.patientDetails == undefined && filter.filter.examinationResult == undefined) return alert('תופס לא תקין');
+
         fetchPatients(filter)
             .then((res) => {})
             .finally(() => {
@@ -79,7 +83,7 @@ const FilterData = ({ open, setOpen, fetchPatients }: Props) => {
     const submitFilter = () => {
         return (
             <div>
-                <h3>FILTER-EXAMINATION</h3>
+                <FilterExamination setPatientFilterDetails={setPatientFilterDetails} setExaminationFilterResult={seExaminationFilterResult} />
                 <RoundedButton
                     type="submit"
                     variant="contained"

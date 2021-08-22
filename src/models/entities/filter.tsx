@@ -11,18 +11,19 @@ export type Filter = {
     };
 };
 export type PatientFilterDetails = {
-    gender: Gender;
-    yearOfBirth: number;
-    examinationDate: Date;
-    hmo: HMO;
+    gender: Gender | undefined;
+    yearOfBirth: number | undefined;
+    hmo: HMO | undefined;
 };
 
 export type ExaminationFilterResult = {
-    frequency1: number;
-    frequency2: number;
-    type: ExamPointTypes;
-    operation: '<' | '>' | '=';
-    operationNumber: number;
-    ageOnCreate: number;
-    examiner: string;
+    frequency1: number | undefined;
+    frequency2: number | undefined;
+    type: ExamPointTypes | undefined;
+    operation: '<' | '>' | '=' | undefined;
+    operationNumber: number | undefined;
+    ageOnCreate: number | undefined;
+    examiner: string | undefined;
+    examinationDate: Date | undefined;
+    earSide: 'RIGHT' | 'LEFT' | undefined;
 };
