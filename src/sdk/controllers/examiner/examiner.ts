@@ -12,9 +12,7 @@ export default class ExaminerApi extends BaseController implements IExaminer {
     }
 
     async fetchAllExaminers() {
-        // const response = await this.client.get('/examiner/all');
-        // should return array of Examiner object.
-        console.log('Hi!');
-        return Promise.resolve(['Riki', 'Liron']);
+        const response = await this.client.get('/examiner/all');
+        return response;
     }
 }

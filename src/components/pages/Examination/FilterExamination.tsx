@@ -36,7 +36,7 @@ export type ExaminationFilterResult = {
 
 export type FilterExaminationProps = RouteComponentProps & {
     //should changed to Examiner[]
-    examiners: string[] | undefined;
+    examiners: any | undefined;
     fetchExaminers: () => Promise<string[]>;
     showLoader: boolean;
     setPatientFilterDetails?: React.Dispatch<React.SetStateAction<PatientFilterDetails | undefined>>;
@@ -296,7 +296,11 @@ const FilterExamination = ({
                                     <FormControl style={{ marginRight: 50, width: 100 }}>
                                         <InputLabel>מאבחן</InputLabel>
                                         <Select value={state.patientDetails.examinerName} onChange={handleExaminerChanged}>
-                                            {getItemsToSelectFromIterable(examiners)}
+                                            {getItemsToSelectFromIterable(
+                                                examiners.map(
+                                                    (examiner: { [x: string]: string }) => examiner['firstName'] + ' ' + examiner['lastName']
+                                                )
+                                            )}
                                             <em>None</em>
                                         </Select>
                                     </FormControl>

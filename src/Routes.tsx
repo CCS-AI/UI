@@ -32,6 +32,9 @@ const Routes = ({}: Props) => {
                 <Route path={PagesRoutes.Login}>
                     <LoginPageConnected />
                 </Route>
+                <AuthRoute path={PagesRoutes.FilterExamination}>
+                    <FilterExamination setExaminationFilterResult={undefined} setPatientFilterDetails={undefined} />
+                </AuthRoute>
                 <Route component={() => <ExceptionPage />} path={PagesRoutes.Error} />
                 <Redirect to={PagesRoutes.Error} />
             </Switch>
