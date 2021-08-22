@@ -1,0 +1,30 @@
+@media print {
+    #root {
+        zoom: 0.5;
+    }
+    ::-webkit-scrollbar {
+        width: 0px;
+        height: 0px;
+    }
+    .main-wrapper {
+        top: 0 !important;
+        height: 100% !important;
+    }
+    .content-wrapper {
+        width: 100% !important;
+    }
+    .table-card {
+        width: 100% !important;
+        margin: 0 !important;
+    }
+    .hide-on-print {
+        display: none !important;
+    }
+    .examination-more-details {
+        display: block !important;
+    }
+    .examination-more-details > * {
+        width: 100% !important;
+        display: block !important;
+    }
+}

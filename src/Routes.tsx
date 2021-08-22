@@ -14,6 +14,7 @@ import CreateExamination from './components/pages/Examination/CreateExamination'
 import ShowQuestionnaire from './components/pages/QuestionnaireForm';
 import SinglePatient from './components/pages/SinglePatient';
 import FilterExamination from './components/pages/Examination/FilterExamination';
+import SingleExamination from './components/pages/SingleExamination/SingleExamination';
 
 type Props = {};
 
@@ -27,14 +28,12 @@ const Routes = ({}: Props) => {
                 <AuthRoute component={RegisterExaminerPage} exact path={PagesRoutes.RegisterExaminer} />
                 <AuthRoute component={ShowAllPatients} exact path={PagesRoutes.Patients} />
                 <AuthRoute component={SinglePatient} path={PagesRoutes.Patients + '/:patientId'} />
+                <AuthRoute component={SingleExamination} path={PagesRoutes.SingleExaminationSummary + '/:examinationId'} />
                 <AuthRoute component={Home} exact path={PagesRoutes.Home} />
                 <AuthRoute component={CreateExamination} path={PagesRoutes.CreateExamination} />
                 <Route path={PagesRoutes.Login}>
                     <LoginPageConnected />
                 </Route>
-                <AuthRoute path={PagesRoutes.FilterExamination}>
-                    <FilterExamination setExaminationFilterResult={undefined} setPatientFilterDetails={undefined} />
-                </AuthRoute>
                 <Route component={() => <ExceptionPage />} path={PagesRoutes.Error} />
                 <Redirect to={PagesRoutes.Error} />
             </Switch>

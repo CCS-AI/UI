@@ -1,8 +1,6 @@
 import { ModelConfig } from '@rematch/core';
 import { localSDK as client } from '../../../sdk';
 import { Examiner } from '../../../models/entities/examiner';
-import { Patient } from '../../../models/entities/patient';
-import { patientsStateType } from '../patient/patient';
 
 export type examinerStateType = {
     examinerInfo?: Examiner;
@@ -31,6 +29,11 @@ export const examiner: ModelConfig<examinerStateType> = {
         async fetchAllExaminers() {
             const examiners = await client.examiner().fetchAllExaminers();
             dispatch.examiner.setAllExaminers(examiners);
+        },
+
+        async getExaminerByID(examinerId: string) {
+            const response = await client.examiner().getExaminerByID(examinerId);
+            return response;
         }
     })
 };

@@ -12,4 +12,8 @@ export default class ExaminationAPI extends BaseController implements IExaminati
         const response = await this.client.post(`/examination`, JSON.stringify(examination));
         return response;
     }
+    async getExaminationById(examinationId: string) {
+        const response = await this.client.get(`/examination/${examinationId}`);
+        return response;
+    }
 }

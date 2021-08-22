@@ -120,7 +120,7 @@ const CreateExamination = ({ questionnaireResults, postExamination, match, pmfid
                         width: '50%'
                     }}
                 >
-                    <h3>רקע מטופל</h3>
+                    <h3>סיכום והמלצות </h3>
                     <TextBox initVal={pBackground} width="100%" rows={19} valueChange={setPbackground} />
                 </div>
             </div>
@@ -155,7 +155,7 @@ const mapDispatchToProps = (dispatch: any) => ({
 
 export default withRouter(connect(null, mapDispatchToProps)(CreateExamination));
 
-const Exam = ({ data, width, height }: Props) => {
+export const Exam = ({ data, width, height }: Props) => {
     const [dataPoints, setDataPoints] = useState<Data[]>([]);
 
     useEffect(() => {

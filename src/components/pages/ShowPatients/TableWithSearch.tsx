@@ -42,9 +42,6 @@ export const PatientTableWithSearch = ({ rows, columns, pageSize }: TableWithSea
 
     return (
         <>
-            <TableHeader>צפייה במטופלים</TableHeader>
-            <br />
-            <br />
             <SearchBar
                 value={''}
                 onChange={(searchVal) => requestSearch(searchVal)}
