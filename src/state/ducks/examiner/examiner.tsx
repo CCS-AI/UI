@@ -4,6 +4,8 @@ import { Examiner } from '../../../models/entities/examiner';
 
 export type examinerStateType = {
     examinerInfo?: Examiner;
+    //should be changed to Examiner[]
+    allExaminers?: string[];
 };
 
 export const examiner: ModelConfig<examinerStateType> = {
@@ -11,6 +13,11 @@ export const examiner: ModelConfig<examinerStateType> = {
     reducers: {
         setExaminerInfo(state: examinerStateType, examinerInfo: Examiner): examinerStateType {
             return { ...state, examinerInfo };
+        },
+
+        //allExaminers should be changed to Examiner[]
+        setAllExaminers(state: examinerStateType, allExaminers: string[]) {
+            return { ...state, allExaminers };
         }
     },
     effects: (dispatch: any) => ({
@@ -18,6 +25,12 @@ export const examiner: ModelConfig<examinerStateType> = {
             const newExaminer = await client.examiner().registerExaminer(examiner);
             return true;
         },
+
+        async fetchAllExaminers() {
+            const examiners = await client.examiner().fetchAllExaminers();
+            dispatch.examiner.setAllExaminers(examiners);
+        },
+
         async getExaminerByID(examinerId: string) {
             const response = await client.examiner().getExaminerByID(examinerId);
             return response;
