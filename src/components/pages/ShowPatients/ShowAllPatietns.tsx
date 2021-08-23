@@ -35,8 +35,6 @@ const ShowAllPatients = ({ patients, fetchPatients, showLoader }: ShowAllPatient
             <TableCard>
                 {showLoader ? (
                     <Loader />
-                ) : !patients || !patients.length ? (
-                    <div>No patients</div>
                 ) : (
                     <>
                         <FilterData open={filterOpen} setOpen={setFilterOpen} />
@@ -44,7 +42,11 @@ const ShowAllPatients = ({ patients, fetchPatients, showLoader }: ShowAllPatient
                         <br />
                         <br />
                         {CreateBtn({ display: 'flex', margin: '5px auto 5px 0' })}
-                        <PatientTableWithSearch rows={patients} columns={Object.keys(patients[0])} pageSize={5}></PatientTableWithSearch>
+                        {!patients || !patients.length ? (
+                            <div>No patients</div>
+                        ) : (
+                            <PatientTableWithSearch rows={patients} columns={Object.keys(patients[0])} pageSize={5}></PatientTableWithSearch>
+                        )}
                     </>
                 )}
             </TableCard>

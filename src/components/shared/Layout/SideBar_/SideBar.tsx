@@ -58,16 +58,6 @@ export const SideBar = ({ setOpenSideBar, open, image, title, permission = Permi
                         <Link to={PagesRoutes.CreatePatient} />
                     </MenuItem>
                 </SubMenu>
-                <MenuItem className={'SideHeader'} hidden={hasPermissionToHeader(permission, 'בדיקות')}>
-                    בדיקות
-                </MenuItem>
-                <SubMenu title="פעולות על בדיקות" className={'Menu'} hidden={hasPermissionToCategory(permission, 'פעולות על בדיקות')}>
-                    <MenuItem>עוד דברים 2</MenuItem>
-                    <MenuItem>
-                        אליאל טסט
-                        <Link to={PagesRoutes.CreateExamination} />
-                    </MenuItem>
-                </SubMenu>
                 <MenuItem className={'SideHeader'} hidden={hasPermissionToCategory(permission, 'פעולות על מטפלים')}>
                     מטפלים
                 </MenuItem>

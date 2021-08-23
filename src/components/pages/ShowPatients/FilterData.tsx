@@ -21,6 +21,7 @@ import { patientSelector } from '../../../state/ducks/patient/selectors';
 import { forEach } from 'lodash';
 import { questionnaireSelector } from '../../../state/ducks/questionnaire/selectors';
 import FilterExamination from '../Examination/FilterExamination';
+import { styled } from '../../shared/Theme/theme';
 type Props = RouteComponentProps & {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -84,17 +85,19 @@ const FilterData = ({ open, setOpen, fetchPatients }: Props) => {
         return (
             <div>
                 <FilterExamination setPatientFilterDetails={setPatientFilterDetails} setExaminationFilterResult={seExaminationFilterResult} />
-                <RoundedButton
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                    startIcon={<SaveIcon />}
-                    onClick={handleClose}
-                    disabled={undefined}
-                >
-                    {showLoader ? <BtnLoader /> : <span>{'שמירה'}</span>}
-                </RoundedButton>
+                <Footer>
+                    <RoundedButton
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        startIcon={<SaveIcon />}
+                        onClick={handleClose}
+                        disabled={undefined}
+                    >
+                        {showLoader ? <BtnLoader /> : <span>{'שמירה'}</span>}
+                    </RoundedButton>
+                </Footer>
             </div>
         );
     };
@@ -119,6 +122,11 @@ const FilterData = ({ open, setOpen, fetchPatients }: Props) => {
     );
 };
 
+const Footer = styled.div`
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+`;
 const mapDispatchToProps = (dispatch: any) => ({
     fetchPatients: (filter: Filter | undefined) => dispatch.patient.fetchAllPatients(filter)
 });

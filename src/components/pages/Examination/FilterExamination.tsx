@@ -74,7 +74,6 @@ const FilterExamination = ({
 
     const findExaminerIdByName = (examinerName: string) => {
         if (!examiners) return undefined;
-        console.log(examiners);
         for (var i = 0; i < examiners.length; i++) {
             if (examiners[i].firstName + ' ' + examiners[i].lastName == examinerName) return examiners[i].id;
         }
@@ -92,7 +91,6 @@ const FilterExamination = ({
                 setPatientFilterDetails(undefined);
                 setExaminationFilterResult(undefined);
             }
-            console.log('Set undefined ');
             return;
         }
 
@@ -143,7 +141,6 @@ const FilterExamination = ({
         if (state.examination.type != '' && state.examination.type != undefined) examDetails['type'] = state.examination.type as ExamPointTypes;
         else examDetails['type'] = undefined;
 
-        console.log(patientDetails, examDetails);
         if (setPatientFilterDetails && setExaminationFilterResult) {
             setPatientFilterDetails(patientDetails);
             setExaminationFilterResult(examDetails);
